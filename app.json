@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "VentWithStrangersMobileNew",
+    "slug": "VentWithStrangersMobileNew",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
