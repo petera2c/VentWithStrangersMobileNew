@@ -11,7 +11,7 @@ function Routes() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Feed"
+          name="feed"
           component={Feed}
           options={{ headerShown: false }}
         />
