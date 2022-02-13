@@ -9,12 +9,20 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/pro-light-svg-icons": "^5.15.3",
+    "@fortawesome/pro-regular-svg-icons": "^5.15.3",
+    "@fortawesome/pro-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-native-fontawesome": "^0.2.6",
+    "avataaars": "^2.0.0",
     "expo": "~44.0.2",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-paper": "^4.11.2",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
