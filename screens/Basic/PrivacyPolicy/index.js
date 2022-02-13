@@ -3,12 +3,12 @@ import { Text } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 
-function FeedScreen({ navigation }) {
+function PrivacyPolicyScreen({ navigation }) {
   return (
     <Screen navigation={navigation}>
-      <Text>Feed</Text>
+      <Text>Privacy Policy</Text>
     </Screen>
   );
 }
 
-export default FeedScreen;
+export default PrivacyPolicyScreen;

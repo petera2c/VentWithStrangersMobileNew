@@ -3,12 +3,12 @@ import { Text } from "react-native";
 
 import Screen from "../../components/containers/Screen";
 
-function FeedScreen({ navigation }) {
+function ChatWithStrangersScreen({ navigation }) {
   return (
     <Screen navigation={navigation}>
-      <Text>Feed</Text>
+      <Text>Chat With Strangers</Text>
     </Screen>
   );
 }
 
-export default FeedScreen;
+export default ChatWithStrangersScreen;

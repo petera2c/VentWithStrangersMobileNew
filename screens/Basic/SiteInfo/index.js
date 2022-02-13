@@ -3,12 +3,12 @@ import { Text } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 
-function FeedScreen({ navigation }) {
+function SiteInfoScreen({ navigation }) {
   return (
     <Screen navigation={navigation}>
-      <Text>Feed</Text>
+      <Text>VWS Info</Text>
     </Screen>
   );
 }
 
-export default FeedScreen;
+export default SiteInfoScreen;

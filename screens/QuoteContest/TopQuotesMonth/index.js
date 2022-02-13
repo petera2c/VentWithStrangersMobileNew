@@ -3,12 +3,12 @@ import { Text } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 
-function FeedScreen({ navigation }) {
+function TopQuotesMonthScreen({ navigation }) {
   return (
     <Screen navigation={navigation}>
-      <Text>Feed</Text>
+      <Text>Top Quotes of the month!</Text>
     </Screen>
   );
 }
 
-export default FeedScreen;
+export default TopQuotesMonthScreen;

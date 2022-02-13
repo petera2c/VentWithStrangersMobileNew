@@ -3,7 +3,7 @@ import { Text } from "react-native";
 
 import Screen from "../../components/containers/Screen";
 
-function FeedScreen({ navigation }) {
+function SettingsScreen({ navigation }) {
   return (
     <Screen navigation={navigation}>
       <Text>Feed</Text>
@@ -11,4 +11,4 @@ function FeedScreen({ navigation }) {
   );
 }
 
-export default FeedScreen;
+export default SettingsScreen;
