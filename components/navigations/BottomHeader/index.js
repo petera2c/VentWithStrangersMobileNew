@@ -1,9 +1,9 @@
 import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView, View } from "react-native";
 import { Button } from "react-native-paper";
 
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
-import { faBell } from "@fortawesome/pro-solid-svg-icons/faBell";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 import { faHouse } from "@fortawesome/pro-solid-svg-icons/faHouse";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
@@ -11,72 +11,93 @@ import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+import Chats from "../../../screens/Chats";
+import Feed from "../../../screens/Feed";
+import NewVent from "../../../screens/NewVent";
+import Profile from "../../../screens/Profile";
+import Drawer from "../Drawer";
+
 import { styles } from "../../../styles";
 
-function BottomHeader({ navigation }) {
+const Tab = createBottomTabNavigator();
+
+function BottomHeader() {
   return (
-    <View style={{ ...styles.flexRow, ...styles.bgWhite }}>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate("feed")}
-        style={{
-          ...styles.fullCenter,
-          flex: 1,
-          borderRadius: 0,
-          ...styles.bgWhite,
+    <Tab.Navigator
+      initialRouteName="Feed"
+      screenOptions={{
+        tabBarActiveTintColor: "#e91e63",
+      }}
+    >
+      <Tab.Screen
+        component={Feed}
+        name="Feed"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesomeIcon icon={faHouse} color={color} size={size} />
+          ),
+          tabBarLabel: () => {
+            return null;
+          },
         }}
-      >
-        <FontAwesomeIcon icon={faHouse} size={32} />
-      </Button>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate("feed")}
-        style={{
-          ...styles.fullCenter,
-          flex: 1,
-          borderRadius: 0,
-          ...styles.bgWhite,
+      />
+      <Tab.Screen
+        component={Chats}
+        name="Chats"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesomeIcon icon={faComments} color={color} size={size} />
+          ),
+          tabBarLabel: () => {
+            return null;
+          },
         }}
-      >
-        <FontAwesomeIcon icon={faComments} size={32} />
-      </Button>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate("feed")}
-        style={{
-          ...styles.fullCenter,
-          flex: 1,
-          borderRadius: 0,
-          ...styles.bgWhite,
+      />
+      <Tab.Screen
+        component={NewVent}
+        name="NewVent"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesomeIcon icon={faPen} color={color} size={size} />
+          ),
+          tabBarLabel: () => {
+            return null;
+          },
         }}
-      >
-        <FontAwesomeIcon icon={faPen} size={32} />
-      </Button>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate("feed")}
-        style={{
-          ...styles.fullCenter,
-          flex: 1,
-          borderRadius: 0,
-          ...styles.bgWhite,
+        tabBarOptions={{
+          showLabel: false,
         }}
-      >
-        <FontAwesomeIcon icon={faUser} size={32} />
-      </Button>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate("feed")}
-        style={{
-          ...styles.fullCenter,
-          flex: 1,
-          borderRadius: 0,
-          ...styles.bgWhite,
+      />
+      <Tab.Screen
+        component={Profile}
+        name="Profile"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesomeIcon icon={faUser} color={color} size={size} />
+          ),
+          tabBarLabel: () => {
+            return null;
+          },
         }}
-      >
-        <FontAwesomeIcon icon={faBars} size={32} />
-      </Button>
-    </View>
+      />
+      <Tab.Screen
+        component={Drawer}
+        name="Drawer"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesomeIcon icon={faBars} color={color} size={size} />
+          ),
+          tabBarLabel: () => {
+            return null;
+          },
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 

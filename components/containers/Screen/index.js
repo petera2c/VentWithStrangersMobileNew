@@ -24,8 +24,6 @@ function ScreenContainer({ children, navigation }) {
 
       <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
         <View style={{ flex: 1, backgroundColor: "red" }}>{children}</View>
-
-        <BottomHeader navigation={navigation} />
       </SafeAreaView>
     </PaperProvider>
   );
