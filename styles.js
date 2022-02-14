@@ -14,7 +14,7 @@ export const colors = {
   grey11: "#3a4046",
   red: "#f44336",
   white: "#fff",
-  primaryFont: "#3a4046"
+  primaryFont: "#3a4046",
 };
 
 export const styles = StyleSheet.create({
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.main,
     borderRadius: 50,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   roundIconBig: {
     width: 60,
@@ -34,38 +34,38 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.main,
     borderRadius: 50,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   wrap: {
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
 
   border: { borderWidth: 1, borderColor: colors.grey7 },
   borderRed: { borderWidth: 1, borderColor: colors.red },
   borderMain: { borderWidth: 1, borderColor: colors.main },
   borderTop: { borderTopWidth: 1, borderTopColor: colors.grey7 },
-  borderBottom: { borderBottomWidth: 1, borderBottomColor: colors.grey7 },
-  borderBottomMain: { borderBottomWidth: 1, borderBottomColor: colors.main },
+  borderBottom: { borderBottomWidth: 2, borderBottomColor: colors.grey7 },
+  borderBottomMain: { borderBottomWidth: 2, borderBottomColor: colors.main },
   button1: { color: colors.grey1 },
   button2: { backgroundColor: colors.main },
   button3: {
     borderWidth: 1,
-    borderColor: colors.main
+    borderColor: colors.main,
   },
 
   shadowBottom: {
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "#999999",
-    shadowOpacity: 0.3
+    shadowOpacity: 0.3,
   },
   shadowAll: {
     shadowOffset: { width: 2, height: 2 },
     shadowColor: "#999999",
-    shadowOpacity: 1
+    shadowOpacity: 1,
   },
 
   taggedUser: {
-    backgroundColor: colors.lightMain
+    backgroundColor: colors.lightMain,
   },
 
   justifyCenter: { justifyContent: "center" },
@@ -87,33 +87,33 @@ export const styles = StyleSheet.create({
   bgRed: { backgroundColor: colors.red },
   bgMain: { backgroundColor: colors.main },
   bgLightMain: {
-    backgroundColor: colors.lightMain
+    backgroundColor: colors.lightMain,
   },
 
   primary: { color: colors.primaryFont },
   colorGrey1: {
-    color: colors.grey1
+    color: colors.grey1,
   },
   colorGrey3: {
-    color: colors.grey3
+    color: colors.grey3,
   },
   colorGrey5: {
-    color: colors.grey5
+    color: colors.grey5,
   },
   colorGrey9: {
-    color: colors.grey9
+    color: colors.grey9,
   },
   colorGrey11: {
-    color: colors.grey11
+    color: colors.grey11,
   },
   colorMain: {
-    color: colors.main
+    color: colors.main,
   },
   colorRed: {
-    color: colors.red
+    color: colors.red,
   },
   colorWhite: {
-    color: colors.white
+    color: colors.white,
   },
   colorBlack: { color: colors.black },
 
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
     minWidth: 16,
     minHeight: 16,
     backgroundColor: "#1FAB89",
-    borderRadius: 100
+    borderRadius: 100,
   },
 
   tac: { textAlign: "center" },
@@ -225,5 +225,5 @@ export const styles = StyleSheet.create({
   ma2: { margin: 2 },
   ma4: { margin: 4 },
   ma8: { margin: 8 },
-  ma16: { margin: 16 }
+  ma16: { margin: 16 },
 });
