@@ -6,6 +6,7 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 
 import Routes from "./screens/index";
+import "./config/firebase_init";
 
 function App() {
   let [fontsLoaded] = useFonts({

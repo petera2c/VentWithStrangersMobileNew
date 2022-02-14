@@ -23,7 +23,7 @@ function ScreenContainer({ children, navigation }) {
       <StatusBar style="dark" />
 
       <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
-        <View style={{ flex: 1, backgroundColor: "red" }}>{children}</View>
+        <View style={{ flex: 1, ...styles.bgBlue2 }}>{children}</View>
       </SafeAreaView>
     </PaperProvider>
   );

@@ -1,5 +1,5 @@
 import { getDocs, collection, orderBy, query, where } from "firebase/firestore";
-import { db } from "../../../config/db_init";
+import { db } from "../../../config/firebase_init";
 import dayjs from "dayjs";
 
 export const getQuotes = async (isMounted, setQuotes) => {

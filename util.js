@@ -17,10 +17,8 @@ import {
   set,
 } from "firebase/database";
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
-import { db, db2 } from "./config/db_init";
-import reactStringReplace from "react-string-replace";
+import { db, db2 } from "./config/firebase_init";
 import dayjs from "dayjs";
-import { message, Modal } from "antd";
 
 export const blockUser = async (userID, userIDToBlock) => {
   await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);
@@ -248,8 +246,6 @@ export const hasUserBlockedUser = async (
   else return callback(false);
 };
 
-export const getIsMobileOrTablet = () => window.screen.width < 940;
-
 export const isPageActive = (page, pathname) => {
   if (page === pathname) return " active ";
   else return "";
@@ -289,17 +285,7 @@ export const soundNotify = (sound = "bing") => {
   audio.play();
 };
 
-export const urlify = (text) =>
-  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
-    <a
-      className="button-1 no-bold no-hover"
-      href={match}
-      rel="noreferrer"
-      target="_blank"
-    >
-      {match}
-    </a>
-  ));
+export const urlify = (text) => text;
 
 export const useIsMounted = () => {
   const isMountedRef = useRef(true);

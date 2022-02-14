@@ -14,7 +14,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/db_init";
+import { db } from "../../config/firebase_init";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { message } from "antd";

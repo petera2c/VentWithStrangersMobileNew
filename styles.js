@@ -15,6 +15,9 @@ export const colors = {
   red: "#f44336",
   white: "#fff",
   primaryFont: "#3a4046",
+
+  blue1: "#e7f3fe",
+  blue2: "#b6ddfc",
 };
 
 export const styles = StyleSheet.create({
@@ -85,10 +88,9 @@ export const styles = StyleSheet.create({
   bgGrey10: { backgroundColor: colors.grey10 },
   bgWhite: { backgroundColor: colors.white },
   bgRed: { backgroundColor: colors.red },
-  bgMain: { backgroundColor: colors.main },
-  bgLightMain: {
-    backgroundColor: colors.lightMain,
-  },
+
+  bgBlue1: { backgroundColor: colors.blue1 },
+  bgBlue2: { backgroundColor: colors.blue2 },
 
   primary: { color: colors.primaryFont },
   colorGrey1: {

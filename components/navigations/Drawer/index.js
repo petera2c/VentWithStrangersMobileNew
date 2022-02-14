@@ -150,7 +150,7 @@ function DrawerNavigation() {
         );
       }}
     >
-      <Drawer.Screen component={BottomHeader} name="Feed" />
+      <Drawer.Screen component={BottomHeader} name="Home" />
     </Drawer.Navigator>
   );
 }

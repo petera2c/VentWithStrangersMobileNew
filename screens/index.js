@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import BottomHeader from "../components/navigations/BottomHeader";
 import Drawer from "../components/navigations/Drawer";
@@ -22,11 +23,40 @@ function Routes() {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
 
+  onAuthStateChanged(getAuth(), (user) => {
+    if (!isMounted.current) return;
+    setLoading(false);
+
+    if (user) setUser(user);
+  });
+
   useEffect(() => {
     isMounted.current = true;
 
+    let newRewardListenerUnsubscribe;
+    if (user) {
+      import("./util").then((functions) => {
+        newRewardListenerUnsubscribe = functions.newRewardListener(
+          isMounted,
+          setNewReward,
+          user.uid
+        );
+        functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
+        functions.getIsUserSubscribed(isMounted, setUserSubscription, user.uid);
+        functions.setIsUserOnlineToDatabase(user.uid);
+      });
+
+      import("../util").then((functions) => {
+        functions.getUserBasicInfo((newBasicUserInfo) => {
+          if (isMounted.current) setUserBasicInfo(newBasicUserInfo);
+        }, user.uid);
+      });
+    }
+
     return () => {
       isMounted.current = false;
+
+      if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
     };
   }, [isMounted, user]);
 

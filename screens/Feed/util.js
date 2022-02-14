@@ -15,7 +15,7 @@ import {
   query as query2,
   ref,
 } from "firebase/database";
-import { db, db2 } from "../../config/db_init";
+import { db, db2 } from "../../config/firebase_init";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getMetaInformation = (pathname) => {

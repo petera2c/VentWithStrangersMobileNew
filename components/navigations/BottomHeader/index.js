@@ -8,7 +8,6 @@ import { faBell } from "@fortawesome/pro-solid-svg-icons/faBell";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 import { faHouse } from "@fortawesome/pro-solid-svg-icons/faHouse";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import Rules from "../../../screens/Basic/Rules";
