@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import loadable from "@loadable/component";
+import { Text, View } from "react-native";
 
 import { capitolizeFirstChar } from "../../../util";
 
-const Avatar = loadable(() => import("avataaars"));
+import Avatar from "../react-native-avataaars";
 
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
@@ -17,7 +17,13 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   if (userBasicInfo && userBasicInfo.avatar) {
     if (size === "large")
       return (
-        <div className={"avatar large " + className}>
+        <View
+          style={{
+            height: 125,
+            width: 125,
+            ...styles.fullCenter,
+          }}
+        >
           <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
@@ -29,13 +35,18 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
             eyebrowType={userBasicInfo.avatar.eyebrowType}
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
-            style={{ height: "100%" }}
           />
-        </div>
+        </View>
       );
     else if (size === "small")
       return (
-        <div className={"avatar small " + className}>
+        <View
+          style={{
+            height: 35,
+            width: 35,
+            ...styles.fullCenter,
+          }}
+        >
           <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
@@ -47,13 +58,18 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
             eyebrowType={userBasicInfo.avatar.eyebrowType}
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
-            style={{ height: "100%" }}
           />
-        </div>
+        </View>
       );
     else
       return (
-        <div className={"avatar " + className}>
+        <View
+          style={{
+            height: 65,
+            width: 65,
+            ...styles.fullCenter,
+          }}
+        >
           <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
@@ -65,33 +81,33 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
             eyebrowType={userBasicInfo.avatar.eyebrowType}
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
-            style={{ height: "100%" }}
           />
-        </div>
+        </View>
       );
   } else {
     if (size === "large")
       return (
-        <p
-          className={"avatar semi-large bold bg-blue white " + className}
-          style={{ fontSize: "48px" }}
-        >
-          {capitolizedDisplayName}
-        </p>
+        <View style={{ ...styles.roundIcon, ...styles.mr4 }}>
+          <Text style={{ ...styles.colorWhite, ...styles.fs18 }}>
+            {capitolizedDisplayName}
+          </Text>
+        </View>
       );
     else if (size === "small")
       return (
-        <p
-          className={"avatar very-small fs-20 bold bg-blue white " + className}
-        >
-          {capitolizedDisplayName}
-        </p>
+        <View style={{ ...styles.roundIcon, ...styles.mr4 }}>
+          <Text style={{ ...styles.colorWhite, ...styles.fs18 }}>
+            {capitolizedDisplayName}
+          </Text>
+        </View>
       );
     else
       return (
-        <p className={"avatar small fs-20 bold bg-blue white " + className}>
-          {capitolizedDisplayName}
-        </p>
+        <View style={{ ...styles.roundIcon, ...styles.mr4 }}>
+          <Text style={{ ...styles.colorWhite, ...styles.fs18 }}>
+            {capitolizedDisplayName}
+          </Text>
+        </View>
       );
   }
 }

@@ -57,7 +57,7 @@ function NewVentScreen({ navigation, route }) {
   const [isMinified, setIsMinified] = useState(miniVersion);
   const [quote, setQuote] = useState();
   const [saving, setSaving] = useState(false);
-  const [starterModal, setStarterModal] = useState("forgotPassword");
+  const [starterModal, setStarterModal] = useState();
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
   const [title, setTitle] = useState("");

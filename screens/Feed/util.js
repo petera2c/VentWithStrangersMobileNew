@@ -30,7 +30,6 @@ export const getMetaInformation = (pathname) => {
 };
 
 export const getVents = async (
-  isMounted,
   pathname,
   setCanLoadMore,
   setVents,
@@ -87,7 +86,6 @@ export const getVents = async (
       )
     );
   }
-  if (!isMounted()) return;
 
   if (snapshot && snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
@@ -115,27 +113,20 @@ export const getVents = async (
       });
     });
 
-    if (isMounted()) {
-      if (newVents.length < 10) setCanLoadMore(false);
+    if (newVents.length < 10) setCanLoadMore(false);
 
-      if (vents) {
-        return setVents((oldVents) => {
-          if (oldVents) return [...oldVents, ...newVents];
-          else return newVents;
-        });
-      } else {
-        return setVents(newVents);
-      }
+    if (vents) {
+      return setVents((oldVents) => {
+        if (oldVents) return [...oldVents, ...newVents];
+        else return newVents;
+      });
+    } else {
+      return setVents(newVents);
     }
   } else return setCanLoadMore(false);
 };
 
-export const newVentListener = (
-  isMounted,
-  pathname,
-  setWaitingVents,
-  first = true
-) => {
+export const newVentListener = (pathname, setWaitingVents, first = true) => {
   if (pathname !== "/recent") return;
 
   const unsubscribe = onSnapshot(
@@ -152,15 +143,14 @@ export const newVentListener = (
           querySnapshot.docChanges()[0].type === "added" ||
           querySnapshot.docChanges()[0].type === "removed"
         ) {
-          if (isMounted())
-            setWaitingVents((vents) => [
-              ...vents,
-              {
-                doc: querySnapshot.docs[0],
-                id: querySnapshot.docs[0].id,
-                ...querySnapshot.docs[0].data(),
-              },
-            ]);
+          setWaitingVents((vents) => [
+            ...vents,
+            {
+              doc: querySnapshot.docs[0],
+              id: querySnapshot.docs[0].id,
+              ...querySnapshot.docs[0].data(),
+            },
+          ]);
         }
       }
     }

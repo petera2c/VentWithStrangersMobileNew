@@ -12,7 +12,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { styles } from "../../../styles";
 
-function ScreenContainer({ children, navigation }) {
+function ScreenContainer({ children, navigation, style }) {
   return (
     <PaperProvider
       theme={{
@@ -32,7 +32,7 @@ function ScreenContainer({ children, navigation }) {
             Keyboard.dismiss();
           }}
         >
-          <View style={{ flex: 1, ...styles.bgBlue2, ...styles.pa16 }}>
+          <View style={{ flex: 1, ...styles.bgBlue2, ...style }}>
             {children}
           </View>
         </TouchableWithoutFeedback>

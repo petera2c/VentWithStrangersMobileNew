@@ -15,7 +15,6 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase_init";
-import { message } from "antd";
 
 import {
   getEndAtValueTimestamp,
@@ -135,7 +134,6 @@ export const getVentPartialLink = (vent) => {
 };
 
 export const newVentCommentListener = (
-  isMounted,
   setCanLoadMoreComments,
   setComments,
   userID,
@@ -158,19 +156,17 @@ export const newVentCommentListener = (
           querySnapshot.docChanges()[0].type === "added" ||
           querySnapshot.docChanges()[0].type === "removed"
         ) {
-          if (isMounted()) {
-            if (querySnapshot.docs[0].data().userID === userID)
-              setComments((oldComments) => [
-                ...oldComments,
-                {
-                  ...querySnapshot.docs[0].data(),
-                  id: querySnapshot.docs[0].id,
-                  doc: querySnapshot.docs[0],
-                  useToPaginate: false,
-                },
-              ]);
-            else setCanLoadMoreComments(true);
-          }
+          if (querySnapshot.docs[0].data().userID === userID)
+            setComments((oldComments) => [
+              ...oldComments,
+              {
+                ...querySnapshot.docs[0].data(),
+                id: querySnapshot.docs[0].id,
+                doc: querySnapshot.docs[0],
+                useToPaginate: false,
+              },
+            ]);
+          else setCanLoadMoreComments(true);
         }
       }
     }
@@ -182,7 +178,6 @@ export const newVentCommentListener = (
 export const getVentComments = async (
   activeSort,
   comments,
-  isMounted,
   setCanLoadMoreComments,
   setComments,
   useOldComments,
@@ -237,39 +232,38 @@ export const getVentComments = async (
     if (newComments.length < 10) setCanLoadMoreComments(false);
     else setCanLoadMoreComments(true);
 
-    if (isMounted)
-      setComments((oldComments) => {
-        if (oldComments && useOldComments) {
-          let returnComments = [...oldComments, ...newComments];
+    setComments((oldComments) => {
+      if (oldComments && useOldComments) {
+        let returnComments = [...oldComments, ...newComments];
 
-          if (activeSort === "first") {
-            returnComments.sort((a, b) => {
-              if (a.server_timestamp < b.server_timestamp) return -1;
-              if (a.server_timestamp > b.server_timestamp) return 1;
-              return 0;
-            });
-          } else if (activeSort === "best") {
-            returnComments.sort((a, b) => {
-              if (a.like_counter < b.like_counter) return 1;
-              if (a.like_counter > b.like_counter) return -1;
+        if (activeSort === "first") {
+          returnComments.sort((a, b) => {
+            if (a.server_timestamp < b.server_timestamp) return -1;
+            if (a.server_timestamp > b.server_timestamp) return 1;
+            return 0;
+          });
+        } else if (activeSort === "best") {
+          returnComments.sort((a, b) => {
+            if (a.like_counter < b.like_counter) return 1;
+            if (a.like_counter > b.like_counter) return -1;
 
-              if (a.server_timestamp < b.server_timestamp) return -1;
-              if (a.server_timestamp > b.server_timestamp) return 1;
-              return 0;
-            });
-          } else if (activeSort === "last") {
-            returnComments.sort((a, b) => {
-              if (a.server_timestamp < b.server_timestamp) return 1;
-              if (a.server_timestamp > b.server_timestamp) return -1;
-              return 0;
-            });
-          }
+            if (a.server_timestamp < b.server_timestamp) return -1;
+            if (a.server_timestamp > b.server_timestamp) return 1;
+            return 0;
+          });
+        } else if (activeSort === "last") {
+          returnComments.sort((a, b) => {
+            if (a.server_timestamp < b.server_timestamp) return 1;
+            if (a.server_timestamp > b.server_timestamp) return -1;
+            return 0;
+          });
+        }
 
-          return returnComments;
-        } else return newComments;
-      });
+        return returnComments;
+      } else return newComments;
+    });
   } else {
-    if (isMounted) setComments([]);
+    setComments([]);
   }
 };
 
