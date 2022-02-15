@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
-import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 
 import Routes from "./screens/index";
@@ -16,12 +15,15 @@ function App() {
     "nunito-semi-bold": require("./assets/fonts/NunitoSans-SemiBold.ttf"),
     "nunito-bold": require("./assets/fonts/NunitoSans-Bold.ttf"),
     "nunito-extra-bold": require("./assets/fonts/NunitoSans-ExtraBold.ttf"),
+    "nunito-light-italic": require("./assets/fonts/NunitoSans-LightItalic.ttf"),
+    "nunito-italic": require("./assets/fonts/NunitoSans-Italic.ttf"),
+    "nunito-bold-italic": require("./assets/fonts/NunitoSans-BoldItalic.ttf"),
   });
 
   if (fontsLoaded) {
     return <Routes />;
   } else {
-    return <AppLoading />;
+    return <View />;
   }
 }
 

@@ -1,12 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import algoliasearch from "algoliasearch";
 
+import { faAngleUp } from "@fortawesome/pro-solid-svg-icons/faAngleUp";
 import { faQuestionCircle } from "@fortawesome/pro-solid-svg-icons/faQuestionCircle";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import Screen from "../containers/Screen";
+import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 
@@ -25,6 +33,8 @@ import {
   selectEncouragingMessage,
 } from "./util";
 import { checks } from "./util";
+
+import { styles } from "../../styles";
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
@@ -47,7 +57,7 @@ function NewVentScreen({ navigation, route }) {
   const [isMinified, setIsMinified] = useState(miniVersion);
   const [quote, setQuote] = useState();
   const [saving, setSaving] = useState(false);
-  const [starterModal, setStarterModal] = useState(false);
+  const [starterModal, setStarterModal] = useState("forgotPassword");
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
   const [title, setTitle] = useState("");
@@ -83,7 +93,10 @@ function NewVentScreen({ navigation, route }) {
 
     if (ventID) getVent(isMounted, setDescription, setTags, setTitle, ventID);
 
-    getQuote(isMounted, setQuote);
+    getQuote(isMounted, (quote) => {
+      quote.value = quote.value.replace(/\s+/g, " ").trim();
+      setQuote(quote);
+    });
 
     if (user) {
       getUserVentTimeOut((res) => {
@@ -127,77 +140,82 @@ function NewVentScreen({ navigation, route }) {
   }, [isMounted, user, userBasicInfo, ventID]);
 
   return (
-    <View
-      className="x-fill column bg-white br8"
-      close={() => {
-        if (miniVersion) setIsMinified(true);
-      }}
-    >
-      <View className={"column br4 pa32 " + (isMinified ? "gap8" : "gap16")}>
+    <View style={{ ...styles.bgWhite, ...styles.br8 }}>
+      <View style={{ ...styles.br4, ...styles.pa32 }}>
         {!miniVersion && quote && (
-          <View className="column flex-fill align-center">
-            <Text className="fs-22 italic tac">"{quote.value}"</Text>
-            <Link to={"/profile?" + quote.userID}>
+          <View style={{ ...styles.alignCenter }}>
+            <Text
+              style={{ ...styles.fs22, ...styles.boldItalic, ...styles.tac }}
+            >
+              "{capitolizeFirstChar(quote.value)}"
+            </Text>
+            <TouchableOpacity to={"/profile?" + quote.userID}>
               <Text className="button-8 tac lh-1">
                 - {capitolizeFirstChar(quote.displayName)}
               </Text>
-            </Link>
+            </TouchableOpacity>
           </View>
         )}
         {!miniVersion && userVentTimeOut > 0 && !ventID && (
-          <View direction="vertical">
-            <Text className="tac">
+          <View>
+            <Text style={{ ...styles.tac }}>
               To avoid spam, people can only post once every few hours. With
               more Karma Points you can post more often. Please come back in
             </Text>
-            <Text className="tac">{userVentTimeOutFormatted}</Text>
+            <Text style={{ ...styles.tac }}>{userVentTimeOutFormatted}</Text>
           </View>
         )}
-        <View className="align-center gap8">
+        <View
+          style={{
+            ...styles.flexRow,
+            ...styles.alignCenter,
+          }}
+        >
           {false && isMinified && (
-            <Link to="/avatar">
+            <TouchableOpacity to="/avatar">
               <MakeAvatar
                 displayName={userBasicInfo.displayName}
                 userBasicInfo={userBasicInfo}
               />
-            </Link>
+            </TouchableOpacity>
           )}
-          <TextInput
-            className="x-fill py8 px16 br4"
-            onChangeText={(event) => {
-              if (postingDisableFunction) return postingDisableFunction();
-
-              setDescription(event.target.value);
-            }}
-            onClick={() => {
-              setIsMinified(false);
-              setHasStartedToWriteVent(true);
-            }}
-            placeholder={
-              isBirthdayPost
-                ? "Have the best birthday ever!"
-                : userVentTimeOutFormatted
-                ? "You can vent again in " + userVentTimeOutFormatted
-                : placeholderText
-            }
-            minRows={isMinified ? 1 : 3}
-            value={description}
-          />
-          {false && hasStartedToWriteVent && (
-            <Emoji
-              handleChange={(emoji) => {
+          <View style={{ ...styles.xFill }}>
+            {!isMinified && (
+              <Text style={{ ...styles.fs22, ...styles.mb8 }}>Description</Text>
+            )}
+            <TextInput
+              onChangeText={(event) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
-                setDescription(description + emoji);
+                setDescription(event.target.value);
               }}
+              onFocus={() => {
+                setIsMinified(false);
+                setHasStartedToWriteVent(true);
+              }}
+              placeholder={
+                isBirthdayPost
+                  ? "Have the best birthday ever!"
+                  : userVentTimeOutFormatted
+                  ? "You can vent again in " + userVentTimeOutFormatted
+                  : placeholderText
+              }
+              style={{
+                ...styles.xFill,
+                ...styles.border,
+                ...styles.fs22,
+                ...styles.br4,
+                ...styles.mb8,
+                ...styles.pa8,
+              }}
+              value={description}
             />
-          )}
+          </View>
         </View>
         {!isMinified && (
-          <View className="x-fill" direction="vertical">
-            <Text className="fw-400">Title</Text>
+          <View style={{ ...styles.mb16 }}>
+            <Text style={{ ...styles.fs22, ...styles.mb8 }}>Title</Text>
             <TextInput
-              className="x-fill py8 px16 br4"
               onChangeText={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
@@ -213,12 +231,23 @@ function NewVentScreen({ navigation, route }) {
                 setSaving(false);
               }}
               placeholder="Our community is listening :)"
-              type="text"
+              style={{
+                ...styles.xFill,
+                ...styles.border,
+                ...styles.fs22,
+                ...styles.br4,
+                ...styles.mb2,
+                ...styles.pa8,
+              }}
               value={title}
             />
             {title.length >= TITLE_LENGTH_MINIMUM && (
               <Text
-                className={title.length > TITLE_LENGTH_MAXIMUM ? "red" : ""}
+                style={{
+                  ...(title.length > TITLE_LENGTH_MAXIMUM
+                    ? styles.colorRed
+                    : styles.colorGrey1),
+                }}
               >
                 {title.length}/{TITLE_LENGTH_MAXIMUM}
               </Text>
@@ -226,11 +255,9 @@ function NewVentScreen({ navigation, route }) {
           </View>
         )}
         {!isMinified && (
-          <View className="x-fill" direction="vertical">
-            <Text className="fw-400">Tag this vent</Text>
-
+          <View>
+            <Text style={{ ...styles.fs22, ...styles.mb8 }}>Tag this vent</Text>
             <TextInput
-              className="x-fill py8 px16 br4"
               onChangeText={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
@@ -245,11 +272,19 @@ function NewVentScreen({ navigation, route }) {
                 setTagText(e.target.value);
               }}
               placeholder="Search tags"
+              style={{
+                ...styles.xFill,
+                ...styles.border,
+                ...styles.fs22,
+                ...styles.br4,
+                ...styles.mb8,
+                ...styles.pa8,
+              }}
               type="text"
               value={tagText}
             />
             {ventTags && ventTags.length > 0 && (
-              <View className="wrap gap8">
+              <View style={{ ...styles.flexRow, ...styles.wrap }}>
                 {ventTags.map((tagHit, index) => (
                   <Tag
                     key={tagHit.objectID}
@@ -264,9 +299,9 @@ function NewVentScreen({ navigation, route }) {
           </View>
         )}
         {!isMinified && tags && tags.length > 0 && (
-          <View className="column gap8">
+          <View>
             <Text>Selected Tags</Text>
-            <View className="x-fill wrap gap8">
+            <View style={{ ...styles.wrap }}>
               {tags.map((tag, index) => (
                 <SelectedTag
                   postingDisableFunction={postingDisableFunction}
@@ -282,11 +317,10 @@ function NewVentScreen({ navigation, route }) {
         )}
 
         {!isMinified && (
-          <View className="justify-end">
+          <View>
             {!saving && (
-              <button
-                className="bg-blue white px64 py8 br4"
-                onClick={() => {
+              <TouchableOpacity
+                onPress={() => {
                   if (postingDisableFunction) return postingDisableFunction();
 
                   if (!description) {
@@ -323,41 +357,77 @@ function NewVentScreen({ navigation, route }) {
                     });
                   }
                 }}
+                style={{ ...styles.buttonPrimary, ...styles.mt16 }}
               >
-                Submit
-              </button>
+                <Text style={{ ...styles.fs24, ...styles.colorWhite }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
             )}
           </View>
         )}
         {isMinified && quote && (
-          <View className="flex-fill full-center">
-            <View className="column flex-fill align-center">
-              <Text className="fs-18 no-bold grey-1 italic tac flex-fill">
-                {quote.value}
+          <View
+            style={{
+              ...styles.xFill,
+              ...styles.flexRow,
+              ...styles.fullCenter,
+            }}
+          >
+            <View
+              style={{
+                ...styles.alignCenter,
+                ...styles.flexFill,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.fs20,
+                  ...styles.tac,
+                  ...styles.boldItalic,
+                  ...styles.colorGrey1,
+                }}
+              >
+                {capitolizeFirstChar(quote.value)}
               </Text>
-              <Link to={"/profile?" + quote.userID}>
-                <Text className="blue tac lh-1">
+              <TouchableOpacity to={"/profile?" + quote.userID}>
+                <Text style={{ ...styles.fs20, ...styles.colorMain }}>
                   - {capitolizeFirstChar(quote.displayName)}
                 </Text>
-              </Link>
+              </TouchableOpacity>
             </View>
 
-            <TouchableOpacity to="/quote-contest">
-              <FontAwesomeIcon icon={faQuestionCircle} />
+            <TouchableOpacity style={{ ...styles.pl8 }} to="/quote-contest">
+              <FontAwesomeIcon
+                icon={faQuestionCircle}
+                style={{ ...styles.colorMain }}
+              />
             </TouchableOpacity>
           </View>
         )}
       </View>
       {!miniVersion && (
-        <View
-          className="column pa32"
-          style={{ borderTop: "2px solid var(--grey-color-2)" }}
-        >
+        <View>
           <Text>
             If you or someone you know is in danger, call your local emergency
             services or police.
           </Text>
         </View>
+      )}
+
+      {miniVersion && !isMinified && (
+        <TouchableOpacity
+          onPress={() => {
+            setIsMinified(true);
+          }}
+          style={{ ...styles.xFill, ...styles.alignCenter }}
+        >
+          <FontAwesomeIcon
+            icon={faAngleUp}
+            style={{ ...styles.colorGrey1 }}
+            size={32}
+          />
+        </TouchableOpacity>
       )}
       {starterModal && (
         <StarterModal
@@ -372,7 +442,6 @@ function NewVentScreen({ navigation, route }) {
 function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
   return (
     <TouchableOpacity
-      className="button-10 br4 px8 py4"
       onPress={() => {
         if (postingDisableFunction) return postingDisableFunction();
 
@@ -383,8 +452,18 @@ function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
           functions.updateTags(setTags, tagHit);
         });
       }}
+      style={{
+        ...styles.border,
+        ...styles.br4,
+        ...styles.mr8,
+        ...styles.mb8,
+        ...styles.px8,
+        ...styles.py4,
+      }}
     >
-      <Text>{viewTagFunction(tagHit.objectID)}</Text>
+      <Text style={{ ...styles.fs20, ...styles.colorGrey1 }}>
+        {viewTagFunction(tagHit.objectID)}
+      </Text>
     </TouchableOpacity>
   );
 }

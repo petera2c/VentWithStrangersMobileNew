@@ -47,7 +47,7 @@ function BottomHeader({ navigation, route }) {
         tabBarActiveTintColor: "#e91e63",
       }}
       tabBar={({ navigation, state }) => {
-        setActiveRoute(state.routes[state.index].name);
+        //  setActiveRoute(state.routes[state.index].name);
         return (
           <SafeAreaView style={{ ...styles.flexRow }}>
             <TouchableOpacity

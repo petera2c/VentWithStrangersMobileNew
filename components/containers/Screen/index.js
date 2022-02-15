@@ -1,10 +1,14 @@
 import React from "react";
-import { SafeAreaView, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-
-import BottomHeader from "../../navigations/BottomHeader";
 
 import { styles } from "../../../styles";
 
@@ -23,7 +27,15 @@ function ScreenContainer({ children, navigation }) {
       <StatusBar style="dark" />
 
       <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
-        <View style={{ flex: 1, ...styles.bgBlue2 }}>{children}</View>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Keyboard.dismiss();
+          }}
+        >
+          <View style={{ flex: 1, ...styles.bgBlue2, ...styles.pa16 }}>
+            {children}
+          </View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </PaperProvider>
   );

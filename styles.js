@@ -42,17 +42,20 @@ export const styles = StyleSheet.create({
   wrap: {
     flexWrap: "wrap",
   },
+  flexFill: {
+    flex: 1,
+  },
 
-  border: { borderWidth: 1, borderColor: colors.grey7 },
-  borderRed: { borderWidth: 1, borderColor: colors.red },
-  borderMain: { borderWidth: 1, borderColor: colors.main },
-  borderTop: { borderTopWidth: 1, borderTopColor: colors.grey7 },
+  border: { borderWidth: 2, borderColor: colors.grey7 },
+  borderRed: { borderWidth: 2, borderColor: colors.red },
+  borderMain: { borderWidth: 2, borderColor: colors.main },
+  borderTop: { borderTopWidth: 2, borderTopColor: colors.grey7 },
   borderBottom: { borderBottomWidth: 2, borderBottomColor: colors.grey7 },
   borderBottomMain: { borderBottomWidth: 2, borderBottomColor: colors.main },
   button1: { color: colors.grey1 },
   button2: { backgroundColor: colors.main },
   button3: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: colors.main,
   },
 
@@ -89,6 +92,7 @@ export const styles = StyleSheet.create({
   bgWhite: { backgroundColor: colors.white },
   bgRed: { backgroundColor: colors.red },
 
+  bgMain: { backgroundColor: colors.main },
   bgBlue1: { backgroundColor: colors.blue1 },
   bgBlue2: { backgroundColor: colors.blue2 },
 
@@ -132,6 +136,8 @@ export const styles = StyleSheet.create({
   semiBold: { fontFamily: "nunito-semi-bold" },
   bold: { fontFamily: "nunito-bold" },
   extraBold: { fontFamily: "nunito-extra-bold" },
+  italic: { fontFamily: "nunito-italic" },
+  boldItalic: { fontFamily: "nunito-bold-italic" },
 
   fs14: { fontSize: 14 },
   fs16: { fontSize: 16 },
@@ -228,4 +234,28 @@ export const styles = StyleSheet.create({
   ma4: { margin: 4 },
   ma8: { margin: 8 },
   ma16: { margin: 16 },
+
+  input: {
+    width: "100%",
+    borderWidth: 2,
+    borderColor: colors.grey7,
+    fontSize: 22,
+    borderRadius: 4,
+    marginBottom: 4,
+    padding: 8,
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 28,
+  },
+  pTag: {
+    color: colors.grey1,
+    fontSize: 20,
+  },
+  buttonPrimary: {
+    alignItems: "center",
+    borderRadius: 4,
+    backgroundColor: colors.main,
+    padding: 8,
+  },
 });

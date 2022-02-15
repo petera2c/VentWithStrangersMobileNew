@@ -1,6 +1,10 @@
-import { initializeApp, getApp } from "firebase/app";
-import { getDatabase, connectDatabaseEmulator } from "firebase/database";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getApp, initializeApp } from "firebase/app";
+import { connectDatabaseEmulator, getDatabase } from "firebase/database";
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  settings,
+} from "firebase/firestore";
 import { getAuth, connectAuthEmulator } from "firebase/auth";
 
 var firebaseConfig = {
@@ -14,7 +18,8 @@ var firebaseConfig = {
   storageBucket: "vent-with-strangers-2acc6.appspot.com",
 };
 
-if (__DEV__)
+//__DEV__
+if (false)
   firebaseConfig = {
     apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
     appId: "1:440569980458:web:870c6bde68871e5fd78553",
@@ -39,8 +44,7 @@ const app = createFirebaseApp(firebaseConfig);
 const db = getFirestore();
 const db2 = getDatabase();
 
-//__DEV__
-if (__DEV__) {
+if (false) {
   connectFirestoreEmulator(db, "localhost", 8080);
   connectDatabaseEmulator(db2, "localhost", 9000);
   const auth = getAuth();
