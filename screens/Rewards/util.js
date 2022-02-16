@@ -73,11 +73,7 @@ export const getNextMilestone = (counter, size) => {
   }
 };
 
-export const getUserRecentRewards = async (
-  isMounted,
-  setRecentRewards,
-  userID
-) => {
+export const getUserRecentRewards = async (setRecentRewards, userID) => {
   const recentRewardsSnapshot = await getDocs(
     query(
       collection(db, "rewards"),
@@ -100,11 +96,7 @@ export const getUserRecentRewards = async (
   setRecentRewards(recentRewards);
 };
 
-export const getUserRewardsProgress = async (
-  isMounted,
-  setUserRewards,
-  userID
-) => {
+export const getUserRewardsProgress = async (setUserRewards, userID) => {
   const userRewardsDoc = await getDoc(doc(db, "user_rewards", userID));
 
   if (userRewardsDoc.exists() && userRewardsDoc.data())
