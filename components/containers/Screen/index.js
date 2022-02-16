@@ -61,8 +61,8 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
         >
           <View style={{ flex: 1 }}>
             {Title && <Title />}
-            <ScrollView style={{ flex: 1, ...styles.bgBlue2, ...style }}>
-              {children}
+            <ScrollView style={{ flex: 1, ...styles.bgBlue2 }}>
+              <View style={{ ...style }}>{children}</View>
             </ScrollView>
           </View>
         </View>

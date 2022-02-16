@@ -58,7 +58,6 @@ function VentComponent({
   ventInit,
 }) {
   const textInput = useRef(null);
-  console.log(navigation);
 
   const { user, userBasicInfo } = useContext(UserContext);
 

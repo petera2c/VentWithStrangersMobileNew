@@ -29,8 +29,6 @@ import {
 
 import { db, db2 } from "../../config/firebase_init";
 
-import { message } from "antd";
-
 import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
 
 const deleteAccountField = async (field, userID) => {

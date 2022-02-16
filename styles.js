@@ -12,9 +12,11 @@ export const colors = {
   grey9: "#859097",
   grey10: "#f4f8fb",
   grey11: "#6d7980",
-  red: "#f44336",
   white: "#fff",
   primaryFont: "#3a4046",
+
+  red: "#f44336",
+  green: "#169873",
 
   blue1: "#e7f3fe",
   blue2: "#b6ddfc",
@@ -117,6 +119,9 @@ export const styles = StyleSheet.create({
   },
   colorRed: {
     color: colors.red,
+  },
+  colorGreen: {
+    color: colors.green,
   },
   colorWhite: {
     color: colors.white,
@@ -261,5 +266,8 @@ export const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 28,
+  },
+  titleSmall: {
+    fontSize: 24,
   },
 });

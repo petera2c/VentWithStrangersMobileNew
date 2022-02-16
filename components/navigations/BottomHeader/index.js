@@ -124,7 +124,7 @@ function BottomHeader({ navigation, route }) {
                 icon={faBars}
                 size={28}
                 style={{
-                  ...(state.index === 4 ? styles.colorMain : styles.colorGrey1),
+                  ...styles.colorGrey1,
                 }}
               />
             </TouchableOpacity>
