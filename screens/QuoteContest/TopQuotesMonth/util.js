@@ -2,7 +2,7 @@ import { getDocs, collection, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../../config/firebase_init";
 import dayjs from "dayjs";
 
-export const getQuotes = async (isMounted, setQuotes) => {
+export const getQuotes = async (setQuotes) => {
   const snapshot = await getDocs(
     query(
       collection(db, "quotes"),
@@ -12,10 +12,9 @@ export const getQuotes = async (isMounted, setQuotes) => {
     )
   );
 
-  if (isMounted())
-    setQuotes(
-      snapshot.docs.map((doc, index) => {
-        return { id: doc.id, doc, ...doc.data() };
-      })
-    );
+  setQuotes(
+    snapshot.docs.map((doc, index) => {
+      return { id: doc.id, doc, ...doc.data() };
+    })
+  );
 };

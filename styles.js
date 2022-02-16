@@ -136,6 +136,7 @@ export const styles = StyleSheet.create({
   },
 
   tac: { textAlign: "center" },
+  tar: { textAlign: "right" },
   extraLight: { fontFamily: "nunito-extra-light" },
   light: { fontFamily: "nunito-light" },
   semiBold: { fontFamily: "nunito-semi-bold" },
