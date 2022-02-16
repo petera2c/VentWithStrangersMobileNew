@@ -235,6 +235,16 @@ export const styles = StyleSheet.create({
   ma8: { margin: 8 },
   ma16: { margin: 16 },
 
+  box: {
+    backgroundColor: colors.white,
+    borderRadius: 8,
+  },
+  buttonPrimary: {
+    alignItems: "center",
+    borderRadius: 4,
+    backgroundColor: colors.main,
+    padding: 8,
+  },
   input: {
     width: "100%",
     borderWidth: 2,
@@ -244,18 +254,12 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
     padding: 8,
   },
-  title: {
-    textAlign: "center",
-    fontSize: 28,
-  },
   pTag: {
     color: colors.grey1,
     fontSize: 20,
   },
-  buttonPrimary: {
-    alignItems: "center",
-    borderRadius: 4,
-    backgroundColor: colors.main,
-    padding: 8,
+  title: {
+    textAlign: "center",
+    fontSize: 28,
   },
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import { faRocket } from "@fortawesome/pro-solid-svg-icons/faRocket";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";

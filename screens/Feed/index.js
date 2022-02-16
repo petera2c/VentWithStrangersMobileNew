@@ -128,7 +128,7 @@ function FeedScreen({ navigation, route }) {
         {isTrending(pathname) && (
           <TouchableOpacity
             onPress={() => setTrendingOptions(true)}
-            style={{ ...styles.flexRow, ...styles.alignCenter, ...styles.py8 }}
+            style={{ ...styles.flexRow, ...styles.alignCenter, ...styles.pt16 }}
           >
             <Text
               style={{ ...styles.fs18, ...styles.colorGrey11, ...styles.mr4 }}
@@ -155,7 +155,7 @@ function FeedScreen({ navigation, route }) {
         />
       )}
 
-      <View className="x-fill" direction="vertical" size="large">
+      <View style={{ ...styles.px16 }}>
         {waitingVents.length > 0 && (
           <TouchableOpacity
             onPress={() => {
@@ -172,6 +172,7 @@ function FeedScreen({ navigation, route }) {
             return (
               <View className="column x-fill gap8" key={vent.id}>
                 <Vent
+                  navigation={navigation}
                   previewMode={true}
                   ventID={vent.id}
                   ventInit={vent.title ? vent : undefined}

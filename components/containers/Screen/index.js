@@ -3,6 +3,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   SafeAreaView,
+  ScrollView,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -12,7 +13,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { styles } from "../../../styles";
 
-function ScreenContainer({ children, navigation, style }) {
+function ScreenContainer({ children, style }) {
   return (
     <PaperProvider
       theme={{
@@ -32,9 +33,9 @@ function ScreenContainer({ children, navigation, style }) {
             Keyboard.dismiss();
           }}
         >
-          <View style={{ flex: 1, ...styles.bgBlue2, ...style }}>
+          <ScrollView style={{ flex: 1, ...styles.bgBlue2, ...style }}>
             {children}
-          </View>
+          </ScrollView>
         </TouchableWithoutFeedback>
       </SafeAreaView>
     </PaperProvider>

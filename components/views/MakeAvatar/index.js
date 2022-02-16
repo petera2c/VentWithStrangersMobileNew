@@ -5,6 +5,8 @@ import { capitolizeFirstChar } from "../../../util";
 
 import Avatar from "../react-native-avataaars";
 
+import { styles } from "../../../styles";
+
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
 

@@ -14,6 +14,7 @@ import Rules from "../../../screens/Basic/Rules";
 import SiteInfo from "../../../screens/Basic/SiteInfo";
 
 import Feed from "../../../screens/Feed";
+import SingleVent from "../../../screens/Feed/SingleVent";
 
 import Account from "../../../screens/Profile/Account";
 import Avatar from "../../../screens/Profile/Avatar";
@@ -30,6 +31,9 @@ import MakeFriends from "../../../screens/MakeFriends";
 import NewVent from "../../../screens/NewVent";
 import OnlineUsers from "../../../screens/OnlineUsers";
 import Rewards from "../../../screens/Rewards";
+
+import AllTags from "../../../screens/tags/All";
+import IndividualTag from "../../../screens/tags/Individual";
 
 import { RouteContext } from "../../../context";
 
@@ -131,6 +135,13 @@ function BottomHeader({ navigation, route }) {
       <Tab.Screen
         component={Feed}
         name="Feed"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        component={SingleVent}
+        name="SingleVent"
         options={{
           headerShown: false,
         }}
@@ -239,6 +250,20 @@ function BottomHeader({ navigation, route }) {
       <Tab.Screen
         component={MakeFriends}
         name="MakeFriends"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        component={AllTags}
+        name="AllTags"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        component={IndividualTag}
+        name="IndividualTag"
         options={{
           headerShown: false,
         }}

@@ -612,4 +612,5 @@ function Tag({ tag }) {
     </Link>
   );
 }
+
 export default Vent;
