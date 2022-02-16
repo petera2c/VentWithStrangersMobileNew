@@ -13,7 +13,6 @@ import { db } from "../../../config/firebase_init";
 import { getEndAtValueTimestamp } from "../../../util";
 
 export const getTagVents = async (
-  isMounted,
   setCanLoadMoreVents,
   setVents,
   tagID,
@@ -30,8 +29,6 @@ export const getTagVents = async (
       limit(10)
     )
   );
-
-  if (!isMounted()) return;
 
   let newVents = [];
 

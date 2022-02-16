@@ -4,6 +4,8 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
+  Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -11,9 +13,12 @@ import { StatusBar } from "expo-status-bar";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
+import { faChevronLeft } from "@fortawesome/pro-solid-svg-icons/faChevronLeft";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
 import { styles } from "../../../styles";
 
-function ScreenContainer({ children, style }) {
+function ScreenContainer({ children, goBack, navigation, style, Title }) {
   return (
     <PaperProvider
       theme={{
@@ -28,15 +33,39 @@ function ScreenContainer({ children, style }) {
       <StatusBar style="dark" />
 
       <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
-        <TouchableWithoutFeedback
+        {goBack && (
+          <View style={{ ...styles.bgWhite }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                ...styles.flexRow,
+                ...styles.alignCenter,
+                ...styles.pa16,
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faChevronLeft}
+                style={{ ...styles.colorGrey11 }}
+              />
+              <Text style={{ ...styles.fs16, ...styles.colorGrey11 }}>
+                Go Back
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <View
           onPress={() => {
             Keyboard.dismiss();
           }}
+          style={{ flex: 1 }}
         >
-          <ScrollView style={{ flex: 1, ...styles.bgBlue2, ...style }}>
-            {children}
-          </ScrollView>
-        </TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            {Title && <Title />}
+            <ScrollView style={{ flex: 1, ...styles.bgBlue2, ...style }}>
+              {children}
+            </ScrollView>
+          </View>
+        </View>
       </SafeAreaView>
     </PaperProvider>
   );

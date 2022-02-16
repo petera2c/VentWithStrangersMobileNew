@@ -102,13 +102,6 @@ export const getVent = async (setVent, ventID) => {
   });
 };
 
-export const getVentDescription = (previewMode, vent) => {
-  let description = vent.description;
-  if (previewMode && description.length > 240)
-    description = description.slice(0, 240) + "... Read More";
-  return description;
-};
-
 export const getVentFullLink = (vent) => {
   const partialLink =
     "/vent/" +

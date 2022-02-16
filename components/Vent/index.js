@@ -36,7 +36,6 @@ import {
   findPossibleUsersToTag,
   getVent,
   getVentComments,
-  getVentDescription,
   getVentPartialLnk,
   likeOrUnlikeVent,
   newVentCommentListener,
@@ -76,7 +75,6 @@ function VentComponent({
 
   const [isUserAccountNewLocal, setIsUserAccountNewLocal] = useState();
   const [signUpProgressFunction, setSignUpProgressFunction] = useState();
-  const [ventPreview, setVentPreview] = useState("");
 
   useEffect(() => {
     let isUserOnlineSubscribe;
@@ -86,8 +84,6 @@ function VentComponent({
       isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
         setIsUserOnline(isUserOnline.state);
       }, newVent.userID);
-
-      setVentPreview(getVentDescription(previewMode, newVent));
 
       if (setTitle && newVent && newVent.title) setTitle(newVent.title);
 
@@ -239,8 +235,8 @@ function VentComponent({
 
             {vent.new_tags && vent.new_tags.length > 0 && (
               <View style={{ ...styles.flexRow, ...styles.wrap }}>
-                {vent.new_tags.map((tag, index) => (
-                  <Tag key={index} navigation={navigation} tag={tag} />
+                {vent.new_tags.map((tagID, index) => (
+                  <Tag key={index} navigation={navigation} tagID={tagID} />
                 ))}
               </View>
             )}
@@ -252,7 +248,7 @@ function VentComponent({
                 ? () => navigation.jumpTo("SingleVent", { ventID })
                 : ""
             }
-            style={{ ...styles.borderBottom, ...styles.py16, ...styles.px32 }}
+            style={{ ...styles.borderBottom, ...styles.pa16 }}
           >
             <Text style={{ ...styles.fs20, ...styles.mb8 }}>{vent.title}</Text>
 
@@ -261,7 +257,7 @@ function VentComponent({
               numberOfLines={displayCommentField ? 150 : 3}
               style={{ ...styles.colorGrey1, ...styles.fs20, ...styles.mb8 }}
             >
-              {ventPreview}
+              {vent.description}
             </Text>
             <View
               style={{
@@ -424,7 +420,7 @@ function VentComponent({
                     );
                   })}
                   {canLoadMoreComments && (
-                    <TouchableOpacitys
+                    <TouchableOpacity
                       className="blue underline"
                       onClick={() => {
                         getVentComments(
@@ -440,7 +436,7 @@ function VentComponent({
                       key={comments.length}
                     >
                       <Text>Load More Comments</Text>
-                    </TouchableOpacitys>
+                    </TouchableOpacity>
                   )}
                 </View>
               )}
@@ -567,16 +563,16 @@ function SmartLink({ children, disablePostOnClick, onPress, style }) {
   }
 }
 
-function Tag({ navigation, tag }) {
+function Tag({ navigation, tagID }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.jumpTo("IndividualTag", { tag });
+        navigation.jumpTo("IndividualTag", { tagID });
       }}
       style={{ ...styles.borderBottom, ...styles.mr8, ...styles.mt8 }}
     >
       <Text style={{ ...styles.colorGrey1, ...styles.fs20 }}>
-        {viewTagFunction(tag)}
+        {viewTagFunction(tagID)}
       </Text>
     </TouchableOpacity>
   );

@@ -10,7 +10,7 @@ import { db } from "../../../config/firebase_init";
 
 import { getEndAtValueTimestamp } from "../../../util";
 
-export const getTags = async (isMounted, setTags, tags) => {
+export const getTags = async (setTags, tags) => {
   let startAt = getEndAtValueTimestamp(tags);
 
   const tagsSnapshot = await getDocs(
@@ -21,8 +21,6 @@ export const getTags = async (isMounted, setTags, tags) => {
       limit(20)
     )
   );
-
-  if (!isMounted()) return;
 
   let newTags = [];
 

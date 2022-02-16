@@ -140,13 +140,6 @@ function BottomHeader({ navigation, route }) {
         }}
       />
       <Tab.Screen
-        component={SingleVent}
-        name="SingleVent"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
         component={Chats}
         name="Chats"
         options={{
@@ -264,6 +257,13 @@ function BottomHeader({ navigation, route }) {
       <Tab.Screen
         component={IndividualTag}
         name="IndividualTag"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        component={SingleVent}
+        name="SingleVent"
         options={{
           headerShown: false,
         }}

@@ -40,21 +40,48 @@ function FeedScreen({ navigation, route }) {
   }, [pathname, setCanLoadMore, user]);
 
   return (
-    <Screen navigation={navigation}>
-      <View
-        style={{
-          ...styles.flexRow,
-          ...styles.justifyBetween,
-          ...styles.bgWhite,
-          ...styles.py16,
-        }}
-      >
-        {user && (
+    <Screen
+      navigation={navigation}
+      Title={() => (
+        <View
+          style={{
+            ...styles.flexRow,
+            ...styles.justifyBetween,
+            ...styles.bgWhite,
+            ...styles.py16,
+          }}
+        >
+          {user && (
+            <TouchableOpacity
+              onPress={() => setPathname("/my-feed")}
+              style={{
+                ...styles.flexFill,
+                ...(pathname === "/my-feed"
+                  ? styles.borderBottomMain
+                  : styles.borderBottom),
+                ...styles.py8,
+                ...styles.mx8,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.fs24,
+                  ...styles.bold,
+                  ...styles.tac,
+                  ...(pathname === "/my-feed"
+                    ? styles.colorMain
+                    : styles.colorGrey1),
+                }}
+              >
+                My Feed
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
-            onPress={() => setPathname("/my-feed")}
+            onPress={() => setPathname("/recent")}
             style={{
               ...styles.flexFill,
-              ...(pathname === "/my-feed"
+              ...(pathname === "/recent"
                 ? styles.borderBottomMain
                 : styles.borderBottom),
               ...styles.py8,
@@ -66,63 +93,41 @@ function FeedScreen({ navigation, route }) {
                 ...styles.fs24,
                 ...styles.bold,
                 ...styles.tac,
-                ...(pathname === "/my-feed"
+                ...(pathname === "/recent"
                   ? styles.colorMain
                   : styles.colorGrey1),
               }}
             >
-              My Feed
+              Recent
             </Text>
           </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          onPress={() => setPathname("/recent")}
-          style={{
-            ...styles.flexFill,
-            ...(pathname === "/recent"
-              ? styles.borderBottomMain
-              : styles.borderBottom),
-            ...styles.py8,
-            ...styles.mx8,
-          }}
-        >
-          <Text
+          <TouchableOpacity
+            onPress={() => setPathname("/trending")}
             style={{
-              ...styles.fs24,
-              ...styles.bold,
-              ...styles.tac,
-              ...(pathname === "/recent"
-                ? styles.colorMain
-                : styles.colorGrey1),
+              ...styles.flexFill,
+              ...(isTrending(pathname)
+                ? styles.borderBottomMain
+                : styles.borderBottom),
+              ...styles.py8,
+              ...styles.mx8,
             }}
           >
-            Recent
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setPathname("/trending")}
-          style={{
-            ...styles.flexFill,
-            ...(isTrending(pathname)
-              ? styles.borderBottomMain
-              : styles.borderBottom),
-            ...styles.py8,
-            ...styles.mx8,
-          }}
-        >
-          <Text
-            style={{
-              ...styles.fs24,
-              ...styles.bold,
-              ...styles.tac,
-              ...(isTrending(pathname) ? styles.colorMain : styles.colorGrey1),
-            }}
-          >
-            Trending
-          </Text>
-        </TouchableOpacity>
-      </View>
-
+            <Text
+              style={{
+                ...styles.fs24,
+                ...styles.bold,
+                ...styles.tac,
+                ...(isTrending(pathname)
+                  ? styles.colorMain
+                  : styles.colorGrey1),
+              }}
+            >
+              Trending
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    >
       <View style={{ ...styles.pa16 }}>
         <NewVentComponent navigation={navigation} />
         {isTrending(pathname) && (
