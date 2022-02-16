@@ -429,12 +429,11 @@ function NewVentScreen({ navigation, route }) {
           />
         </TouchableOpacity>
       )}
-      {starterModal && (
-        <StarterModal
-          activeModal={starterModal}
-          setActiveModal={setStarterModal}
-        />
-      )}
+      <StarterModal
+        activeModal={starterModal}
+        setActiveModal={setStarterModal}
+        visible={starterModal}
+      />
     </View>
   );
 }

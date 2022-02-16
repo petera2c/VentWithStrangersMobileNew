@@ -152,13 +152,12 @@ function FeedScreen({ navigation, route }) {
         )}
       </View>
 
-      {trendingOptions && (
-        <TrendingOptions
-          close={() => setTrendingOptions(false)}
-          pathname={pathname}
-          setPathname={setPathname}
-        />
-      )}
+      <TrendingOptions
+        close={() => setTrendingOptions(false)}
+        pathname={pathname}
+        setPathname={setPathname}
+        visible={trendingOptions}
+      />
 
       <View style={{ ...styles.px16 }}>
         {waitingVents.length > 0 && (

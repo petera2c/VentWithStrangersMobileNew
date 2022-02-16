@@ -182,7 +182,7 @@ function VentComponent({
               >
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.jumpTo("Profile", { authorID: author.id });
+                    navigation.jumpTo("Profile", { userID: author.id });
                   }}
                   style={{ ...styles.mr8 }}
                 >
@@ -540,12 +540,11 @@ function VentComponent({
         </View>
       )}
 
-      {starterModal && (
-        <StarterModal
-          activeModal={starterModal}
-          setActiveModal={setStarterModal}
-        />
-      )}
+      <StarterModal
+        activeModal={starterModal}
+        setActiveModal={setStarterModal}
+        visible={starterModal}
+      />
     </View>
   );
 }

@@ -55,12 +55,11 @@ function ChatWithStrangersScreen({ navigation }) {
         />
         <Text style={{ ...styles.title }}>Start Chatting</Text>
       </TouchableOpacity>
-      {starterModal && (
-        <StarterModal
-          activeModal={starterModal}
-          setActiveModal={setStarterModal}
-        />
-      )}
+      <StarterModal
+        activeModal={starterModal}
+        setActiveModal={setStarterModal}
+        visible={starterModal}
+      />
     </Screen>
   );
 }

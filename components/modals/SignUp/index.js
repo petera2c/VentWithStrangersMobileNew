@@ -21,13 +21,13 @@ import { colors, styles } from "../../../styles";
 import { UserContext } from "../../../context";
 import { signUp } from "./util";
 
-function SignUpModal({ navigate, setActiveModal }) {
+function SignUpModal({ navigate, setActiveModal, visible }) {
   const { setUserBasicInfo } = useContext(UserContext);
 
   const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
-    <Modal transparent={true}>
+    <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
         <TouchableOpacity
           activeOpacity={1}

@@ -89,16 +89,16 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   } else {
     if (size === "large")
       return (
-        <View style={{ ...styles.roundIcon, ...styles.mr4 }}>
-          <Text style={{ ...styles.colorWhite, ...styles.fs18 }}>
+        <View style={{ ...styles.roundIconLarge, ...styles.mr4 }}>
+          <Text style={{ ...styles.colorWhite, ...styles.fs40 }}>
             {capitolizedDisplayName}
           </Text>
         </View>
       );
     else if (size === "small")
       return (
-        <View style={{ ...styles.roundIcon, ...styles.mr4 }}>
-          <Text style={{ ...styles.colorWhite, ...styles.fs18 }}>
+        <View style={{ ...styles.roundIconSmall, ...styles.mr4 }}>
+          <Text style={{ ...styles.colorWhite, ...styles.fs16 }}>
             {capitolizedDisplayName}
           </Text>
         </View>
@@ -106,7 +106,7 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
     else
       return (
         <View style={{ ...styles.roundIcon, ...styles.mr4 }}>
-          <Text style={{ ...styles.colorWhite, ...styles.fs18 }}>
+          <Text style={{ ...styles.colorWhite, ...styles.fs20 }}>
             {capitolizedDisplayName}
           </Text>
         </View>

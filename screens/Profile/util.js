@@ -44,7 +44,6 @@ export const deleteAccountAndAllData = async (userID) => {
 };
 
 export const followOrUnfollowUser = async (
-  isMounted,
   option,
   setIsFollowing,
   userID,
@@ -55,7 +54,7 @@ export const followOrUnfollowUser = async (
     option ? option : null
   );
 
-  if (isMounted()) setIsFollowing(option);
+  setIsFollowing(option);
   message.success(
     option ? "Followed Successfully :)" : "Unfollowed Successfully :)"
   );
@@ -63,7 +62,6 @@ export const followOrUnfollowUser = async (
 
 export const getBlockedUsers = async (
   blockedUsers,
-  isMounted,
   setBlockedUsers,
   setCanLoadMore,
   userID
@@ -80,8 +78,6 @@ export const getBlockedUsers = async (
       limitToFirst(10)
     )
   );
-
-  if (!isMounted()) return;
 
   let newBlockedUsers = [];
 
@@ -106,7 +102,6 @@ export const getBlockedUsers = async (
 };
 
 export const getIsFollowing = async (
-  isMounted,
   setIsFollowing,
   userID,
   userIDToFollow
@@ -116,7 +111,7 @@ export const getIsFollowing = async (
     true
   );
 
-  if (isMounted()) setIsFollowing(isFollowingDoc.val());
+  setIsFollowing(isFollowingDoc.val());
 };
 
 export const getUser = async (callback, userID) => {
@@ -131,7 +126,6 @@ export const getUser = async (callback, userID) => {
 };
 
 export const getUsersComments = async (
-  isMounted,
   search,
   setCanLoadMoreComments,
   setComments,
@@ -148,8 +142,6 @@ export const getUsersComments = async (
       limit(10)
     )
   );
-
-  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = snapshot.docs.map((doc, index) => ({
@@ -171,7 +163,6 @@ export const getUsersComments = async (
 };
 
 export const getUsersVents = async (
-  isMounted,
   search,
   setCanLoadMoreVents,
   setVents,
@@ -188,8 +179,6 @@ export const getUsersVents = async (
       limit(10)
     )
   );
-
-  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({

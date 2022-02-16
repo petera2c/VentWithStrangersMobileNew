@@ -17,9 +17,9 @@ import { colors, styles } from "../../../styles";
 
 import { sendPasswordReset } from "./util";
 
-function ForgotPasswordModal({ setActiveModal }) {
+function ForgotPasswordModal({ setActiveModal, visible }) {
   return (
-    <Modal transparent={true}>
+    <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
         <TouchableOpacity
           activeOpacity={1}

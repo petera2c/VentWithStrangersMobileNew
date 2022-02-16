@@ -20,11 +20,11 @@ import { colors, styles } from "../../../styles";
 
 import { login } from "./util";
 
-function LoginModal({ setActiveModal }) {
+function LoginModal({ setActiveModal, visible }) {
   const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
-    <Modal transparent={true}>
+    <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
         <TouchableOpacity
           activeOpacity={1}

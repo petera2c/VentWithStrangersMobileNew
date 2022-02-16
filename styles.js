@@ -25,19 +25,27 @@ export const colors = {
 export const styles = StyleSheet.create({
   test: { backgroundColor: "red" },
 
-  roundIcon: {
-    width: 30,
-    height: 30,
+  roundIconSmall: {
+    width: 32,
+    height: 32,
     backgroundColor: colors.main,
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
   },
-  roundIconBig: {
-    width: 60,
-    height: 60,
+  roundIcon: {
+    width: 48,
+    height: 48,
     backgroundColor: colors.main,
     borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  roundIconLarge: {
+    width: 128,
+    height: 128,
+    backgroundColor: colors.main,
+    borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -249,6 +257,14 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     backgroundColor: colors.main,
+    padding: 8,
+  },
+  buttonSecondary: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: colors.grey7,
     padding: 8,
   },
   input: {
