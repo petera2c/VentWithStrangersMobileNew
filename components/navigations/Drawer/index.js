@@ -1,21 +1,52 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import BottomHeader from "../BottomHeader";
-import Rewards from "../../../screens/Rewards";
+import MakeAvatar from "../../views/MakeAvatar";
 
-import { RouteContext, UserContext } from "../../../context";
+import {
+  OnlineUsersContext,
+  RouteContext,
+  UserContext,
+} from "../../../context";
 
 import { styles } from "../../../styles";
+
+import {
+  chatQueueEmptyListener,
+  getTotalOnlineUsers,
+  getUserAvatars,
+} from "../../../util";
 
 const Drawer = createDrawerNavigator();
 
 function DrawerNavigation() {
   const { activeRoute } = useContext(RouteContext);
   const { user } = useContext(UserContext);
+  const {
+    firstOnlineUsers,
+    totalOnlineUsers,
+    setFirstOnlineUsers,
+    setTotalOnlineUsers,
+  } = useContext(OnlineUsersContext);
 
+  const [queueLength, setQueueLength] = useState();
   const [showAccountRoutes, setShowAccountRoutes] = useState();
+
+  useEffect(() => {
+    let chatQueueListenerUnsubscribe;
+
+    chatQueueListenerUnsubscribe = chatQueueEmptyListener(setQueueLength);
+
+    getTotalOnlineUsers((totalOnlineUsers) => {
+      setTotalOnlineUsers(totalOnlineUsers);
+      getUserAvatars(setFirstOnlineUsers);
+    });
+    return () => {
+      if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
+    };
+  }, [setFirstOnlineUsers, setTotalOnlineUsers]);
 
   return (
     <Drawer.Navigator
@@ -83,13 +114,69 @@ function DrawerNavigation() {
               </View>
             )}
 
-            <SomeButton
-              isActive={activeRoute === "OnlineUsers"}
+            <TouchableOpacity
               onPress={() => {
                 navigation.navigate("OnlineUsers");
               }}
-              title="Online Users"
-            />
+              style={{
+                ...styles.flexRow,
+                ...styles.alignCenter,
+                ...(activeRoute === "OnlineUsers"
+                  ? styles.borderBottomMain
+                  : styles.borderBottom),
+                ...styles.py16,
+              }}
+            >
+              {firstOnlineUsers && (
+                <View
+                  style={{
+                    ...styles.flexRow,
+                    ...styles.alignEnd,
+                    width: 4 * 40 - 4 * 18,
+                  }}
+                >
+                  {firstOnlineUsers.map((userBasicInfo, index) => (
+                    <View
+                      key={userBasicInfo.id}
+                      style={{
+                        transform: [{ translateX: -(index * 18) }],
+                      }}
+                    >
+                      <MakeAvatar
+                        displayName={userBasicInfo.displayName}
+                        userBasicInfo={userBasicInfo}
+                        size="small"
+                      />
+                    </View>
+                  ))}
+                  {totalOnlineUsers - firstOnlineUsers.length > 0 && (
+                    <View
+                      style={{
+                        transform: [
+                          { translateX: -(firstOnlineUsers.length * 18) },
+                        ],
+                        ...styles.roundIconSmall,
+                      }}
+                    >
+                      <Text style={{ ...styles.colorWhite, ...styles.fs16 }}>
+                        +{totalOnlineUsers - firstOnlineUsers.length}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
+              <Text
+                style={{
+                  ...styles.fs24,
+                  ...styles.bold,
+                  ...(activeRoute === "OnlineUsers"
+                    ? styles.colorMain
+                    : styles.colorGrey1),
+                }}
+              >
+                {(totalOnlineUsers === 1 ? " Person" : " People") + " Online"}
+              </Text>
+            </TouchableOpacity>
 
             <SomeButton
               isActive={activeRoute === "QuoteContest"}
