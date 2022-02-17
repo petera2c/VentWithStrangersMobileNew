@@ -3,27 +3,33 @@ import { Text, TouchableOpacity, View } from "react-native";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
+import { styles } from "../../styles";
+
 dayjs.extend(relativeTime);
 
 function NotificationList({ navigation, notifications }) {
   return (
-    <View className="column x-fill">
-      {notifications.map((notification, index) => {
-        return (
-          <TouchableOpacity
-            className="column border-bottom grey-1 pa16"
-            key={index}
-            to={notification.link}
-          >
-            <Text>{notification.message}</Text>
-            <Text className="grey-1 ic">
-              {dayjs(notification.server_timestamp).fromNow()}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
+    <View>
+      {notifications.map((notification, index) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() =>
+            navigation.jumpTo("SingleVent", {
+              ventID: getVentIDFromLink(notification.link),
+            })
+          }
+          style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}
+        >
+          <Text style={{ ...styles.fs20, ...styles.mb8 }}>
+            {notification.message}
+          </Text>
+          <Text style={{ ...styles.fs18, ...styles.colorGrey5, ...styles.tar }}>
+            {dayjs(notification.server_timestamp).fromNow()}
+          </Text>
+        </TouchableOpacity>
+      ))}
       {((notifications && notifications.length === 0) || !notifications) && (
-        <View className="full-center">
+        <View style={{ ...styles.box, ...styles.pa32 }}>
           <Text className="fw-400 pa16">
             There are no notifications to show!
           </Text>
@@ -31,6 +37,12 @@ function NotificationList({ navigation, notifications }) {
       )}
     </View>
   );
+}
+
+function getVentIDFromLink(link) {
+  if (link) link = link.substring(1, link.length);
+
+  return link.substring(link.indexOf("/") + 1, link.lastIndexOf("/"));
 }
 
 export default NotificationList;

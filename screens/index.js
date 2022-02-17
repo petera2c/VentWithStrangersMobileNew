@@ -15,6 +15,7 @@ import {
   getIsUserSubscribed,
   newRewardListener,
   setIsUserOnlineToDatabase,
+  setUserOnlineStatus,
 } from "./util";
 
 const Stack = createNativeStackNavigator();

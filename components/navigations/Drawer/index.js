@@ -191,7 +191,10 @@ function DrawerNavigation() {
               onPress={() => {
                 navigation.navigate("ChatWithStrangers");
               }}
-              title="Chat With Strangers"
+              title={
+                "Chat With Strangers" +
+                (queueLength === -1 ? "" : ` (${queueLength})`)
+              }
             />
 
             <SomeButton
