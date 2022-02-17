@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { ProgressBar, Colors } from "react-native-paper";
@@ -23,6 +29,7 @@ function RewardsScreen({ navigation }) {
   const { user } = useContext(UserContext);
 
   const [recentRewards, setRecentRewards] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [userRewards, setUserRewards] = useState({});
 
   useEffect(() => {
@@ -30,11 +37,19 @@ function RewardsScreen({ navigation }) {
       getUserRecentRewards(setRecentRewards, user.uid);
       getUserRewardsProgress(setUserRewards, user.uid);
     }
-  }, [user]);
+    setTimeout(() => setRefreshing(false), 400);
+  }, [refreshing, setRefreshing, user]);
 
   return (
     <Screen navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
             <Text style={{ ...styles.title, ...styles.mb16 }}>

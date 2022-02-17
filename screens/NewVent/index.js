@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import NewVentComponent from "../../components/NewVent";
 import Screen from "../../components/containers/Screen";
@@ -12,17 +18,27 @@ import { styles } from "../../styles";
 function NewVentScreen({ navigation, route }) {
   const { user } = useContext(UserContext);
 
+  const [refreshing, setRefreshing] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
     if (!user) {
       setStarterModal(true);
     } else setStarterModal(false);
-  }, [setStarterModal, user]);
+
+    setTimeout(() => setRefreshing(false), 400);
+  }, [refreshing, setRefreshing, setStarterModal, user]);
 
   return (
     <Screen navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           <NewVentComponent
             navigation={navigation}

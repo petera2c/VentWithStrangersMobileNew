@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import Screen from "../../components/containers/Screen";
 import UserComp from "../../components/User";
@@ -16,6 +22,7 @@ const FETCH_USER_INIT_COUNT = 6;
 function OnlineUsersScreen({ navigation }) {
   const [canLoadMoreUsers, setCanLoadMoreUsers] = useState(true);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [userLoadCount, setUserLoadCount] = useState(FETCH_USER_INIT_COUNT);
 
   const { setFirstOnlineUsers, setTotalOnlineUsers } = useContext(
@@ -28,11 +35,27 @@ function OnlineUsersScreen({ navigation }) {
       setTotalOnlineUsers(totalOnlineUsers);
       getUserAvatars(setFirstOnlineUsers);
     });
-  }, [setFirstOnlineUsers, setOnlineUsers, setTotalOnlineUsers, userLoadCount]);
+
+    setTimeout(() => setRefreshing(false), 400);
+  }, [
+    refreshing,
+    setFirstOnlineUsers,
+    setOnlineUsers,
+    setRefreshing,
+    setTotalOnlineUsers,
+    userLoadCount,
+  ]);
 
   return (
     <Screen navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           {onlineUsers.map(({ lastOnline, userID }, index) => {
             return (

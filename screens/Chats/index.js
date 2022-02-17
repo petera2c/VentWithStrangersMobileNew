@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import Screen from "../../components/containers/Screen";
 import StarterModal from "../../components/modals/Starter";
@@ -26,6 +32,7 @@ function ChatsScreen({ navigation }) {
   const [activeConversation, setActiveConversation] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
@@ -51,10 +58,12 @@ function ChatsScreen({ navigation }) {
       );
     }
 
+    setTimeout(() => setRefreshing(false), 400);
+
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [user]);
+  }, [refreshing, setRefreshing, user]);
 
   return (
     <Screen navigation={navigation}>
@@ -67,7 +76,14 @@ function ChatsScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
           )}
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
+            }
+          >
             <View style={{ ...styles.pa16 }}>
               {conversations.map((conversation, index) => {
                 return (

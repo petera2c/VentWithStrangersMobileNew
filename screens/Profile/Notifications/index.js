@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 import NotificationList from "../../../components/NotificationList";
@@ -18,6 +24,7 @@ function NotificationsScreen({ navigation }) {
 
   const [canShowLoadMore, setCanShowLoadMore] = useState(true);
   const [notifications, setNotifications] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     let newNotificationsListenerUnsubscribe;
@@ -37,15 +44,24 @@ function NotificationsScreen({ navigation }) {
       );
     }
 
+    setTimeout(() => setRefreshing(false), 400);
+
     return () => {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, [user]);
+  }, [refreshing, setRefreshing, user]);
 
   return (
     <Screen navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
             <Text style={{ ...styles.title }}>Your Notifications</Text>

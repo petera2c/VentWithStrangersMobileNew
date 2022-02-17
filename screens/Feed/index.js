@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -20,6 +26,7 @@ function FeedScreen({ navigation, route }) {
 
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [pathname, setPathname] = useState(user ? "/my-feed" : "/recent");
+  const [refreshing, setRefreshing] = useState(false);
   const [trendingOptions, setTrendingOptions] = useState(false);
   const [vents, setVents] = useState([]);
   const [waitingVents, setWaitingVents] = useState([]);
@@ -34,10 +41,12 @@ function FeedScreen({ navigation, route }) {
     getVents(pathname, setCanLoadMore, setVents, user, null);
     newVentListenerUnsubscribe = newVentListener(pathname, setWaitingVents);
 
+    setTimeout(() => setRefreshing(false), 400);
+
     return () => {
       if (newVentListenerUnsubscribe) return newVentListenerUnsubscribe();
     };
-  }, [pathname, setCanLoadMore, user]);
+  }, [pathname, refreshing, setCanLoadMore, setRefreshing, user]);
 
   return (
     <Screen
@@ -128,7 +137,14 @@ function FeedScreen({ navigation, route }) {
         </View>
       )}
     >
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           <NewVentComponent miniVersion navigation={navigation} />
           {isTrending(pathname) && (

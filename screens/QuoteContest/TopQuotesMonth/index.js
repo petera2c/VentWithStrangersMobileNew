@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import dayjs from "dayjs";
 
 import Screen from "../../../components/containers/Screen";
@@ -11,16 +17,27 @@ import { getQuotes } from "./util";
 
 function TopQuotesMonthScreen({ navigation }) {
   const [quotes, setQuotes] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [thisMonthYearFormatted, setThisMonthYearFormatted] = useState();
 
   useEffect(() => {
     setThisMonthYearFormatted(dayjs().format("MMMM YYYY"));
     getQuotes(setQuotes);
-  }, [setQuotes]);
+
+    setTimeout(() => setRefreshing(false), 400);
+  }, [refreshing, setQuotes, setRefreshing]);
 
   return (
     <Screen navigation={navigation}>
-      <ScrollView style={{ ...styles.pa16 }}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+        style={{ ...styles.pa16 }}
+      >
         <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
           <Text style={{ ...styles.title, ...styles.mb8 }}>
             {thisMonthYearFormatted} Feel Good Quotes

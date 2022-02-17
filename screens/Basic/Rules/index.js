@@ -1,14 +1,27 @@
-import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 
 import { styles } from "../../../styles";
 
 function RulesScreen({ navigation }) {
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setRefreshing(false), 400);
+  }, [refreshing, setRefreshing]);
+
   return (
     <Screen navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           <View style={{ ...styles.box, ...styles.pa32 }}>
             <Text className="tac" style={{ ...styles.title, ...styles.mb8 }}>

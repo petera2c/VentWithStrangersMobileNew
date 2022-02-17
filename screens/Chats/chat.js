@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
+  RefreshControl,
   ScrollView,
   Text,
   TextInput,
@@ -55,6 +56,7 @@ function Chat({
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const [showPartnerIsTyping, setShowPartnerIsTyping] = useState(false);
 
   useEffect(() => {
@@ -113,6 +115,8 @@ function Chat({
       setMessages
     );
 
+    setTimeout(() => setRefreshing(false), 400);
+
     return () => {
       readConversation(activeConversation, userID);
 
@@ -123,7 +127,9 @@ function Chat({
   }, [
     activeConversation,
     isChatInConversationsArray,
+    refreshing,
     setActiveChatUserBasicInfos,
+    setRefreshing,
     userID,
   ]);
 
@@ -222,6 +228,12 @@ function Chat({
 
         <ScrollView
           ref={dummyRef}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
+          }
           style={{ ...styles.flexFill, ...styles.bgWhite }}
         >
           <View style={{ ...styles.pa16 }}>

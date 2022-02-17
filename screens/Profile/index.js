@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -60,6 +66,7 @@ function ProfileScreen({ navigation, route }) {
   const [isFollowing, setIsFollowing] = useState();
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
@@ -97,14 +104,23 @@ function ProfileScreen({ navigation, route }) {
     getUsersVents(userID, setCanLoadMoreVents, setVents, []);
     getUsersComments(userID, setCanLoadMoreComments, setComments, []);
 
+    setTimeout(() => setRefreshing(false), 400);
+
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [user, userID]);
+  }, [refreshing, setRefreshing, user, userID]);
 
   return (
     <Screen goBack navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           {userID && (
             <View style={{ ...styles.box, ...styles.mb16, ...styles.pa16 }}>

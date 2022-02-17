@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Linking,
+  RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -19,10 +20,21 @@ import { styles } from "../../../styles";
 
 function SiteInfoScreen({ navigation }) {
   const [activeBadge, setActiveBadge] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
+  useEffect(() => {
+    setTimeout(() => setRefreshing(false), 400);
+  }, [refreshing, setRefreshing]);
   return (
     <Screen navigation={navigation}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
+      >
         <View style={{ ...styles.pa16 }}>
           <View style={{ ...styles.box, ...styles.pa32 }}>
             <View style={{ ...styles.mb16 }}>
