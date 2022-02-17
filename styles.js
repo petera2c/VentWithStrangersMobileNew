@@ -282,7 +282,7 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
   },
   pTag: {
-    color: colors.grey1,
+    color: colors.grey11,
     fontSize: 20,
   },
   title: {

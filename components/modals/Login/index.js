@@ -58,6 +58,7 @@ function LoginModal({ setActiveModal, visible }) {
               <View style={{ ...styles.pa16 }}>
                 <View>
                   <TextInput
+                    autoCapitalize="none"
                     name="email"
                     onChangeText={(text) => setEmail(text)}
                     placeholder="Email Address"

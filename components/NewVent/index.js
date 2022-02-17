@@ -177,6 +177,7 @@ function NewVentScreen({ miniVersion, navigation, route }) {
               <Text style={{ ...styles.fs22, ...styles.mb8 }}>Description</Text>
             )}
             <TextInput
+              multiline
               onChangeText={(event) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
@@ -209,6 +210,7 @@ function NewVentScreen({ miniVersion, navigation, route }) {
           <View style={{ ...styles.mb16 }}>
             <Text style={{ ...styles.fs22, ...styles.mb8 }}>Title</Text>
             <TextInput
+              multiline
               onChangeText={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
@@ -251,6 +253,7 @@ function NewVentScreen({ miniVersion, navigation, route }) {
           <View>
             <Text style={{ ...styles.fs22, ...styles.mb8 }}>Tag this vent</Text>
             <TextInput
+              multiline
               onChangeText={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 

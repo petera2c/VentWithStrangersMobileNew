@@ -58,12 +58,14 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
 
               <View style={{ ...styles.pa16 }}>
                 <TextInput
+                  autoCapitalize="none"
                   name="displayName"
                   placeholder="Display Name"
                   placeholderTextColor={colors.grey1}
                   style={{ ...styles.input }}
                 />
                 <TextInput
+                  autoCapitalize="none"
                   name="email"
                   placeholder="Email Address"
                   placeholderTextColor={colors.grey1}
@@ -75,6 +77,7 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                 <View>
                   <View>
                     <TextInput
+                      autoCapitalize="none"
                       name="password"
                       placeholder="Password"
                       placeholderTextColor={colors.grey1}
@@ -87,6 +90,7 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                   <View>
                     <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
                       <TextInput
+                        autoCapitalize="none"
                         name="passwordConfirm"
                         placeholder="Confirm Password"
                         placeholderTextColor={colors.grey1}
