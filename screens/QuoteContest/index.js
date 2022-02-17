@@ -104,9 +104,7 @@ function QuoteContestScreen({ navigation }) {
           })}
           {canLoadMoreQuotes && (
             <TouchableOpacity
-              onPress={() =>
-                getQuotes(isMounted, quotes, setCanLoadMoreQuotes, setQuotes)
-              }
+              onPress={() => getQuotes(quotes, setCanLoadMoreQuotes, setQuotes)}
             >
               <Text>Load More Quotes</Text>
             </TouchableOpacity>
@@ -118,7 +116,8 @@ function QuoteContestScreen({ navigation }) {
         style={{
           ...styles.bgWhite,
           ...styles.shadowTop,
-          ...styles.pa16,
+          ...styles.px16,
+          ...styles.pt16,
         }}
       >
         <TextInput
@@ -153,7 +152,6 @@ function QuoteContestScreen({ navigation }) {
             if (myQuote)
               saveQuote(
                 canUserCreateQuote,
-                isMounted,
                 myQuote,
                 quoteID,
                 setCanUserCreateQuote,

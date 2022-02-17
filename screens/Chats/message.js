@@ -42,10 +42,10 @@ function Message({
 
   if (message.is_notice)
     return (
-      <View className="x-fill">
+      <View style={{ ...styles.xFill }}>
         {urlify(message.body).map((obj, index) => {
           return (
-            <Text className="grey-11 py8" key={index}>
+            <Text key={index} style={{ ...styles.fs20, ...styles.colorGrey11 }}>
               {obj}
             </Text>
           );
@@ -54,26 +54,39 @@ function Message({
     );
   else
     return (
-      <View className="x-fill">
+      <View
+        style={{
+          ...styles.xFill,
+          ...(message.userID === userID ? styles.alignEnd : styles.alignStart),
+          ...styles.mb8,
+        }}
+      >
         <View
-          className={
-            "br4 " + (message.userID === userID ? "bg-blue" : "bg-blue-1")
-          }
-          style={{ maxWidth: "80%" }}
+          style={{
+            ...styles.flexRow,
+            ...(message.userID === userID ? styles.bgMain : styles.bgBlue1),
+            ...styles.br4,
+          }}
         >
-          <View className="column flex-fill px16 py8">
+          <View
+            style={{
+              maxWidth: "70%",
+              ...styles.px16,
+              ...styles.py8,
+            }}
+          >
             {message.userID !== userID &&
               shouldShowDisplayName &&
               displayName && <Text className="orange">{displayName}</Text>}
-            <View className="flex-fill description ">
+            <View>
               {urlify(message.body).map((obj, index) => {
                 return (
                   <Text
-                    className={
-                      "description " +
-                      (message.userID === userID ? "white" : "primary")
-                    }
                     key={index}
+                    style={{
+                      ...styles.fs20,
+                      ...(message.userID === userID ? styles.colorWhite : {}),
+                    }}
                   >
                     {obj}
                   </Text>
@@ -81,18 +94,18 @@ function Message({
               })}
             </View>
           </View>
-          <View className="relative br4">
+          <View style={{ ...styles.flexRow }}>
             <View
-              className="clickable align-end pr2"
               onClick={() => {
                 setMessageOptions(!messageOptions);
               }}
               onMouseLeave={() => setMessageOptions(false)}
+              style={{ ...styles.flexRow, ...styles.alignEnd, ...styles.pr2 }}
             >
               <Text
-                className={
-                  "fs-12 " + (message.userID === userID ? "white" : "grey-1")
-                }
+                style={{
+                  ...(message.userID === userID ? styles.colorWhite : {}),
+                }}
               >
                 {dayjs(message.server_timestamp).format("h:mm A")}
               </Text>

@@ -92,6 +92,7 @@ export const styles = StyleSheet.create({
   justifyCenter: { justifyContent: "center" },
   justifyBetween: { justifyContent: "space-between" },
   justifyEnd: { justifyContent: "flex-end" },
+  alignStart: { alignItems: "flex-start" },
   alignCenter: { alignItems: "center" },
   alignEnd: { alignItems: "flex-end" },
   fullCenter: { alignItems: "center", justifyContent: "center" },
@@ -140,13 +141,6 @@ export const styles = StyleSheet.create({
     color: colors.white,
   },
   colorBlack: { color: colors.black },
-
-  online: {
-    minWidth: 16,
-    minHeight: 16,
-    backgroundColor: "#1FAB89",
-    borderRadius: 100,
-  },
 
   tac: { textAlign: "center" },
   tar: { textAlign: "right" },
@@ -280,6 +274,12 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 4,
     padding: 8,
+  },
+  onlineDot: {
+    minWidth: 16,
+    minHeight: 16,
+    backgroundColor: "#1FAB89",
+    borderRadius: 100,
   },
   pTag: {
     color: colors.grey1,

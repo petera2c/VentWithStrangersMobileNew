@@ -26,7 +26,7 @@ function OnlineUsersScreen({ navigation }) {
     getTotalOnlineUsers((totalOnlineUsers) => {
       getOnlineUsers(setCanLoadMoreUsers, setOnlineUsers, userLoadCount);
       setTotalOnlineUsers(totalOnlineUsers);
-      getUserAvatars(isMounted, setFirstOnlineUsers);
+      getUserAvatars(setFirstOnlineUsers);
     });
   }, [setFirstOnlineUsers, setOnlineUsers, setTotalOnlineUsers, userLoadCount]);
 
@@ -48,7 +48,7 @@ function OnlineUsersScreen({ navigation }) {
           })}
           {canLoadMoreUsers && (
             <TouchableOpacity
-              onClick={() =>
+              onPress={() =>
                 setUserLoadCount(
                   (userLoadCount) => userLoadCount + FETCH_USER_INIT_COUNT
                 )
@@ -56,7 +56,7 @@ function OnlineUsersScreen({ navigation }) {
               style={{ ...styles.buttonPrimary }}
             >
               <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
-                Load More Users
+                Load More People
               </Text>
             </TouchableOpacity>
           )}

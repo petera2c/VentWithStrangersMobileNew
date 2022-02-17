@@ -13,10 +13,10 @@ function SingleVentScreen({ navigation, route }) {
 
   return (
     <Screen goBack navigation={navigation}>
-      <View style={{ ...styles.pa16 }}>
-        {ventFound === false && <Text>Vent Not Found</Text>}
-        {ventFound === undefined && ventID && (
-          <View className="column flex-fill">
+      <ScrollView>
+        <View style={{ ...styles.pa16 }}>
+          {ventFound === false && <Text>Vent Not Found</Text>}
+          {ventFound === undefined && ventID && (
             <Vent
               disablePostOnClick={true}
               displayCommentField
@@ -25,9 +25,9 @@ function SingleVentScreen({ navigation, route }) {
               setVentFound={setVentFound}
               ventID={ventID}
             />
-          </View>
-        )}
-      </View>
+          )}
+        </View>
+      </ScrollView>
     </Screen>
   );
 }

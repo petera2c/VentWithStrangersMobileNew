@@ -72,9 +72,6 @@ function BottomHeader({ navigation, route }) {
     let newNotificationsListenerUnsubscribe;
 
     if (user) {
-      if (activeRoute === "/chat")
-        resetUnreadConversationCount(setUnreadConversationsCount, user.uid);
-
       getNotifications(
         [],
         undefined,
@@ -124,7 +121,6 @@ function BottomHeader({ navigation, route }) {
         tabBarActiveTintColor: "#e91e63",
       }}
       tabBar={({ navigation, state }) => {
-        //  setActiveRoute(state.routes[state.index].name);
         return (
           <SafeAreaView style={{ ...styles.flexRow }}>
             <TouchableOpacity
@@ -147,6 +143,11 @@ function BottomHeader({ navigation, route }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
+                resetUnreadConversationCount(
+                  setUnreadConversationsCount,
+                  user.uid
+                );
+
                 navigation.navigate("Chats");
               }}
               style={{

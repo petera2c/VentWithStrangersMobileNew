@@ -22,6 +22,7 @@ import {
   getMessages,
   isUserTypingListener,
   messageListener,
+  readConversation,
   sendMessage,
   setConversationIsTyping,
 } from "./util";
@@ -44,14 +45,7 @@ function Chat({
   const isUserTypingTimeout = useRef();
 
   const scrollToBottom = () => {
-    /*
-    if (dummyRef.current)
-      dummyRef.current.scrollIntoView({
-        block: "nearest",
-        inline: "center",
-        behavior: "smooth",
-        alignToTop: false,
-      });*/
+    if (dummyRef.current) dummyRef.current.scrollToEnd({ animated: true });
   };
 
   const [allowToSetIsUserTypingToDB, setAllowToSetIsUserTypingToDB] = useState(
@@ -69,6 +63,8 @@ function Chat({
 
     setCanLoadMore(true);
     setShowPartnerIsTyping(false);
+
+    readConversation(activeConversation, userID);
 
     if (
       activeConversation &&
@@ -118,6 +114,8 @@ function Chat({
     );
 
     return () => {
+      readConversation(activeConversation, userID);
+
       if (isUserTypingUnsubscribe) off(isUserTypingUnsubscribe);
 
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
@@ -146,7 +144,11 @@ function Chat({
             setGroupChatEditting(activeConversation);
             setIsCreateGroupModalVisible(true);
           }}
-          style={{ ...styles.flexRow, ...styles.alignCenter }}
+          style={{
+            ...styles.flexRow,
+            ...styles.flexFill,
+            ...styles.alignCenter,
+          }}
         >
           <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
             {activeChatUserBasicInfos &&
@@ -201,17 +203,13 @@ function Chat({
             </Text>
           )}
         </View>
-
-        {false && (
-          <TouchableOpacity
-            onClick={() => {
-              setActiveConversation(false);
-              navigate("/chat");
-            }}
-          >
-            <Text>Go Back</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          onPress={() => {
+            setActiveConversation(false);
+          }}
+        >
+          <Text style={{ ...styles.fs20, ...styles.colorGrey11 }}>Go Back</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={{ ...styles.flexFill }}>
@@ -222,7 +220,10 @@ function Chat({
             </Text>
           ))}
 
-        <ScrollView style={{ ...styles.flexFill, ...styles.bgWhite }}>
+        <ScrollView
+          ref={dummyRef}
+          style={{ ...styles.flexFill, ...styles.bgWhite }}
+        >
           <View style={{ ...styles.pa16 }}>
             {canLoadMore && (
               <TouchableOpacity
@@ -270,7 +271,6 @@ function Chat({
                 />
               );
             })}
-            <View ref={dummyRef} />
           </View>
         </ScrollView>
       </View>
@@ -326,9 +326,9 @@ function Chat({
         }}
       >
         <TextInput
-          onChange={(event) => {
-            if (event.target.value === "\n") return;
-            setMessageString(event.target.value);
+          onChangeText={(text) => {
+            if (text === "\n") return;
+            setMessageString(text);
 
             if (!allowToSetIsUserTypingToDB) {
               if (!typingTimer) {
@@ -343,15 +343,6 @@ function Chat({
               setAllowToSetIsUserTypingToDB(false);
             }
           }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (!messageString) return;
-              setConversationIsTyping(activeConversation.id, true, userID);
-              setAllowToSetIsUserTypingToDB(true);
-              sendMessage(activeConversation.id, messageString, userID);
-              setMessageString("");
-            }
-          }}
           placeholder="Type a helpful message here..."
           ref={textInput}
           style={{ ...styles.input, ...styles.flexFill, ...styles.mr8 }}
@@ -361,7 +352,7 @@ function Chat({
 
         <TouchableOpacity
           className={"button-2 "}
-          onClick={() => {
+          onPress={() => {
             if (!messageString) return;
             setConversationIsTyping(activeConversation.id, true, userID);
             setAllowToSetIsUserTypingToDB(true);

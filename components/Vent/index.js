@@ -437,7 +437,6 @@ function VentComponent({
                         getVentComments(
                           activeSort,
                           comments,
-                          isMounted,
                           setCanLoadMoreComments,
                           setComments,
                           true,
@@ -599,7 +598,6 @@ function Something({}) {
           getVentComments(
             "First",
             [],
-            isMounted,
             setCanLoadMoreComments,
             setComments,
             false,
@@ -617,7 +615,6 @@ function Something({}) {
           getVentComments(
             "Best",
             [],
-            isMounted,
             setCanLoadMoreComments,
             setComments,
             false,
@@ -635,7 +632,6 @@ function Something({}) {
           getVentComments(
             "Last",
             [],
-            isMounted,
             setCanLoadMoreComments,
             setComments,
             false,

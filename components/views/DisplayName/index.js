@@ -78,11 +78,14 @@ function DisplayName({
                   ...(big
                     ? styles.fs24
                     : { ...styles.fs20, ...styles.colorGrey11 }),
+                  ...styles.mr8,
                 }}
               >
                 {capitolizedDisplayName}
               </Text>
-              {isUserOnline && <View style={{ ...styles.onlineDot }} />}
+              {isUserOnline && (
+                <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
+              )}
               {userBasicInfo && (
                 <KarmaBadge
                   noOnClick={noBadgeOnClick}

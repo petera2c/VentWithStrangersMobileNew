@@ -28,7 +28,6 @@ import {
   deleteConversation,
   getIsChatMuted,
   muteChat,
-  readConversation,
 } from "./util";
 
 dayjs.extend(relativeTime);
@@ -80,9 +79,6 @@ function ConversationOption({
       if (isActive) setActiveChatUserBasicInfos(tempArray);
     };
     getAllMemberData(chatMemberIDArray);
-
-    if (isActive && (!hasSeen || conversation.go_to_inbox))
-      readConversation(conversation, userID);
 
     getIsChatMuted(conversation.id, setIsMuted, userID);
 
