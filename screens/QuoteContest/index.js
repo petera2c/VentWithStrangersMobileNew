@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  KeyboardAvoidingView,
   ScrollView,
   Text,
   TextInput,
@@ -115,8 +114,7 @@ function QuoteContestScreen({ navigation }) {
         </View>
       </ScrollView>
 
-      <KeyboardAvoidingView
-        behavior="padding"
+      <View
         style={{
           ...styles.bgWhite,
           ...styles.shadowTop,
@@ -170,7 +168,7 @@ function QuoteContestScreen({ navigation }) {
             Submit My Quote
           </Text>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}

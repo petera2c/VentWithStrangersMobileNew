@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import dayjs from "dayjs";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
-import Container from "../../components/containers/Container";
+//import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
+
+import { styles } from "../../styles";
 
 import { urlify } from "../../util";
 import { deleteMessage } from "./util";
@@ -40,33 +42,33 @@ function Message({
 
   if (message.is_notice)
     return (
-      <Container className="x-fill">
+      <View className="x-fill">
         {urlify(message.body).map((obj, index) => {
           return (
-            <p className="grey-11 py8" key={index}>
+            <Text className="grey-11 py8" key={index}>
               {obj}
-            </p>
+            </Text>
           );
         })}
-      </Container>
+      </View>
     );
   else
     return (
-      <Container className="x-fill">
-        <Container
+      <View className="x-fill">
+        <View
           className={
             "br4 " + (message.userID === userID ? "bg-blue" : "bg-blue-1")
           }
           style={{ maxWidth: "80%" }}
         >
-          <Container className="column flex-fill px16 py8">
+          <View className="column flex-fill px16 py8">
             {message.userID !== userID &&
               shouldShowDisplayName &&
-              displayName && <p className="orange">{displayName}</p>}
-            <div className="flex-fill description ">
+              displayName && <Text className="orange">{displayName}</Text>}
+            <View className="flex-fill description ">
               {urlify(message.body).map((obj, index) => {
                 return (
-                  <p
+                  <Text
                     className={
                       "description " +
                       (message.userID === userID ? "white" : "primary")
@@ -74,34 +76,34 @@ function Message({
                     key={index}
                   >
                     {obj}
-                  </p>
+                  </Text>
                 );
               })}
-            </div>
-          </Container>
-          <Container className="relative br4">
-            <Container
+            </View>
+          </View>
+          <View className="relative br4">
+            <View
               className="clickable align-end pr2"
               onClick={() => {
                 setMessageOptions(!messageOptions);
               }}
               onMouseLeave={() => setMessageOptions(false)}
             >
-              <p
+              <Text
                 className={
                   "fs-12 " + (message.userID === userID ? "white" : "grey-1")
                 }
               >
                 {dayjs(message.server_timestamp).format("h:mm A")}
-              </p>
-            </Container>
+              </Text>
+            </View>
             {messageOptions && (
-              <div
+              <View
                 className="absolute top-100 left-0 pt4"
                 style={{ zIndex: 1 }}
               >
-                <Container className="column x-fill bg-white border-all px16 py8 br8">
-                  <Container
+                <View className="column x-fill bg-white border-all px16 py8 br8">
+                  <View
                     className="button-8 clickable align-center"
                     onClick={(e) => {
                       e.preventDefault();
@@ -113,11 +115,11 @@ function Message({
                       }
                     }}
                   >
-                    <p className="flex-fill">
+                    <Text className="flex-fill">
                       {message.userID === userID
                         ? "Delete Message"
                         : "Report Message"}
-                    </p>
+                    </Text>
                     <FontAwesomeIcon
                       className="ml8"
                       icon={
@@ -126,12 +128,12 @@ function Message({
                           : faExclamationTriangle
                       }
                     />
-                  </Container>
-                </Container>
-              </div>
+                  </View>
+                </View>
+              </View>
             )}
-          </Container>
-        </Container>
+          </View>
+        </View>
         {deleteMessageConfirm && (
           <ConfirmAlertModal
             close={() => setDeleteMessageConfirm(false)}
@@ -142,7 +144,7 @@ function Message({
             title="Delete Message"
           />
         )}
-      </Container>
+      </View>
     );
 }
 

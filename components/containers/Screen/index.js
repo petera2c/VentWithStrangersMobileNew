@@ -31,36 +31,37 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
       }}
     >
       <StatusBar style="dark" />
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
+          {goBack && (
+            <View style={{ ...styles.bgWhite }}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  ...styles.flexRow,
+                  ...styles.alignCenter,
+                  ...styles.pa16,
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  style={{ ...styles.colorMain }}
+                />
+                <Text style={{ ...styles.fs16, ...styles.colorMain }}>
+                  Go Back
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <View style={{ flex: 1 }}>
+            {Title && <Title />}
 
-      <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
-        {goBack && (
-          <View style={{ ...styles.bgWhite }}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{
-                ...styles.flexRow,
-                ...styles.alignCenter,
-                ...styles.pa16,
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faChevronLeft}
-                style={{ ...styles.colorGrey11 }}
-              />
-              <Text style={{ ...styles.fs16, ...styles.colorGrey11 }}>
-                Go Back
-              </Text>
-            </TouchableOpacity>
+            <View style={{ flex: 1, ...styles.bgBlue2, ...style }}>
+              {children}
+            </View>
           </View>
-        )}
-        <View style={{ flex: 1 }}>
-          {Title && <Title />}
-
-          <View style={{ flex: 1, ...styles.bgBlue2, ...style }}>
-            {children}
-          </View>
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </PaperProvider>
   );
 }

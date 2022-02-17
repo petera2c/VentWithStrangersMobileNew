@@ -40,7 +40,6 @@ import { RouteContext, UserContext } from "../../../context";
 
 import { styles } from "../../../styles";
 
-import { isPageActive, useIsMounted, signOut2 } from "../../../util";
 import {
   conversationsListener,
   newNotificationsListener,

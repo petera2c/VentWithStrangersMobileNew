@@ -1,28 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Text, TouchableOpacity, View } from "react-native";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import loadable from "@loadable/component";
-import { Dropdown, message } from "antd";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 import { faVolume } from "@fortawesome/pro-solid-svg-icons/faVolume";
 import { faVolumeSlash } from "@fortawesome/pro-solid-svg-icons/faVolumeSlash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
-import Container from "../../components/containers/Container";
+//import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import KarmaBadge from "../../components/views/KarmaBadge";
+import MakeAvatar from "../../components/views/MakeAvatar";
+
+import { styles } from "../../styles";
 
 import {
   blockUser,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
-  useIsMounted,
 } from "../../util";
 import {
   conversationListener,
@@ -31,8 +30,6 @@ import {
   muteChat,
   readConversation,
 } from "./util";
-
-const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 
 dayjs.extend(relativeTime);
 
@@ -47,9 +44,6 @@ function ConversationOption({
   setIsCreateGroupModalVisible,
   userID,
 }) {
-  const isMounted = useIsMounted();
-  const navigate = useNavigate();
-
   const unsubFromConversationUpdates = useRef(false);
 
   const [blockModal, setBlockModal] = useState(false);
@@ -63,7 +57,6 @@ function ConversationOption({
   useEffect(() => {
     unsubFromConversationUpdates.current = conversationListener(
       conversation,
-      isMounted,
       setConversations
     );
 
@@ -82,18 +75,16 @@ function ConversationOption({
           tempArray.push(newBasicUserInfo);
         }, chatMemberIDArray[index]);
       }
-      if (isMounted()) {
-        setUserBasicInfoArray(tempArray);
+      setUserBasicInfoArray(tempArray);
 
-        if (isActive) setActiveChatUserBasicInfos(tempArray);
-      }
+      if (isActive) setActiveChatUserBasicInfos(tempArray);
     };
     getAllMemberData(chatMemberIDArray);
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
 
-    getIsChatMuted(conversation.id, isMounted, setIsMuted, userID);
+    getIsChatMuted(conversation.id, setIsMuted, userID);
 
     return () => {
       if (unsubFromConversationUpdates.current)
@@ -103,133 +94,117 @@ function ConversationOption({
     conversation,
     hasSeen,
     isActive,
-    isMounted,
     setActiveChatUserBasicInfos,
     setConversations,
     userID,
   ]);
 
-  if (!conversation) return <div>loading</div>;
+  if (!conversation) return <View>loading</View>;
 
   return (
-    <Container
-      className={
-        "x-fill relative align-center justify-between clickable pa8 br4 " +
-        (isActive ? "bg-blue-1" : "")
-      }
-      onClick={() => {
+    <TouchableOpacity
+      onPress={() => {
         setActiveChatUserBasicInfos(userBasicInfoArray);
         setActiveConversation(conversation);
-        navigate("/chat?" + conversation.id);
+      }}
+      style={{
+        ...styles.flexRow,
+        ...styles.justifyBetween,
+        ...styles.bgWhite,
+        ...styles.br4,
+        ...styles.mb16,
+        ...styles.pa8,
       }}
     >
-      <Container className="flex-fill column ov-hidden">
-        <Container className="align-center flex-fill gap4 mr16">
-          <Container
-            className="align-end"
-            style={{ width: userBasicInfoArray.length * 20 + 32 + "px" }}
-          >
-            {userBasicInfoArray.map((userBasicInfo, index) => (
-              <Container
-                className="relative"
-                key={userBasicInfo.id}
-                style={{
-                  width: "20px",
-                }}
-              >
-                <MakeAvatar
-                  displayName={userBasicInfo.displayName}
-                  userBasicInfo={userBasicInfo}
-                  size="small"
-                />
-              </Container>
-            ))}
-          </Container>
-
-          {(conversation.chat_name || userBasicInfoArray) && (
-            <DisplayOnlineAndName
-              chatName={conversation.chat_name}
-              hasSeen={hasSeen}
-              userBasicInfo={
-                userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
-              }
-            />
-          )}
-          {!conversation.chat_name && userBasicInfoArray.length === 1 && (
-            <KarmaBadge
-              noOnClick
-              userBasicInfo={
-                userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
-              }
-            />
-          )}
-        </Container>
-        {conversation.last_message && (
-          <p
-            className="description"
+      <View style={{ ...styles.flexFill }}>
+        <View style={{ ...styles.flexRow }}>
+          <View
             style={{
-              WebkitLineClamp: 1,
-              lineClamp: 1,
+              ...styles.flexRow,
+              ...styles.flexFill,
+              ...styles.alignCenter,
+              ...styles.pa8,
+            }}
+          >
+            <View
+              style={{
+                ...styles.flexRow,
+                ...styles.alignCenter,
+                width:
+                  userBasicInfoArray && userBasicInfoArray.length > 1
+                    ? 4 * 74 - 4 * 36
+                    : "auto",
+              }}
+            >
+              {userBasicInfoArray.map((userBasicInfo, index) => (
+                <View
+                  key={userBasicInfo.id}
+                  style={{
+                    transform: [{ translateX: -(index * 36) }],
+                  }}
+                >
+                  <MakeAvatar
+                    displayName={userBasicInfo.displayName}
+                    userBasicInfo={userBasicInfo}
+                  />
+                </View>
+              ))}
+            </View>
+
+            {(conversation.chat_name || userBasicInfoArray) && (
+              <DisplayOnlineAndName
+                chatName={conversation.chat_name}
+                hasSeen={hasSeen}
+                userBasicInfo={
+                  userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
+                }
+              />
+            )}
+            {!conversation.chat_name && userBasicInfoArray.length === 1 && (
+              <KarmaBadge
+                noOnClick
+                userBasicInfo={
+                  userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
+                }
+              />
+            )}
+          </View>
+
+          <TouchableOpacity onPress={() => {}} style={{ ...styles.justifyEnd }}>
+            <FontAwesomeIcon
+              icon={faEllipsisV}
+              size={24}
+              style={{ ...styles.colorGrey9 }}
+            />
+          </TouchableOpacity>
+        </View>
+        {conversation.last_message && (
+          <Text
+            style={{
+              ...styles.pTag,
+              ...styles.mb8,
+              ...styles.px8,
             }}
           >
             {conversation.last_message.length > 40
               ? conversation.last_message.substring(0, 40) + "..."
               : conversation.last_message}{" "}
-          </p>
+          </Text>
         )}
-        {conversation.last_updated && (
-          <p>{dayjs(conversation.last_updated).fromNow()}</p>
-        )}
-      </Container>
+        <View style={{ ...styles.alignEnd }}>
+          {conversation.last_updated && (
+            <Text
+              style={{
+                ...styles.pTag,
+                ...styles.tar,
+              }}
+            >
+              {dayjs(conversation.last_updated).fromNow()}
+            </Text>
+          )}
+        </View>
+      </View>
 
-      <Dropdown
-        overlay={
-          <Container className="column x-fill bg-white border-all px16 py8 br8">
-            <Container
-              className="button-8 clickable align-center"
-              onClick={(e) => {
-                setIsMuted(!isMuted);
-                muteChat(conversation.id, userID, !isMuted);
-                message.success(
-                  "Chat is " + (isMuted ? "unmuted" : "muted") + " :)"
-                );
-              }}
-            >
-              <p className="flex-fill ic">
-                {isMuted ? "Unmute " : "Mute "}Chat
-              </p>
-              <FontAwesomeIcon
-                className="ml8"
-                icon={isMuted ? faVolume : faVolumeSlash}
-              />
-            </Container>
-            <Container
-              className="button-8 clickable align-center"
-              onClick={(e) => {
-                setBlockModal(!blockModal);
-              }}
-            >
-              <p className="ic fw-400 flex-fill">Block User</p>
-              <FontAwesomeIcon className="ml8" icon={faUserLock} />
-            </Container>
-            <Container
-              className="button-9 clickable align-center"
-              onClick={(e) => {
-                setDeleteConversationConfirm(true);
-              }}
-            >
-              <p className="flex-fill ic">Leave Chat</p>
-              <FontAwesomeIcon className="ml8" icon={faTrash} />
-            </Container>
-          </Container>
-        }
-        placement="bottomRight"
-        trigger={["click"]}
-      >
-        <div className="clickable px8">
-          <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
-        </div>
-      </Dropdown>
       {deleteConversationConfirm && (
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
@@ -265,12 +240,11 @@ function ConversationOption({
           title="Block User"
         />
       )}
-    </Container>
+    </TouchableOpacity>
   );
 }
 
-function DisplayOnlineAndName({ chatName, hasSeen, style, userBasicInfo }) {
-  const isMounted = useIsMounted();
+function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
   const [isUserOnline, setIsUserOnline] = useState(false);
 
   useEffect(() => {
@@ -278,7 +252,7 @@ function DisplayOnlineAndName({ chatName, hasSeen, style, userBasicInfo }) {
 
     if (!chatName)
       isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
-        if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
+        if (isUserOnlineObj && isUserOnlineObj.state) {
           if (isUserOnlineObj.state === "online") setIsUserOnline(true);
           else setIsUserOnline(false);
         }
@@ -287,20 +261,68 @@ function DisplayOnlineAndName({ chatName, hasSeen, style, userBasicInfo }) {
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [chatName, isMounted, userBasicInfo]);
+  }, [chatName, userBasicInfo]);
 
   return (
-    <Container className="flex-fill align-center ov-hidden gap8" style={style}>
-      <h6 className={"ellipsis " + (hasSeen ? "grey-1" : "primary")}>
+    <View
+      style={{ ...styles.flexRow, ...styles.flexFill, ...styles.alignCenter }}
+    >
+      <Text
+        style={{
+          ...styles.titleSmall,
+          ...(hasSeen ? styles.colorGrey1 : {}),
+          ...styles.mr8,
+        }}
+      >
         {chatName
           ? chatName
           : userBasicInfo
           ? capitolizeFirstChar(userBasicInfo.displayName)
           : "Anonymous"}
-      </h6>
-      {!chatName && isUserOnline && <div className="online-dot" />}
-    </Container>
+      </Text>
+      {!chatName && isUserOnline && <View style={{ ...styles.onlineDot }} />}
+    </View>
   );
 }
+
+/*
+<View className="column x-fill bg-white border-all px16 py8 br8">
+  <View
+    className="button-8 clickable align-center"
+    onClick={(e) => {
+      setIsMuted(!isMuted);
+      muteChat(conversation.id, userID, !isMuted);
+      message.success(
+        "Chat is " + (isMuted ? "unmuted" : "muted") + " :)"
+      );
+    }}
+  >
+    <Text className="flex-fill ic">
+      {isMuted ? "Unmute " : "Mute "}Chat
+    </Text>
+    <FontAwesomeIcon
+      className="ml8"
+      icon={isMuted ? faVolume : faVolumeSlash}
+    />
+  </View>
+  <View
+    className="button-8 clickable align-center"
+    onClick={(e) => {
+      setBlockModal(!blockModal);
+    }}
+  >
+    <Text className="ic fw-400 flex-fill">Block User</Text>
+    <FontAwesomeIcon className="ml8" icon={faUserLock} />
+  </View>
+  <View
+    className="button-9 clickable align-center"
+    onClick={(e) => {
+      setDeleteConversationConfirm(true);
+    }}
+  >
+    <Text className="flex-fill ic">Leave Chat</Text>
+    <FontAwesomeIcon className="ml8" icon={faTrash} />
+  </View>
+</View>*/
 
 export default ConversationOption;

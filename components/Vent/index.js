@@ -174,6 +174,7 @@ function VentComponent({
                   navigation.jumpTo("Profile", { userID: author.id });
                 }}
                 style={{
+                  ...styles.flexFill,
                   ...styles.flexRow,
                   ...styles.alignCenter,
                 }}
@@ -201,7 +202,13 @@ function VentComponent({
                 </View>
               </TouchableOpacity>
               {vent.is_birthday_post && (
-                <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+                <View
+                  style={{
+                    ...styles.flexFill,
+                    ...styles.flexRow,
+                    ...styles.alignCenter,
+                  }}
+                >
                   <FontAwesomeIcon
                     icon={faBirthdayCake}
                     size={32}

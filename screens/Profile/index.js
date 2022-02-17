@@ -224,7 +224,7 @@ function ProfileScreen({ navigation, route }) {
                   {userInfo.education !== undefined && (
                     <View
                       style={{
-                        ...styles.buttonSecondary,
+                        ...styles.flexRow,
                         ...styles.mr8,
                         ...styles.mb8,
                       }}
@@ -232,7 +232,7 @@ function ProfileScreen({ navigation, route }) {
                       <FontAwesomeIcon
                         icon={faSchool}
                         size={24}
-                        style={{ ...styles.colorGrey1, ...styles.mr8 }}
+                        style={{ ...styles.colorGrey1, ...styles.mr4 }}
                       />
                       <Text style={{ ...styles.pTag }}>
                         {educationList[userInfo.education]}
@@ -242,7 +242,7 @@ function ProfileScreen({ navigation, route }) {
                   {userInfo.kids !== undefined && (
                     <View
                       style={{
-                        ...styles.buttonSecondary,
+                        ...styles.flexRow,
                         ...styles.mr8,
                         ...styles.mb8,
                       }}
@@ -250,7 +250,7 @@ function ProfileScreen({ navigation, route }) {
                       <FontAwesomeIcon
                         icon={faBaby}
                         size={24}
-                        style={{ ...styles.colorGrey1, ...styles.mr8 }}
+                        style={{ ...styles.colorGrey1, ...styles.mr4 }}
                       />
                       <Text style={{ ...styles.pTag }}>
                         {kidsList[userInfo.kids]}
@@ -260,7 +260,7 @@ function ProfileScreen({ navigation, route }) {
                   {userInfo.partying !== undefined && (
                     <View
                       style={{
-                        ...styles.buttonSecondary,
+                        ...styles.flexRow,
                         ...styles.mr8,
                         ...styles.mb8,
                       }}
@@ -268,7 +268,7 @@ function ProfileScreen({ navigation, route }) {
                       <FontAwesomeIcon
                         icon={faGlassCheers}
                         size={24}
-                        style={{ ...styles.colorGrey1, ...styles.mr8 }}
+                        style={{ ...styles.colorGrey1, ...styles.mr4 }}
                       />
                       <Text style={{ ...styles.pTag }}>
                         {partyingList[userInfo.partying]}
@@ -278,7 +278,7 @@ function ProfileScreen({ navigation, route }) {
                   {userInfo.politics !== undefined && (
                     <View
                       style={{
-                        ...styles.buttonSecondary,
+                        ...styles.flexRow,
                         ...styles.mr8,
                         ...styles.mb8,
                       }}
@@ -286,7 +286,7 @@ function ProfileScreen({ navigation, route }) {
                       <FontAwesomeIcon
                         icon={faLandmark}
                         size={24}
-                        style={{ ...styles.colorGrey1, ...styles.mr8 }}
+                        style={{ ...styles.colorGrey1, ...styles.mr4 }}
                       />
                       <Text style={{ ...styles.pTag }}>
                         {politicalBeliefsList[userInfo.politics]}
@@ -296,7 +296,7 @@ function ProfileScreen({ navigation, route }) {
                   {userInfo.religion !== undefined && (
                     <View
                       style={{
-                        ...styles.buttonSecondary,
+                        ...styles.flexRow,
                         ...styles.mr8,
                         ...styles.mb8,
                       }}
@@ -304,7 +304,7 @@ function ProfileScreen({ navigation, route }) {
                       <FontAwesomeIcon
                         icon={faPray}
                         size={24}
-                        style={{ ...styles.colorGrey1, ...styles.mr8 }}
+                        style={{ ...styles.colorGrey1, ...styles.mr4 }}
                       />
                       <Text style={{ ...styles.pTag }}>
                         {userInfo.religion}

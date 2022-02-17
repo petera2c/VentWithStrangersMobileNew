@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
+import { Linking, NativeModules, TouchableOpacity } from "react-native";
+import reactStringReplace from "react-string-replace";
 import {
   collection,
   doc,
@@ -19,6 +21,8 @@ import {
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/firebase_init";
 import dayjs from "dayjs";
+
+import { setUserOnlineStatus } from "./pages/util";
 
 export const blockUser = async (userID, userIDToBlock) => {
   await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);
@@ -254,12 +258,10 @@ export const isUserAccountNew = (userBasicInfo) => {
 };
 
 export const signOut2 = (userID) => {
-  import("./pages/util").then(async (functions) => {
-    await functions.setUserOnlineStatus("offline", userID);
+  setUserOnlineStatus("offline", userID);
 
-    signOut(getAuth()).then(() => {
-      window.location.reload();
-    });
+  signOut(getAuth()).then(() => {
+    NativeModules.DevSettings.reload();
   });
 };
 
@@ -269,7 +271,23 @@ export const soundNotify = (sound = "bing") => {
   audio.play();
 };
 
-export const urlify = (text) => text;
+export const urlify = (text) =>
+  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
+    <TouchableOpacity
+      className="button-1 no-bold no-hover"
+      onPress={() => {
+        Linking.canOpenURL(match).then((supported) => {
+          if (supported) {
+            Linking.openURL(match);
+          } else {
+            console.log("Don't know how to open URI: " + match);
+          }
+        });
+      }}
+    >
+      {match}
+    </TouchableOpacity>
+  ));
 
 export const useIsMounted = () => {
   const isMountedRef = useRef(true);

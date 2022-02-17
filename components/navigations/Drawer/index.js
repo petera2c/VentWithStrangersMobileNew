@@ -5,6 +5,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import BottomHeader from "../BottomHeader";
 import MakeAvatar from "../../views/MakeAvatar";
 
+import { signOut2 } from "../../../util";
+
 import {
   OnlineUsersContext,
   RouteContext,
@@ -78,7 +80,7 @@ function DrawerNavigation() {
 
                 {showAccountRoutes && (
                   <View>
-                    <SomeButton
+                    <NavigationLink
                       isActive={activeRoute === "Profile"}
                       onPress={() => {
                         navigation.navigate("Profile");
@@ -86,7 +88,7 @@ function DrawerNavigation() {
                       title="My Public Profile"
                     />
 
-                    <SomeButton
+                    <NavigationLink
                       isActive={activeRoute === "Avatar"}
                       onPress={() => {
                         navigation.navigate("Avatar");
@@ -94,7 +96,7 @@ function DrawerNavigation() {
                       title="Avatar"
                     />
 
-                    <SomeButton
+                    <NavigationLink
                       isActive={activeRoute === "Account"}
                       onPress={() => {
                         navigation.navigate("Account");
@@ -102,7 +104,7 @@ function DrawerNavigation() {
                       title="Account"
                     />
 
-                    <SomeButton
+                    <NavigationLink
                       isActive={activeRoute === "Settings"}
                       onPress={() => {
                         navigation.navigate("Settings");
@@ -178,7 +180,7 @@ function DrawerNavigation() {
               </Text>
             </TouchableOpacity>
 
-            <SomeButton
+            <NavigationLink
               isActive={activeRoute === "QuoteContest"}
               onPress={() => {
                 navigation.navigate("QuoteContest");
@@ -186,7 +188,7 @@ function DrawerNavigation() {
               title="Quote Contest"
             />
 
-            <SomeButton
+            <NavigationLink
               isActive={activeRoute === "ChatWithStrangers"}
               onPress={() => {
                 navigation.navigate("ChatWithStrangers");
@@ -197,7 +199,7 @@ function DrawerNavigation() {
               }
             />
 
-            <SomeButton
+            <NavigationLink
               isActive={activeRoute === "Rewards"}
               onPress={() => {
                 navigation.navigate("Rewards");
@@ -205,7 +207,7 @@ function DrawerNavigation() {
               title="Rewards"
             />
 
-            <SomeButton
+            <NavigationLink
               isActive={activeRoute === "TopQuotesMonth"}
               onPress={() => {
                 navigation.navigate("TopQuotesMonth");
@@ -213,7 +215,7 @@ function DrawerNavigation() {
               title="Feel Good Quotes"
             />
 
-            <SomeButton
+            <NavigationLink
               isActive={activeRoute === "Rules"}
               onPress={() => {
                 navigation.navigate("Rules");
@@ -221,12 +223,19 @@ function DrawerNavigation() {
               title="Rules"
             />
 
-            <SomeButton
+            <NavigationLink
               isActive={activeRoute === "SiteInfo"}
               onPress={() => {
                 navigation.navigate("SiteInfo");
               }}
               title="VWS Info"
+            />
+            <NavigationLink
+              isActive={false}
+              onPress={() => {
+                if (user) signOut2(user.uid);
+              }}
+              title="Sign Out"
             />
           </SafeAreaView>
         );
@@ -237,7 +246,7 @@ function DrawerNavigation() {
   );
 }
 
-function SomeButton({ isActive, onPress, title }) {
+function NavigationLink({ isActive, onPress, title }) {
   return (
     <TouchableOpacity
       onPress={onPress}

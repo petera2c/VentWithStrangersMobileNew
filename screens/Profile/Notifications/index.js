@@ -22,12 +22,20 @@ function NotificationsScreen({ navigation }) {
   useEffect(() => {
     let newNotificationsListenerUnsubscribe;
 
-    getNotifications([], setCanShowLoadMore, undefined, setNotifications, user);
-    newNotificationsListenerUnsubscribe = newNotificationsListener(
-      () => {},
-      setNotifications,
-      user
-    );
+    if (user) {
+      getNotifications(
+        [],
+        setCanShowLoadMore,
+        undefined,
+        setNotifications,
+        user
+      );
+      newNotificationsListenerUnsubscribe = newNotificationsListener(
+        () => {},
+        setNotifications,
+        user
+      );
+    }
 
     return () => {
       if (newNotificationsListenerUnsubscribe)
@@ -39,18 +47,16 @@ function NotificationsScreen({ navigation }) {
     <Screen navigation={navigation}>
       <ScrollView>
         <View style={{ ...styles.pa16 }}>
-          {true && (
-            <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
-              <Text style={{ ...styles.title }}>Your Notifications</Text>
-            </View>
-          )}
+          <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
+            <Text style={{ ...styles.title }}>Your Notifications</Text>
+          </View>
           <View className="bg-white ov-hidden br8">
             <NotificationList
               navigation={navigation}
               notifications={notifications}
             />
           </View>
-          {canShowLoadMore && (
+          {user && canShowLoadMore && (
             <TouchableOpacity
               onPress={() =>
                 getNotifications(
@@ -61,7 +67,7 @@ function NotificationsScreen({ navigation }) {
                   user
                 )
               }
-              style={{ ...styles.buttonPrimary }}
+              style={{ ...styles.buttonPrimary, ...styles.mt16 }}
             >
               <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
                 Load More
