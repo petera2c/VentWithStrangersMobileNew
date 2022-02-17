@@ -17,7 +17,7 @@ import { joinQueue } from "./util";
 function ChatWithStrangersScreen({ navigation }) {
   const { user } = useContext(UserContext);
 
-  const [starterModal, setStarterModal] = useState();
+  const [starterModal, setStarterModal] = useState(false);
 
   return (
     <Screen navigation={navigation} style={{ ...styles.pa16 }}>

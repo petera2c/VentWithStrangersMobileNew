@@ -323,7 +323,7 @@ export const tagUser = (
   });
 };
 
-export const startConversation = async (navigate, user, ventUserID) => {
+export const startConversation = async (navigation, user, ventUserID) => {
   const userInteractionIssues = userSignUpProgress(user);
   if (userInteractionIssues) return false;
 
@@ -336,7 +336,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
   );
 
   const goToPage = (conversationID) => {
-    navigate("/chat?" + conversationID);
+    navigation.navigate("Chat", { conversationID });
   };
 
   let found;

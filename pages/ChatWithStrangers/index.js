@@ -17,7 +17,7 @@ function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
-  const [starterModal, setStarterModal] = useState();
+  const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
     setIsMobileOrTablet(getIsMobileOrTablet());

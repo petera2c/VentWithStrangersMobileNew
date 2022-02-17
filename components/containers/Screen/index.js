@@ -53,17 +53,11 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
             </TouchableOpacity>
           </View>
         )}
-        <View
-          onPress={() => {
-            Keyboard.dismiss();
-          }}
-          style={{ flex: 1 }}
-        >
-          <View style={{ flex: 1 }}>
-            {Title && <Title />}
-            <ScrollView style={{ flex: 1, ...styles.bgBlue2 }}>
-              <View style={{ ...style }}>{children}</View>
-            </ScrollView>
+        <View style={{ flex: 1 }}>
+          {Title && <Title />}
+
+          <View style={{ flex: 1, ...styles.bgBlue2, ...style }}>
+            {children}
           </View>
         </View>
       </SafeAreaView>

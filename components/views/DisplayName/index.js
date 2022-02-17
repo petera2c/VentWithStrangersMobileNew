@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import loadable from "@loadable/component";
+import { Text, TouchableOpacity, View } from "react-native";
 
-import Container from "../../containers/Container";
 import KarmaBadge from "../../views/KarmaBadge";
+import MakeAvatar from "../../views/MakeAvatar";
+
+import { styles } from "../../../styles";
 
 import { capitolizeFirstChar } from "../../../util";
-
-const MakeAvatar = loadable(() => import("../../views/MakeAvatar"));
 
 function DisplayName({
   big,
   displayName,
   isLink = true,
   isUserOnline,
+  navigation,
   noAvatar,
   noBadgeOnClick,
   noTooltip,
@@ -30,27 +30,28 @@ function DisplayName({
 
   if (isLink)
     return (
-      <Container className="align-center flex-fill ov-hidden gap4">
-        <Link
+      <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+        <TouchableOpacity
           className="flex clickable align-center ov-hidden gap4"
-          onClick={(e) => {
-            e.stopPropagation();
+          onPress={() => {
+            navigation.jumpTo("Profile", { userID });
           }}
-          to={"/profile?" + userID}
         >
           <MakeAvatar
             displayName={userBasicInfo.displayName}
             userBasicInfo={userBasicInfo}
           />
           {userBasicInfo && (
-            <Container className="full-center flex-fill ov-hidden gap4">
-              <h5 className="button-1 ellipsis fw-400 grey-11">
+            <View style={{ ...styles.fullCenter }}>
+              <Text style={{ ...styles.fs20, ...styles.colorGrey11 }}>
                 {capitolizedDisplayName}
-              </h5>
-              {isUserOnline === "online" && <div className="online-dot" />}
-            </Container>
+              </Text>
+              {isUserOnline === "online" && (
+                <View style={{ ...styles.onlineDot }} />
+              )}
+            </View>
           )}
-        </Link>
+        </TouchableOpacity>
         {userBasicInfo && (
           <KarmaBadge
             noOnClick={noBadgeOnClick}
@@ -58,12 +59,12 @@ function DisplayName({
             userBasicInfo={userBasicInfo}
           />
         )}
-      </Container>
+      </View>
     );
   else
     return (
-      <Container className="align-center flex-fill ov-hidden">
-        <Container className="flex-fill align-center ov-hidden gap4">
+      <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+        <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
           {!noAvatar && (
             <MakeAvatar
               displayName={userBasicInfo.displayName}
@@ -71,15 +72,17 @@ function DisplayName({
             />
           )}
           {userBasicInfo && (
-            <Container className="full-center flex-fill ov-hidden gap4">
-              <h5
-                className={
-                  "ellipsis fw-400 " + (big ? "fs-24 primary" : "grey-11")
-                }
+            <View style={{ ...styles.flexRow, ...styles.fullCenter }}>
+              <Text
+                style={{
+                  ...(big
+                    ? styles.fs24
+                    : { ...styles.fs20, ...styles.colorGrey11 }),
+                }}
               >
                 {capitolizedDisplayName}
-              </h5>
-              {isUserOnline && <div className="online-dot" />}
+              </Text>
+              {isUserOnline && <View style={{ ...styles.onlineDot }} />}
               {userBasicInfo && (
                 <KarmaBadge
                   noOnClick={noBadgeOnClick}
@@ -87,10 +90,10 @@ function DisplayName({
                   userBasicInfo={userBasicInfo}
                 />
               )}
-            </Container>
+            </View>
           )}
-        </Container>
-      </Container>
+        </View>
+      </View>
     );
 }
 

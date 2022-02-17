@@ -17,7 +17,6 @@ import {
 import { db } from "../../config/firebase_init";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { message } from "antd";
 
 import { getEndAtValueTimestamp } from "../../util";
 
@@ -44,11 +43,7 @@ export const deleteQuote = async (
   message.success("Quote deleted!");
 };
 
-export const getCanUserCreateQuote = async (
-  isMounted,
-  setCanUserCreateQuote,
-  userID
-) => {
+export const getCanUserCreateQuote = async (setCanUserCreateQuote, userID) => {
   const todaysFormattedDate = new dayjs(Timestamp.now().toMillis())
     .utcOffset(0)
     .format("MM-DD-YYYY");
@@ -62,13 +57,9 @@ export const getCanUserCreateQuote = async (
     )
   );
 
-  if (
-    userQuotesTodaySnapshot.docs &&
-    userQuotesTodaySnapshot.docs.length > 0 &&
-    isMounted()
-  )
+  if (userQuotesTodaySnapshot.docs && userQuotesTodaySnapshot.docs.length > 0)
     setCanUserCreateQuote(false);
-  else if (isMounted()) setCanUserCreateQuote(true);
+  else setCanUserCreateQuote(true);
 };
 
 export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
@@ -83,12 +74,7 @@ export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
   setHasLiked(Boolean(value));
 };
 
-export const getQuotes = async (
-  isMounted,
-  quotes,
-  setCanLoadMoreQuotes,
-  setQuotes
-) => {
+export const getQuotes = async (quotes, setCanLoadMoreQuotes, setQuotes) => {
   let startAt = getEndAtValueTimestamp(quotes);
   const todaysFormattedDate = new dayjs().utcOffset(0).format("MM-DD-YYYY");
 
@@ -101,8 +87,6 @@ export const getQuotes = async (
       limit(10)
     )
   );
-
-  if (!isMounted()) return;
 
   let newQuotes = [];
 
@@ -151,7 +135,6 @@ export const reportQuote = (option, quoteID, userID) => {
 
 export const saveQuote = async (
   canUserCreateQuote,
-  isMounted,
   quote,
   quoteID,
   setCanUserCreateQuote,
@@ -166,14 +149,12 @@ export const saveQuote = async (
   if (quoteID) {
     await updateDoc(doc(db, "quotes", quoteID), { userID, value: quote });
 
-    if (isMounted()) {
-      setQuotes((oldQuotes) => {
-        const quoteIndex = oldQuotes.findIndex((quote) => quote.id === quoteID);
-        oldQuotes[quoteIndex].value = quote;
-        return [...oldQuotes];
-      });
-      setMyQuote("");
-    }
+    setQuotes((oldQuotes) => {
+      const quoteIndex = oldQuotes.findIndex((quote) => quote.id === quoteID);
+      oldQuotes[quoteIndex].value = quote;
+      return [...oldQuotes];
+    });
+    setMyQuote("");
     message.success("Updated successfully! :)");
   } else if (canUserCreateQuote) {
     const newQuote = await addDoc(collection(db, "quotes"), {
@@ -185,14 +166,12 @@ export const saveQuote = async (
 
     message.success("Quote saved!");
 
-    if (isMounted()) {
-      setQuotes((oldQuotes) => [
-        { id: newQuote.id, doc: newQuoteDoc, ...newQuoteDoc.data() },
-        ...oldQuotes,
-      ]);
-      setCanUserCreateQuote(false);
-      setMyQuote("");
-    }
+    setQuotes((oldQuotes) => [
+      { id: newQuote.id, doc: newQuoteDoc, ...newQuoteDoc.data() },
+      ...oldQuotes,
+    ]);
+    setCanUserCreateQuote(false);
+    setMyQuote("");
   } else {
     message.error("You can only create one quote per day");
   }

@@ -47,12 +47,10 @@ export const capitolizeFirstLetterOfEachWord = (string) => {
     .replace(/(^\w{1})|(\s{1}\w{1})/g, (match) => match.toUpperCase());
 };
 
-export const chatQueueEmptyListener = (isMounted, setQueueLength) => {
+export const chatQueueEmptyListener = (setQueueLength) => {
   const unsubscribe = onSnapshot(
     query(collection(db, "chat_queue"), limit(10)),
     (snapshot) => {
-      if (!isMounted()) return;
-
       if (snapshot.docs && snapshot.docs.length > 0)
         setQueueLength(snapshot.docs.length);
       else setQueueLength(-1);
@@ -67,21 +65,14 @@ export const combineObjectWithID = (id, object) => {
   return object;
 };
 
-export const countdown = (
-  isMounted,
-  dayjsTimeout,
-  setTimeout,
-  setTimeOutFormatted
-) => {
-  if (isMounted()) {
-    setTimeout((oldUserVentTimeOut) => {
-      if (setTimeOutFormatted) {
-        setTimeOutFormatted(formatSeconds(oldUserVentTimeOut));
-      }
-      if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
-      else return Math.round(new dayjs(dayjsTimeout).diff(new dayjs()) / 1000);
-    });
-  }
+export const countdown = (dayjsTimeout, setTimeout, setTimeOutFormatted) => {
+  setTimeout((oldUserVentTimeOut) => {
+    if (setTimeOutFormatted) {
+      setTimeOutFormatted(formatSeconds(oldUserVentTimeOut));
+    }
+    if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
+    else return Math.round(new dayjs(dayjsTimeout).diff(new dayjs()) / 1000);
+  });
 };
 
 export const displayNameErrors = (displayName) => {
@@ -194,7 +185,7 @@ export const getUserBasicInfo = async (callback, userID) => {
   callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
-export const getUserAvatars = (isMounted, setFirstOnlineUsers) => {
+export const getUserAvatars = (setFirstOnlineUsers) => {
   get(query2(ref(db2, "status"), limitToLast(3), orderByChild("index"))).then(
     async (snapshot) => {
       let usersOnline = [];
@@ -222,25 +213,18 @@ export const getUserAvatars = (isMounted, setFirstOnlineUsers) => {
           });
       }
 
-      if (isMounted()) setFirstOnlineUsers(onlineUsersAvatars);
+      setFirstOnlineUsers(onlineUsersAvatars);
     }
   );
 };
 
-export const hasUserBlockedUser = async (
-  isMounted,
-  userID,
-  userID2,
-  callback
-) => {
+export const hasUserBlockedUser = async (userID, userID2, callback) => {
   const block1 = await get(
     ref(db2, "block_check_new/" + userID + "/" + userID2)
   );
   const block2 = await get(
     ref(db2, "block_check_new/" + userID2 + "/" + userID)
   );
-
-  if (!isMounted()) return;
 
   if (block1.val() || block2.val()) return callback(true);
   else return callback(false);

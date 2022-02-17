@@ -69,6 +69,11 @@ export const styles = StyleSheet.create({
     borderColor: colors.main,
   },
 
+  shadowTop: {
+    shadowOffset: { width: 0, height: -2 },
+    shadowColor: "#999999",
+    shadowOpacity: 0.3,
+  },
   shadowBottom: {
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "#999999",

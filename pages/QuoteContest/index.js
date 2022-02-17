@@ -48,7 +48,7 @@ function QuoteContestPage() {
   const [myQuote, setMyQuote] = useState("");
   const [quoteID, setQuoteID] = useState();
   const [quotes, setQuotes] = useState([]);
-  const [starterModal, setStarterModal] = useState();
+  const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
     setIsMobileOrTablet(getIsMobileOrTablet());

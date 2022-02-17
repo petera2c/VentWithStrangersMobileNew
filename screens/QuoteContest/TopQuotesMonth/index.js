@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import dayjs from "dayjs";
 
 import Screen from "../../../components/containers/Screen";
@@ -19,19 +19,21 @@ function TopQuotesMonthScreen({ navigation }) {
   }, [setQuotes]);
 
   return (
-    <Screen navigation={navigation} style={{ ...styles.pa16 }}>
-      <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
-        <Text style={{ ...styles.title, ...styles.mb8 }}>
-          {thisMonthYearFormatted} Feel Good Quotes
-        </Text>
-        <Text style={{ ...styles.pTag, ...styles.tac }}>
-          Some of our favourites :)
-        </Text>
-      </View>
+    <Screen navigation={navigation}>
+      <ScrollView style={{ ...styles.pa16 }}>
+        <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
+          <Text style={{ ...styles.title, ...styles.mb8 }}>
+            {thisMonthYearFormatted} Feel Good Quotes
+          </Text>
+          <Text style={{ ...styles.pTag, ...styles.tac }}>
+            Some of our favourites :)
+          </Text>
+        </View>
 
-      {quotes.map((quote, index) => (
-        <QuoteDisplay key={quote.id} navigation={navigation} quote={quote} />
-      ))}
+        {quotes.map((quote, index) => (
+          <QuoteDisplay key={quote.id} navigation={navigation} quote={quote} />
+        ))}
+      </ScrollView>
     </Screen>
   );
 }

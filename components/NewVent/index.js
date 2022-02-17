@@ -57,7 +57,7 @@ function NewVentScreen({ navigation, route }) {
   const [isMinified, setIsMinified] = useState(miniVersion);
   const [quote, setQuote] = useState();
   const [saving, setSaving] = useState(false);
-  const [starterModal, setStarterModal] = useState();
+  const [starterModal, setStarterModal] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
   const [title, setTitle] = useState("");
@@ -149,7 +149,11 @@ function NewVentScreen({ navigation, route }) {
             >
               "{capitolizeFirstChar(quote.value)}"
             </Text>
-            <TouchableOpacity to={"/profile?" + quote.userID}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.jumpTo("Profile", { userID: quote.userID })
+              }
+            >
               <Text className="button-8 tac lh-1">
                 - {capitolizeFirstChar(quote.displayName)}
               </Text>
@@ -172,7 +176,7 @@ function NewVentScreen({ navigation, route }) {
           }}
         >
           {false && isMinified && (
-            <TouchableOpacity to="/avatar">
+            <TouchableOpacity onPress={() => navigation.jumpTo("Avatar")}>
               <MakeAvatar
                 displayName={userBasicInfo.displayName}
                 userBasicInfo={userBasicInfo}
@@ -390,16 +394,24 @@ function NewVentScreen({ navigation, route }) {
               >
                 {capitolizeFirstChar(quote.value)}
               </Text>
-              <TouchableOpacity to={"/profile?" + quote.userID}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.jumpTo("Profile", { userID: quote.userID })
+                }
+              >
                 <Text style={{ ...styles.fs20, ...styles.colorMain }}>
                   - {capitolizeFirstChar(quote.displayName)}
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={{ ...styles.pl8 }} to="/quote-contest">
+            <TouchableOpacity
+              onPress={() => navigation.jumpTo("QuoteContest")}
+              style={{ ...styles.pl8 }}
+            >
               <FontAwesomeIcon
                 icon={faQuestionCircle}
+                size={24}
                 style={{ ...styles.colorMain }}
               />
             </TouchableOpacity>

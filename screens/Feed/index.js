@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -20,7 +20,7 @@ function FeedScreen({ navigation, route }) {
 
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [pathname, setPathname] = useState(user ? "/my-feed" : "/recent");
-  const [trendingOptions, setTrendingOptions] = useState();
+  const [trendingOptions, setTrendingOptions] = useState(false);
   const [vents, setVents] = useState([]);
   const [waitingVents, setWaitingVents] = useState([]);
 
@@ -128,63 +128,69 @@ function FeedScreen({ navigation, route }) {
         </View>
       )}
     >
-      <View style={{ ...styles.pa16 }}>
-        <NewVentComponent navigation={navigation} />
-        {isTrending(pathname) && (
-          <TouchableOpacity
-            onPress={() => setTrendingOptions(true)}
-            style={{ ...styles.flexRow, ...styles.alignCenter, ...styles.pt16 }}
-          >
-            <Text
-              style={{ ...styles.fs18, ...styles.colorGrey11, ...styles.mr4 }}
+      <ScrollView>
+        <View style={{ ...styles.pa16 }}>
+          <NewVentComponent navigation={navigation} />
+          {isTrending(pathname) && (
+            <TouchableOpacity
+              onPress={() => setTrendingOptions(true)}
+              style={{
+                ...styles.flexRow,
+                ...styles.alignCenter,
+                ...styles.pt16,
+              }}
             >
-              {pathname === "/trending/this-week"
-                ? "Trending This Week"
-                : pathname === "/trending/this-month"
-                ? "Trending This Month"
-                : "Trending Today"}
-            </Text>
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              style={{ ...styles.colorGrey11 }}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
+              <Text
+                style={{ ...styles.fs18, ...styles.colorGrey11, ...styles.mr4 }}
+              >
+                {pathname === "/trending/this-week"
+                  ? "Trending This Week"
+                  : pathname === "/trending/this-month"
+                  ? "Trending This Month"
+                  : "Trending Today"}
+              </Text>
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                style={{ ...styles.colorGrey11 }}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
 
-      <TrendingOptions
-        close={() => setTrendingOptions(false)}
-        pathname={pathname}
-        setPathname={setPathname}
-        visible={trendingOptions}
-      />
+        <TrendingOptions
+          close={() => setTrendingOptions(false)}
+          pathname={pathname}
+          setPathname={setPathname}
+          visible={trendingOptions}
+        />
 
-      <View style={{ ...styles.px16 }}>
-        {waitingVents.length > 0 && (
-          <TouchableOpacity
-            onPress={() => {
-              setVents((vents) => [...waitingVents, ...vents]);
-              setWaitingVents([]);
-            }}
-            style={{ ...styles.bgWhite, ...styles.border, ...styles.br32 }}
-          >
-            <View>Load New Vent{waitingVents.length > 1 ? "s" : ""}</View>
-          </TouchableOpacity>
-        )}
-        {vents &&
-          vents.map((vent, index) => {
-            return (
-              <View className="column x-fill gap8" key={vent.id}>
-                <Vent
-                  navigation={navigation}
-                  previewMode={true}
-                  ventID={vent.id}
-                  ventInit={vent.title ? vent : undefined}
-                />
-              </View>
-            );
-          })}
-      </View>
+        <View style={{ ...styles.px16 }}>
+          {waitingVents.length > 0 && (
+            <TouchableOpacity
+              onPress={() => {
+                setVents((vents) => [...waitingVents, ...vents]);
+                setWaitingVents([]);
+              }}
+              style={{ ...styles.bgWhite, ...styles.border, ...styles.br32 }}
+            >
+              <View>Load New Vent{waitingVents.length > 1 ? "s" : ""}</View>
+            </TouchableOpacity>
+          )}
+          {vents &&
+            vents.map((vent, index) => {
+              return (
+                <View className="column x-fill gap8" key={vent.id}>
+                  <Vent
+                    navigation={navigation}
+                    previewMode={true}
+                    ventID={vent.id}
+                    ventInit={vent.title ? vent : undefined}
+                  />
+                </View>
+              );
+            })}
+        </View>
+      </ScrollView>
     </Screen>
   );
 }
