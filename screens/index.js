@@ -11,8 +11,6 @@ import { OnlineUsersContext, RouteContext, UserContext } from "../context";
 const Stack = createNativeStackNavigator();
 
 function Routes() {
-  const isMounted = useRef(false);
-
   const [activeRoute, setActiveRoute] = useState();
   const [firstOnlineUsers, setFirstOnlineUsers] = useState([]);
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
@@ -24,41 +22,35 @@ function Routes() {
   const [loading, setLoading] = useState(true);
 
   onAuthStateChanged(getAuth(), (user) => {
-    if (!isMounted.current) return;
     setLoading(false);
 
     if (user) setUser(user);
   });
 
   useEffect(() => {
-    isMounted.current = true;
-
     let newRewardListenerUnsubscribe;
     if (user) {
       import("./util").then((functions) => {
         newRewardListenerUnsubscribe = functions.newRewardListener(
-          isMounted,
           setNewReward,
           user.uid
         );
-        functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
-        functions.getIsUserSubscribed(isMounted, setUserSubscription, user.uid);
+        functions.getIsUsersBirthday(setIsUsersBirthday, user.uid);
+        functions.getIsUserSubscribed(setUserSubscription, user.uid);
         functions.setIsUserOnlineToDatabase(user.uid);
       });
 
       import("../util").then((functions) => {
         functions.getUserBasicInfo((newBasicUserInfo) => {
-          if (isMounted.current) setUserBasicInfo(newBasicUserInfo);
+          setUserBasicInfo(newBasicUserInfo);
         }, user.uid);
       });
     }
 
     return () => {
-      isMounted.current = false;
-
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
     };
-  }, [isMounted, user]);
+  }, [user]);
 
   return (
     <UserContext.Provider

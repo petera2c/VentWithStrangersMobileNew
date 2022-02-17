@@ -70,7 +70,7 @@ export const checkVentTitle = (title) => {
   return true;
 };
 
-export const getQuote = async (isMounted, setQuote) => {
+export const getQuote = async (setQuote) => {
   const yesterdaysFormattedDate = new dayjs(Timestamp.now().toMillis())
     .utcOffset(0)
     .subtract(1, "days")
@@ -88,8 +88,7 @@ export const getQuote = async (isMounted, setQuote) => {
   if (
     quotesSnapshot.docs &&
     quotesSnapshot.docs[0] &&
-    quotesSnapshot.docs[0].data() &&
-    isMounted()
+    quotesSnapshot.docs[0].data()
   ) {
     const author = await getDoc(
       doc(db, "users_display_name", quotesSnapshot.docs[0].data().userID)
@@ -118,18 +117,10 @@ export const getUserVentTimeOut = async (callback, userID) => {
   else callback(false);
 };
 
-export const getVent = async (
-  isMounted,
-  setDescription,
-  setTags,
-  setTitle,
-  ventID
-) => {
+export const getVent = async (setDescription, setTags, setTitle, ventID) => {
   const ventDoc = await getDoc(doc(db, "vents", ventID));
 
   const vent = ventDoc.data();
-
-  if (!isMounted()) return;
 
   if (vent) {
     setDescription(vent.description);

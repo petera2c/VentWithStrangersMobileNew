@@ -23,6 +23,9 @@ import { login } from "./util";
 function LoginModal({ setActiveModal, visible }) {
   const [canSeePassword, setCanSeePassword] = useState(false);
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
@@ -56,9 +59,11 @@ function LoginModal({ setActiveModal, visible }) {
                 <View>
                   <TextInput
                     name="email"
+                    onChangeText={(text) => setEmail(text)}
                     placeholder="Email Address"
                     placeholderTextColor={colors.grey1}
                     style={{ ...styles.input, ...styles.mb8 }}
+                    value={email}
                   />
                   <View
                     style={{
@@ -68,6 +73,7 @@ function LoginModal({ setActiveModal, visible }) {
                   >
                     <TextInput
                       name="password"
+                      onChangeText={(text) => setPassword(text)}
                       placeholder="Password"
                       placeholderTextColor={colors.grey1}
                       secureTextEntry={canSeePassword ? false : true}
@@ -76,6 +82,7 @@ function LoginModal({ setActiveModal, visible }) {
                         ...styles.flexFill,
                         ...styles.mr8,
                       }}
+                      value={password}
                     />
                     <TouchableOpacity
                       onPress={() => setCanSeePassword(!canSeePassword)}
@@ -112,7 +119,7 @@ function LoginModal({ setActiveModal, visible }) {
                   </Text>
 
                   <TouchableOpacity
-                    onPress={() => {}}
+                    onPress={() => login({ email, password }, setActiveModal)}
                     style={{
                       ...styles.buttonPrimary,
                       ...styles.mb16,

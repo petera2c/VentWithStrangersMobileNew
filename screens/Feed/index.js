@@ -130,7 +130,7 @@ function FeedScreen({ navigation, route }) {
     >
       <ScrollView>
         <View style={{ ...styles.pa16 }}>
-          <NewVentComponent navigation={navigation} />
+          <NewVentComponent miniVersion navigation={navigation} />
           {isTrending(pathname) && (
             <TouchableOpacity
               onPress={() => setTrendingOptions(true)}

@@ -138,14 +138,6 @@ function DrawerNavigation() {
               }}
               title="VWS Info"
             />
-
-            <SomeButton
-              isActive={activeRoute === "MakeFriends"}
-              onPress={() => {
-                navigation.navigate("MakeFriends");
-              }}
-              title="Make Friends"
-            />
           </SafeAreaView>
         );
       }}

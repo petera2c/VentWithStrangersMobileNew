@@ -20,11 +20,7 @@ import {
 import { db, db2 } from "../config/firebase_init";
 import dayjs from "dayjs";
 
-export const getIsUsersBirthday = async (
-  isMounted,
-  setIsUsersBirthday,
-  userID
-) => {
+export const getIsUsersBirthday = async (setIsUsersBirthday, userID) => {
   const userInfoDoc = await getDoc(doc(db, "users_info", userID));
 
   if (
@@ -36,32 +32,23 @@ export const getIsUsersBirthday = async (
       new dayjs().diff(new dayjs(userInfoDoc.data().last_birthday), "day") >=
         365)
   ) {
-    if (isMounted.current) setIsUsersBirthday(true);
+    setIsUsersBirthday(true);
     await updateDoc(doc(db, "users_info", userInfoDoc.id), {
       last_birthday: Timestamp.now().toMillis(),
     });
   }
 };
 
-export const getIsUserSubscribed = async (
-  isMounted,
-  setUserSubscription,
-  userID
-) => {
+export const getIsUserSubscribed = async (setUserSubscription, userID) => {
   const userSubscriptionDoc = await getDoc(
     doc(db, "user_subscription", userID)
   );
 
-  if (userSubscriptionDoc.data() && isMounted.current)
+  if (userSubscriptionDoc.data())
     setUserSubscription(userSubscriptionDoc.data());
 };
 
-export const newRewardListener = (
-  isMounted,
-  setNewReward,
-  userID,
-  first = true
-) => {
+export const newRewardListener = (setNewReward, userID, first = true) => {
   const unsubscribe = onSnapshot(
     query(
       collection(db, "rewards"),
@@ -72,11 +59,7 @@ export const newRewardListener = (
     (querySnapshot) => {
       if (first) {
         first = false;
-      } else if (
-        querySnapshot.docs &&
-        querySnapshot.docs[0] &&
-        isMounted.current
-      ) {
+      } else if (querySnapshot.docs && querySnapshot.docs[0]) {
         setNewReward(() => {
           return {
             id: querySnapshot.docs[0].id,

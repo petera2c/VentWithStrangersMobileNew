@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from "react";
+import useState from "react-usestateref";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SafeAreaView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { sendEmailVerification } from "firebase/auth";
 import { Button } from "react-native-paper";
 
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
@@ -27,7 +29,6 @@ import TopQuotesMonth from "../../../screens/QuoteContest/TopQuotesMonth";
 
 import Chats from "../../../screens/Chats";
 import ChatWithStrangers from "../../../screens/ChatWithStrangers";
-import MakeFriends from "../../../screens/MakeFriends";
 import NewVent from "../../../screens/NewVent";
 import OnlineUsers from "../../../screens/OnlineUsers";
 import Rewards from "../../../screens/Rewards";
@@ -35,14 +36,87 @@ import Rewards from "../../../screens/Rewards";
 import AllTags from "../../../screens/tags/All";
 import IndividualTag from "../../../screens/tags/Individual";
 
-import { RouteContext } from "../../../context";
+import { RouteContext, UserContext } from "../../../context";
 
 import { styles } from "../../../styles";
+
+import { isPageActive, useIsMounted, signOut2 } from "../../../util";
+import {
+  conversationsListener,
+  newNotificationsListener,
+  getNotifications,
+  getUnreadConversations,
+  isUserInQueueListener,
+  leaveQueue,
+  readNotifications,
+  resetUnreadConversationCount,
+} from "./util";
 
 const Tab = createBottomTabNavigator();
 
 function BottomHeader({ navigation, route }) {
-  const { setActiveRoute } = useContext(RouteContext);
+  const { activeRoute, setActiveRoute } = useContext(RouteContext);
+
+  const { user, userBasicInfo } = useContext(UserContext);
+
+  const [activeModal, setActiveModal] = useState("");
+  const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
+  const [notificationCounter, setNotificationCounter] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const [showFeedbackContainer, setShowFeedbackContainer] = useState(false);
+  const [unreadConversationsCount, setUnreadConversationsCount] = useState();
+
+  useEffect(() => {
+    let conversationsUnsubscribe;
+    let isUserInQueueUnsubscribe;
+    let newConversationsListenerUnsubscribe;
+    let newNotificationsListenerUnsubscribe;
+
+    if (user) {
+      if (activeRoute === "/chat")
+        resetUnreadConversationCount(setUnreadConversationsCount, user.uid);
+
+      getNotifications(
+        [],
+        undefined,
+        setNotificationCounter,
+        setNotifications,
+        user
+      );
+
+      conversationsUnsubscribe = conversationsListener(navigation, user.uid);
+      isUserInQueueUnsubscribe = isUserInQueueListener(
+        setIsUserInQueue,
+        user.uid
+      );
+      newConversationsListenerUnsubscribe = getUnreadConversations(
+        activeRoute,
+        setUnreadConversationsCount,
+        user.uid
+      );
+      newNotificationsListenerUnsubscribe = newNotificationsListener(
+        setNotificationCounter,
+        setNotifications,
+        user
+      );
+    }
+
+    const cleanup = () => {
+      if (newNotificationsListenerUnsubscribe)
+        newNotificationsListenerUnsubscribe();
+      if (conversationsUnsubscribe) conversationsUnsubscribe();
+      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
+    };
+
+    return () => {
+      cleanup();
+      if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
+      if (newConversationsListenerUnsubscribe)
+        newConversationsListenerUnsubscribe();
+      if (newNotificationsListenerUnsubscribe)
+        newNotificationsListenerUnsubscribe();
+    };
+  }, [activeRoute, isUserInQueueRef, navigation, setIsUserInQueue, user]);
 
   return (
     <Tab.Navigator
@@ -76,15 +150,39 @@ function BottomHeader({ navigation, route }) {
               onPress={() => {
                 navigation.navigate("Chats");
               }}
-              style={{ flex: 1, ...styles.fullCenter, ...styles.py16 }}
+              style={{
+                ...styles.flexRow,
+                flex: 1,
+                ...styles.fullCenter,
+                ...styles.py16,
+              }}
             >
               <FontAwesomeIcon
                 icon={faComments}
                 size={28}
                 style={{
                   ...(state.index === 1 ? styles.colorMain : styles.colorGrey1),
+                  ...styles.mr8,
                 }}
               />
+              {Boolean(unreadConversationsCount) && (
+                <View
+                  style={{
+                    ...styles.bgRed,
+                    ...styles.px4,
+                    ...styles.br4,
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.colorWhite,
+                      ...styles.fs22,
+                    }}
+                  >
+                    {unreadConversationsCount}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -104,15 +202,39 @@ function BottomHeader({ navigation, route }) {
               onPress={() => {
                 navigation.navigate("Notifications");
               }}
-              style={{ flex: 1, ...styles.fullCenter, ...styles.py16 }}
+              style={{
+                ...styles.flexRow,
+                flex: 1,
+                ...styles.fullCenter,
+                ...styles.py16,
+              }}
             >
               <FontAwesomeIcon
                 icon={faBell}
                 size={28}
                 style={{
                   ...(state.index === 3 ? styles.colorMain : styles.colorGrey1),
+                  ...styles.mr8,
                 }}
               />
+              {Boolean(notificationCounter) && (
+                <View
+                  style={{
+                    ...styles.bgRed,
+                    ...styles.px4,
+                    ...styles.br4,
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.colorWhite,
+                      ...styles.fs22,
+                    }}
+                  >
+                    {notificationCounter}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -236,13 +358,6 @@ function BottomHeader({ navigation, route }) {
       <Tab.Screen
         component={SiteInfo}
         name="SiteInfo"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        component={MakeFriends}
-        name="MakeFriends"
         options={{
           headerShown: false,
         }}

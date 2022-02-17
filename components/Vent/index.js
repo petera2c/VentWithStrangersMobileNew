@@ -11,9 +11,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import Comment from "../Comment";
 //import ConfirmAlertModal from "../modals/ConfirmAlert";
+import ContentOptions from "../ContentOptions";
 import KarmaBadge from "../views/KarmaBadge";
 import MakeAvatar from "../views/MakeAvatar";
-//import Options from "../Options";
 import StarterModal from "../modals/Starter";
 
 import { styles } from "../../styles";
@@ -169,32 +169,37 @@ function VentComponent({
                 ...styles.alignCenter,
               }}
             >
-              <MakeAvatar
-                displayName={author.displayName}
-                userBasicInfo={author}
-              />
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.jumpTo("Profile", { userID: author.id });
+                }}
                 style={{
                   ...styles.flexRow,
-                  ...styles.flexFill,
                   ...styles.alignCenter,
                 }}
               >
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.jumpTo("Profile", { userID: author.id });
+                <MakeAvatar
+                  displayName={author.displayName}
+                  userBasicInfo={author}
+                />
+                <View
+                  style={{
+                    ...styles.flexRow,
+                    ...styles.flexFill,
+                    ...styles.alignCenter,
                   }}
-                  style={{ ...styles.mr8 }}
                 >
-                  <Text style={{ ...styles.colorGrey11, ...styles.fs20 }}>
-                    {capitolizeFirstChar(author.displayName)}
-                  </Text>
-                </TouchableOpacity>
-                {isUserOnline === "online" && (
-                  <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
-                )}
-                <KarmaBadge userBasicInfo={author} />
-              </View>
+                  <View style={{ ...styles.mr8 }}>
+                    <Text style={{ ...styles.colorGrey11, ...styles.fs20 }}>
+                      {capitolizeFirstChar(author.displayName)}
+                    </Text>
+                  </View>
+                  {isUserOnline === "online" && (
+                    <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
+                  )}
+                  <KarmaBadge userBasicInfo={author} />
+                </View>
+              </TouchableOpacity>
               {vent.is_birthday_post && (
                 <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
                   <FontAwesomeIcon
@@ -210,7 +215,7 @@ function VentComponent({
                 </View>
               )}
               {user && (
-                <Options
+                <ContentOptions
                   canUserInteractFunction={
                     signUpProgressFunction ? signUpProgressFunction : false
                   }
@@ -218,7 +223,7 @@ function VentComponent({
                     deleteVent(navigate, ventID);
                   }}
                   editFunction={() => {
-                    navigate("SingleVent-to-strangers?" + vent.id);
+                    navigation.jumpTo("NewVent", { ventID: vent.id });
                   }}
                   objectID={vent.id}
                   objectUserID={vent.userID}

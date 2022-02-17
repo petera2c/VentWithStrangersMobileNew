@@ -269,7 +269,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: colors.grey7,
+    borderColor: colors.blue2,
     padding: 8,
   },
   input: {

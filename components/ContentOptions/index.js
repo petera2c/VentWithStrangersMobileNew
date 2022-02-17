@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Modal,
+  SafeAreaView,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -31,9 +34,7 @@ function OptionsComponent({
   reportFunction,
   userID,
 }) {
-  const [blockModal, setBlockModal] = useState();
-  const [reportModal, setReportModal] = useState();
-  const [showOptionsModal, setOptionsModal] = useState();
+  const [showOptionsModal, setOptionsModal] = useState(false);
 
   return (
     <View>
@@ -44,88 +45,181 @@ function OptionsComponent({
         <FontAwesomeIcon icon={faEllipsisV} style={{ ...styles.colorGrey9 }} />
       </TouchableOpacity>
 
-      {reportModal && (
-        <ReportModal
-          close={() => setReportModal(false)}
-          submit={(option) => {
-            if (canUserInteractFunction) return canUserInteractFunction();
-
-            reportFunction(option);
-          }}
-        />
-      )}
-      {blockModal && (
-        <ConfirmAlertModal
-          close={() => setBlockModal(false)}
-          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their content. Are you sure you would like to block this user?"
-          submit={() => {
-            if (canUserInteractFunction) return canUserInteractFunction();
-
-            blockUser(userID, objectUserID);
-          }}
-          title="Block User"
-        />
-      )}
+      <OptionsModal
+        blockUser={blockUser}
+        canUserInteractFunction={canUserInteractFunction}
+        objectUserID={objectUserID}
+        reportFunction={reportFunction}
+        setOptionsModal={setOptionsModal}
+        userID={userID}
+        visible={showOptionsModal}
+      />
     </View>
   );
 }
 
-function SomeModal() {
+function OptionsModal({
+  blockUser,
+  canUserInteractFunction,
+  objectUserID,
+  reportFunction,
+  setOptionsModal,
+  userID,
+  visible,
+}) {
   return (
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
-        {objectUserID === userID && (
-          <View
-            className="button-8 clickable align-center justify-between gap8"
-            onClick={(e) => {
-              e.preventDefault();
-              editFunction(objectID);
-            }}
-          >
-            <Text className="ic">Edit</Text>
-            <FontAwesomeIcon icon={faEdit} />
-          </View>
-        )}
-        {objectUserID === userID && (
-          <View
-            className="button-8 clickable align-center justify-between gap8"
-            onClick={(e) => {
-              e.preventDefault();
-              deleteFunction(objectID);
-            }}
-          >
-            <Text className="ic">Delete</Text>
-            <FontAwesomeIcon icon={faTrash} />
-          </View>
-        )}
-        {objectUserID !== userID && (
-          <View
-            className="button-8 clickable align-center justify-between gap8"
-            onClick={(e) => {
-              e.preventDefault();
-              if (canUserInteractFunction) return canUserInteractFunction();
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setOptionsModal(false);
+            Keyboard.dismiss();
+          }}
+          style={{
+            ...styles.fill,
+            display: "flex",
+            justifyContent: "flex-end",
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <TouchableWithoutFeedback>
+            <SafeAreaView
+              style={{
+                ...styles.bgWhite,
+                overflow: "hidden",
+                ...styles.br8,
+              }}
+            >
+              <View style={{ ...styles.bgBlue1, ...styles.pa16 }}>
+                <Text style={{ ...styles.title }}>Options</Text>
+              </View>
+              <View style={{ ...styles.pa16 }}>
+                {objectUserID === userID && (
+                  <TouchableOpacity
+                    className="button-8 clickable align-center justify-between gap8"
+                    onPress={() => {
+                      editFunction(objectID);
+                    }}
+                    style={{
+                      ...styles.buttonSecondary,
+                      ...styles.fullCenter,
+                      ...styles.mb8,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.fs20,
+                        ...styles.colorMain,
+                        ...styles.tac,
+                      }}
+                    >
+                      Edit
+                    </Text>
+                    <FontAwesomeIcon
+                      icon={faEdit}
+                      style={{
+                        ...styles.colorMain,
+                        ...styles.mr8,
+                      }}
+                    />
+                  </TouchableOpacity>
+                )}
+                {objectUserID === userID && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      deleteFunction(objectID);
+                    }}
+                    style={{
+                      ...styles.buttonSecondary,
+                      ...styles.fullCenter,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.fs20,
+                        ...styles.colorMain,
+                        ...styles.tac,
+                      }}
+                    >
+                      Delete
+                    </Text>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{
+                        ...styles.colorMain,
+                        ...styles.mr8,
+                      }}
+                    />
+                  </TouchableOpacity>
+                )}
+                {objectUserID !== userID && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (canUserInteractFunction)
+                        return canUserInteractFunction();
 
-              setReportModal(!reportModal);
-            }}
-          >
-            <Text className="ic">Report</Text>
-            <FontAwesomeIcon icon={faExclamationTriangle} />
-          </View>
-        )}
-        {objectUserID !== userID && (
-          <View
-            className="button-8 clickable align-center justify-between gap8"
-            onClick={(e) => {
-              e.preventDefault();
-              if (canUserInteractFunction) return canUserInteractFunction();
+                      reportFunction(option);
+                    }}
+                    style={{
+                      ...styles.buttonSecondary,
+                      ...styles.fullCenter,
+                      ...styles.mb8,
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faExclamationTriangle}
+                      style={{
+                        ...styles.colorMain,
+                        ...styles.mr8,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        ...styles.fs20,
+                        ...styles.colorMain,
+                        ...styles.tac,
+                      }}
+                    >
+                      Report
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {objectUserID !== userID && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (canUserInteractFunction)
+                        return canUserInteractFunction();
 
-              setBlockModal(!blockModal);
-            }}
-          >
-            <Text className="ic">Block User</Text>
-            <FontAwesomeIcon icon={faUserLock} />
-          </View>
-        )}
+                      blockUser(userID, objectUserID);
+                    }}
+                    style={{
+                      ...styles.buttonSecondary,
+                      ...styles.fullCenter,
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faUserLock}
+                      style={{
+                        ...styles.colorMain,
+                        ...styles.mr8,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        ...styles.fs20,
+                        ...styles.colorMain,
+                        ...styles.tac,
+                      }}
+                    >
+                      Block User
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     </Modal>
   );

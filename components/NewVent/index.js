@@ -22,7 +22,6 @@ import {
   capitolizeFirstChar,
   countdown,
   isUserKarmaSufficient,
-  useIsMounted,
   viewTagFunction,
 } from "../../util";
 import {
@@ -45,11 +44,9 @@ const tagsIndex = searchClient.initIndex("vent_tags");
 const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
 
-function NewVentScreen({ navigation, route }) {
-  const isMounted = useIsMounted();
+function NewVentScreen({ miniVersion, navigation, route }) {
   const { user, userBasicInfo } = useContext(UserContext);
-  //const { miniVersion } = route.params;
-  const miniVersion = true;
+
   const ventID = "";
   const isBirthdayPost = false;
 
@@ -72,28 +69,25 @@ function NewVentScreen({ navigation, route }) {
   useEffect(() => {
     let interval;
 
-    if (isMounted()) {
-      setPlaceholderText(selectEncouragingMessage());
-    }
+    setPlaceholderText(selectEncouragingMessage());
 
     tagsIndex
       .search("", {
         hitsPerPage: 10,
       })
       .then(({ hits }) => {
-        if (isMounted())
-          setVentTags(
-            hits.sort((a, b) => {
-              if (a.display < b.display) return -1;
-              if (a.display > b.display) return 1;
-              return 0;
-            })
-          );
+        setVentTags(
+          hits.sort((a, b) => {
+            if (a.display < b.display) return -1;
+            if (a.display > b.display) return 1;
+            return 0;
+          })
+        );
       });
 
-    if (ventID) getVent(isMounted, setDescription, setTags, setTitle, ventID);
+    if (ventID) getVent(setDescription, setTags, setTitle, ventID);
 
-    getQuote(isMounted, (quote) => {
+    getQuote((quote) => {
       quote.value = quote.value.replace(/\s+/g, " ").trim();
       setQuote(quote);
     });
@@ -108,17 +102,12 @@ function NewVentScreen({ navigation, route }) {
           ventID,
           res
         );
-        if (isMounted()) setPostingDisableFunction(temp);
+        setPostingDisableFunction(temp);
 
         if (res) {
           interval = setInterval(
             () =>
-              countdown(
-                isMounted,
-                res,
-                setUserVentTimeOut,
-                setUserVentTimeOutFormatted
-              ),
+              countdown(res, setUserVentTimeOut, setUserVentTimeOutFormatted),
             1000
           );
         }
@@ -132,18 +121,18 @@ function NewVentScreen({ navigation, route }) {
         ventID,
         false
       );
-      if (isMounted()) setPostingDisableFunction(temp);
+      setPostingDisableFunction(temp);
     }
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isMounted, user, userBasicInfo, ventID]);
+  }, [user, userBasicInfo, ventID]);
 
   return (
     <View style={{ ...styles.bgWhite, ...styles.br8 }}>
       <View style={{ ...styles.br4, ...styles.pa32 }}>
         {!miniVersion && quote && (
-          <View style={{ ...styles.alignCenter }}>
+          <View style={{ ...styles.alignCenter, ...styles.mb16 }}>
             <Text
               style={{ ...styles.fs22, ...styles.boldItalic, ...styles.tac }}
             >
@@ -154,7 +143,7 @@ function NewVentScreen({ navigation, route }) {
                 navigation.jumpTo("Profile", { userID: quote.userID })
               }
             >
-              <Text className="button-8 tac lh-1">
+              <Text style={{ ...styles.fs18, ...styles.colorMain }}>
                 - {capitolizeFirstChar(quote.displayName)}
               </Text>
             </TouchableOpacity>
@@ -419,7 +408,7 @@ function NewVentScreen({ navigation, route }) {
         )}
       </View>
       {!miniVersion && (
-        <View>
+        <View style={{ ...styles.px32, ...styles.pb32 }}>
           <Text>
             If you or someone you know is in danger, call your local emergency
             services or police.
