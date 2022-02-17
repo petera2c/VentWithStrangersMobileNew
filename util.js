@@ -22,7 +22,7 @@ import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/firebase_init";
 import dayjs from "dayjs";
 
-import { setUserOnlineStatus } from "./pages/util";
+import { setUserOnlineStatus } from "./screens/util";
 
 export const blockUser = async (userID, userIDToBlock) => {
   await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);

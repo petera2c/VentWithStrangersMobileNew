@@ -200,6 +200,7 @@ function BottomHeader({ navigation, route }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
+                readNotifications(notifications, setNotificationCounter);
                 navigation.navigate("Notifications");
               }}
               style={{
