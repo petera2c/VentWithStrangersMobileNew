@@ -67,7 +67,11 @@ function VentComponent({
   ventID,
   ventInit,
 }) {
-  const textInput = useRef(null);
+  const scrollRef = useRef();
+
+  const scrollToBottom = () => {
+    if (scrollRef.current) scrollRef.current.scrollToEnd({ animated: true });
+  };
 
   const { user, userBasicInfo } = useContext(UserContext);
 
@@ -368,9 +372,6 @@ function VentComponent({
             >
               <FontAwesomeIcon
                 icon={faComments}
-                onClick={() => {
-                  if (disablePostOnClick) textInput.current.focus();
-                }}
                 size={32}
                 style={{ ...styles.colorMain, ...styles.mr4 }}
               />
@@ -534,6 +535,7 @@ function VentComponent({
     <View style={{ ...styles.flexFill }}>
       {isOnSingleVentPage ? (
         <ScrollView
+          ref={scrollRef}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -607,6 +609,7 @@ function VentComponent({
                 if (!commentString) return;
                 commentVent(commentString, setVent, user, vent, vent.id);
 
+                scrollToBottom();
                 setCommentString("");
               }}
               style={{ ...styles.buttonPrimary, ...styles.ml8 }}

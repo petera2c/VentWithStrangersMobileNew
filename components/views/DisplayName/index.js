@@ -32,18 +32,20 @@ function DisplayName({
     return (
       <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
         <TouchableOpacity
-          className="flex clickable align-center ov-hidden gap4"
           onPress={() => {
             navigation.jumpTo("Profile", { userID });
           }}
+          style={{ ...styles.flexRow, ...styles.alignCenter }}
         >
           <MakeAvatar
             displayName={userBasicInfo.displayName}
             userBasicInfo={userBasicInfo}
           />
           {userBasicInfo && (
-            <View style={{ ...styles.fullCenter }}>
-              <Text style={{ ...styles.fs20, ...styles.colorGrey11 }}>
+            <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+              <Text
+                style={{ ...styles.fs20, ...styles.colorGrey11, ...styles.mr8 }}
+              >
                 {capitolizedDisplayName}
               </Text>
               {isUserOnline === "online" && (
@@ -72,7 +74,12 @@ function DisplayName({
             />
           )}
           {userBasicInfo && (
-            <View style={{ ...styles.flexRow, ...styles.fullCenter }}>
+            <View
+              style={{
+                ...styles.flexRow,
+                ...styles.fullCenter,
+              }}
+            >
               <Text
                 style={{
                   ...(big

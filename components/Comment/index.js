@@ -84,105 +84,107 @@ function CommentComponent({
   if (isContentBlocked) return <View />;
 
   return (
-    <View>
+    <View style={{ ...styles.pa16 }}>
+      <View style={{ ...styles.mb16 }}>
+        <DisplayName
+          displayName={userBasicInfo.displayName}
+          isUserOnline={isUserOnline}
+          userBasicInfo={userBasicInfo}
+          userID={comment.userID}
+        />
+
+        <View className="relative column full-center">
+          {false && user && (
+            <Options
+              canUserInteractFunction={
+                userSignUpProgress(user, true)
+                  ? () => {
+                      const userInteractionIssues = userSignUpProgress(user);
+
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          return setStarterModal(true);
+                      }
+                    }
+                  : false
+              }
+              deleteFunction={(commentID) => {
+                deleteComment(comment.id, setComments);
+              }}
+              editFunction={() => {
+                setCommentString(comment.text);
+                setEditingComment(true);
+              }}
+              objectID={comment.id}
+              objectUserID={comment.userID}
+              reportFunction={(option) => {
+                reportComment(option, comment.id, user.uid, comment.ventID);
+              }}
+              userID={user.uid}
+            />
+          )}
+        </View>
+      </View>
+      {!editingComment && (
+        <Text style={{ ...styles.pTag, ...styles.mb16 }}>
+          {swapTags(comment.text)}
+        </Text>
+      )}
+
       <View
-        className="x-fill column bg-white mt1"
         style={{
-          borderTopLeftRadius: commentIndex === 0 ? "8px" : "",
-          borderTopRightRadius: commentIndex === 0 ? "8px" : "",
-          borderBottomLeftRadius: arrayLength - 1 === commentIndex ? "8px" : "",
-          borderBottomRightRadius:
-            arrayLength - 1 === commentIndex ? "8px" : "",
+          ...styles.flexRow,
+          ...styles.alignCenter,
+          ...styles.justifyBetween,
         }}
       >
-        <View className="justify-between py16">
-          <DisplayName
-            displayName={userBasicInfo.displayName}
-            isUserOnline={isUserOnline}
-            userBasicInfo={userBasicInfo}
-            userID={comment.userID}
-          />
+        <TouchableOpacity
+          onPress={async () => {
+            const userInteractionIssues = userSignUpProgress(user);
 
-          <View className="relative column full-center">
-            {false && user && (
-              <Options
-                canUserInteractFunction={
-                  userSignUpProgress(user, true)
-                    ? () => {
-                        const userInteractionIssues = userSignUpProgress(user);
+            if (userInteractionIssues) {
+              if (userInteractionIssues === "NSI") setStarterModal(true);
+              return;
+            }
 
-                        if (userInteractionIssues) {
-                          if (userInteractionIssues === "NSI")
-                            return setStarterModal(true);
-                        }
-                      }
-                    : false
-                }
-                deleteFunction={(commentID) => {
-                  deleteComment(comment.id, setComments);
-                }}
-                editFunction={() => {
-                  setCommentString(comment.text);
-                  setEditingComment(true);
-                }}
-                objectID={comment.id}
-                objectUserID={comment.userID}
-                reportFunction={(option) => {
-                  reportComment(option, comment.id, user.uid, comment.ventID);
-                }}
-                userID={user.uid}
-              />
-            )}
-          </View>
-        </View>
-        {!editingComment && <Text>{swapTags(comment.text)}</Text>}
+            await likeOrUnlikeComment(comment, hasLiked, user);
+            await getCommentHasLiked(commentID, setHasLiked, user.uid);
 
-        <View className="align-center justify-between wrap gap8 py16">
-          <TouchableOpacity
-            className="clickable align-center"
-            onClick={async () => {
-              const userInteractionIssues = userSignUpProgress(user);
-
-              if (userInteractionIssues) {
-                if (userInteractionIssues === "NSI") setStarterModal(true);
-                return;
-              }
-
-              await likeOrUnlikeComment(comment, hasLiked, user);
-              await getCommentHasLiked(
-                commentID,
-                isMounted,
-                setHasLiked,
-                user.uid
-              );
-
-              if (hasLiked) comment.like_counter--;
-              else comment.like_counter++;
-              setComment({ ...comment });
+            if (hasLiked) comment.like_counter--;
+            else comment.like_counter++;
+            setComment({ ...comment });
+          }}
+          style={{ ...styles.flexRow, ...styles.alignCenter }}
+        >
+          <FontAwesomeIcon
+            className={`heart ${hasLiked ? "red" : "grey-5"} mr4`}
+            icon={hasLiked ? faHeart2 : faHeart}
+            size={24}
+            style={{
+              ...(hasLiked ? styles.colorRed : styles.colorGrey5),
+              ...styles.mr4,
             }}
-          >
-            <FontAwesomeIcon
-              className={`heart ${hasLiked ? "red" : "grey-5"} mr4`}
-              icon={hasLiked ? faHeart2 : faHeart}
-            />
-            <Text className="grey-5">
-              {comment.like_counter ? comment.like_counter : 0}
-            </Text>
-          </TouchableOpacity>
-          <View className="align-center">
-            <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
-            <Text className="grey-5 fs-16">
-              {dayjs(comment.server_timestamp).fromNow()}
-            </Text>
-          </View>
+          />
+          <Text style={{ ...styles.colorGrey5, ...styles.fs24 }}>
+            {comment.like_counter ? comment.like_counter : 0}
+          </Text>
+        </TouchableOpacity>
+        <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+          <FontAwesomeIcon
+            icon={faClock}
+            style={{ ...styles.colorGrey5, ...styles.mr8 }}
+          />
+          <Text style={{ ...styles.fs16, ...styles.colorGrey5 }}>
+            {dayjs(comment.server_timestamp).fromNow()}
+          </Text>
         </View>
-
-        <StarterModal
-          activeModal={starterModal}
-          setActiveModal={setStarterModal}
-          visible={Boolean(starterModal)}
-        />
       </View>
+
+      <StarterModal
+        activeModal={starterModal}
+        setActiveModal={setStarterModal}
+        visible={Boolean(starterModal)}
+      />
     </View>
   );
 }
