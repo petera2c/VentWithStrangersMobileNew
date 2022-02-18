@@ -294,9 +294,9 @@ export const likeOrUnlikeVent = async (
   });
 };
 
-export const reportVent = async (option, userID, ventID) => {
+export const reportVent = async (userID, ventID) => {
+  console.log(ventID + "|||" + userID);
   await setDoc(doc(db, "vent_reports", ventID + "|||" + userID), {
-    option,
     userID,
     ventID,
   });

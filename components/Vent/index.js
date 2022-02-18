@@ -252,10 +252,10 @@ function VentComponent({
               }}
               objectID={vent.id}
               objectUserID={vent.userID}
-              reportFunction={(option) => {
+              reportFunction={() => {
                 if (signUpProgressFunction) return signUpProgressFunction();
 
-                reportVent(option, user.uid, vent.id);
+                reportVent(user.uid, vent.id);
               }}
               userID={user.uid}
             />

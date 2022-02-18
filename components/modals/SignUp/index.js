@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -12,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -21,7 +21,8 @@ import { colors, styles } from "../../../styles";
 import { UserContext } from "../../../context";
 import { signUp } from "./util";
 
-function SignUpModal({ navigation, setActiveModal, visible }) {
+function SignUpModal({ setActiveModal, visible }) {
+  const navigation = useNavigation();
   const { setUserBasicInfo } = useContext(UserContext);
 
   const [canSeePassword, setCanSeePassword] = useState(false);

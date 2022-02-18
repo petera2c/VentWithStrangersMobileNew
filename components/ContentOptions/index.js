@@ -18,9 +18,6 @@ import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-//import ConfirmAlertModal from "../modals/ConfirmAlert";
-//import ReportModal from "../modals/Report";
-
 import { styles } from "../../styles";
 
 import { blockUser } from "../../util";
@@ -160,7 +157,8 @@ function OptionsModal({
                       if (canUserInteractFunction)
                         return canUserInteractFunction();
 
-                      reportFunction(option);
+                      reportFunction();
+                      setOptionsModal(false);
                     }}
                     style={{
                       ...styles.buttonSecondary,

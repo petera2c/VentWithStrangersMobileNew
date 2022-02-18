@@ -340,6 +340,7 @@ export const userSignUpProgressFunction = (setStarterModal, user) => {
   } else if (!user.emailVerified) {
     return () => () => {
       user.reload();
+
       return sendEmailVerification(user)
         .then(() => {
           return showMessage({

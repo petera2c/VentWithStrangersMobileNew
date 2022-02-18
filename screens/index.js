@@ -33,6 +33,7 @@ function Routes() {
   const [loading, setLoading] = useState(true);
 
   onAuthStateChanged(getAuth(), (user) => {
+    console.log(user.emailVerified);
     setLoading(false);
     if (user) setUser(user);
   });

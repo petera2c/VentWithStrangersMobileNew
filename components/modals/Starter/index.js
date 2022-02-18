@@ -5,12 +5,7 @@ import LoginModal from "../Login";
 import SignUpModal from "../SignUp";
 import ForgotPasswordModal from "../ForgotPassword";
 
-function StarterModal({
-  activeModal = "",
-  navigation,
-  setActiveModal,
-  visible,
-}) {
+function StarterModal({ activeModal = "", setActiveModal, visible }) {
   const [localActiveModal, setLocalActiveModal] = useState(activeModal);
 
   useEffect(() => {
@@ -20,7 +15,6 @@ function StarterModal({
   if (localActiveModal === "signUp")
     return (
       <SignUpModal
-        navigation={navigation}
         setActiveModal={setActiveModal ? setActiveModal : setLocalActiveModal}
         visible={visible}
       />
