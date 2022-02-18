@@ -128,9 +128,8 @@ export const likeOrUnlikeQuote = (hasLiked, quote, user) => {
   });
 };
 
-export const reportQuote = (option, quoteID, userID) => {
+export const reportQuote = (quoteID, userID) => {
   setDoc(doc(db, "quote_reports", quoteID + "|||" + userID), {
-    option,
     quoteID,
     userID,
   });

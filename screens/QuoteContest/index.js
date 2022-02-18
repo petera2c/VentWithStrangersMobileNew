@@ -303,8 +303,8 @@ function Quote({
                 }}
                 objectID={quote.id}
                 objectUserID={quote.userID}
-                reportFunction={(option) => {
-                  reportQuote(option, quote.id, user.uid);
+                reportFunction={() => {
+                  reportQuote(quote.id, user.uid);
                 }}
                 userID={user.uid}
               />
