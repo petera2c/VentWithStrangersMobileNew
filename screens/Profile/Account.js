@@ -186,26 +186,30 @@ function AccountScreen({ navigation }) {
                   style={{ ...styles.colorPrimary }}
                 />
               </View>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={birthDate ? new Date(birthDate) : new Date()}
-                mode={"date"}
-                is24Hour={true}
-                display="default"
-                onChange={(event, selectedDate) => {
-                  if (!selectedDate) return setBirthDate(null);
-                  const date = new dayjs(selectedDate);
-
-                  const diffInYears = new dayjs().diff(date) / 31536000000;
-                  if (diffInYears > 11) setBirthDate(date);
-                  else {
-                    showMessage({
-                      message: "You are too young to use this application :'(",
-                      type: "error",
-                    });
-                  }
+              <View
+                style={{
+                  ...styles.mb16,
                 }}
-              />
+              >
+                <DateTimePicker
+                  value={birthDate ? new Date(birthDate) : new Date()}
+                  mode={"date"}
+                  onChange={(event, selectedDate) => {
+                    if (!selectedDate) return setBirthDate(null);
+                    const date = new dayjs(selectedDate);
+
+                    const diffInYears = new dayjs().diff(date) / 31536000000;
+                    if (diffInYears > 11) setBirthDate(date);
+                    else {
+                      showMessage({
+                        message:
+                          "You are too young to use this application :'(",
+                        type: "error",
+                      });
+                    }
+                  }}
+                />
+              </View>
 
               <Text style={{ ...styles.fs20, ...styles.tac }}>
                 This information will be used to connect you with other users

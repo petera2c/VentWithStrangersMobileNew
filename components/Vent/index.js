@@ -1,9 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { showMessage } from "react-native-flash-message";
+import { MentionInput } from "react-native-controlled-mentions";
 
 import { faBirthdayCake } from "@fortawesome/pro-regular-svg-icons/faBirthdayCake";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
@@ -17,7 +25,7 @@ import KarmaBadge from "../views/KarmaBadge";
 import MakeAvatar from "../views/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
-import { styles } from "../../styles";
+import { colors, styles } from "../../styles";
 
 import { UserContext } from "../../context";
 import {
@@ -70,6 +78,7 @@ function VentComponent({
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [isUserOnline, setIsUserOnline] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [vent, setVent] = useState(ventInit);
 
@@ -135,14 +144,18 @@ function VentComponent({
         ventID
       );
 
+    setTimeout(() => setRefreshing(false), 400);
+
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, [
     displayCommentField,
+    refreshing,
     previewMode,
     searchPreviewMode,
+    setRefreshing,
     setTitle,
     user,
     userBasicInfo,
@@ -159,398 +172,386 @@ function VentComponent({
 
   if (isContentBlocked) return <View />;
 
-  return (
-    <View style={{ ...styles.xFill }}>
-      {vent && (
-        <View style={{ ...styles.box, ...styles.mb16, ...styles.pt16 }}>
-          <View style={{ ...styles.borderBottom, ...styles.pa16 }}>
+  const something = (
+    <View style={{ ...styles.box, ...styles.mb16, ...styles.pt16 }}>
+      <View style={{ ...styles.borderBottom, ...styles.pa16 }}>
+        <View
+          style={{
+            ...styles.flexRow,
+            ...styles.alignCenter,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              navigation.jumpTo("Profile", { userID: author.id });
+            }}
+            style={{
+              ...styles.flexFill,
+              ...styles.flexRow,
+              ...styles.alignCenter,
+            }}
+          >
+            <MakeAvatar
+              displayName={author.displayName}
+              userBasicInfo={author}
+            />
             <View
               style={{
                 ...styles.flexRow,
+                ...styles.flexFill,
                 ...styles.alignCenter,
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.jumpTo("Profile", { userID: author.id });
-                }}
-                style={{
-                  ...styles.flexFill,
-                  ...styles.flexRow,
-                  ...styles.alignCenter,
-                }}
-              >
-                <MakeAvatar
-                  displayName={author.displayName}
-                  userBasicInfo={author}
-                />
-                <View
-                  style={{
-                    ...styles.flexRow,
-                    ...styles.flexFill,
-                    ...styles.alignCenter,
-                  }}
-                >
-                  <View style={{ ...styles.mr8 }}>
-                    <Text style={{ ...styles.colorGrey11, ...styles.fs20 }}>
-                      {capitolizeFirstChar(author.displayName)}
-                    </Text>
-                  </View>
-                  {isUserOnline === "online" && (
-                    <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
-                  )}
-                  <KarmaBadge userBasicInfo={author} />
-                </View>
-              </TouchableOpacity>
-              {vent.is_birthday_post && (
-                <View
-                  style={{
-                    ...styles.flexFill,
-                    ...styles.flexRow,
-                    ...styles.alignCenter,
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faBirthdayCake}
-                    size={32}
-                    style={{ ...styles.colorMain, ...styles.mr8 }}
-                  />
-                  <FontAwesomeIcon
-                    icon={faBirthdayCake}
-                    size={32}
-                    style={{ ...styles.colorMain }}
-                  />
-                </View>
-              )}
-              {user && (
-                <ContentOptions
-                  canUserInteractFunction={
-                    signUpProgressFunction ? signUpProgressFunction : false
-                  }
-                  deleteFunction={(ventID) => {
-                    deleteVent(navigate, ventID);
-                  }}
-                  editFunction={() => {
-                    navigation.jumpTo("NewVent", { ventID: vent.id });
-                  }}
-                  objectID={vent.id}
-                  objectUserID={vent.userID}
-                  reportFunction={(option) => {
-                    if (signUpProgressFunction) return signUpProgressFunction();
-
-                    reportVent(option, user.uid, vent.id);
-                  }}
-                  userID={user.uid}
-                />
-              )}
-            </View>
-
-            {vent.new_tags && vent.new_tags.length > 0 && (
-              <View style={{ ...styles.flexRow, ...styles.wrap }}>
-                {vent.new_tags.map((tagID, index) => (
-                  <Tag key={index} navigation={navigation} tagID={tagID} />
-                ))}
+              <View style={{ ...styles.mr8 }}>
+                <Text style={{ ...styles.colorGrey11, ...styles.fs20 }}>
+                  {capitolizeFirstChar(author.displayName)}
+                </Text>
               </View>
-            )}
-          </View>
-          <SmartLink
-            disablePostOnClick={disablePostOnClick}
-            onPress={
-              vent && vent.id
-                ? () => navigation.jumpTo("SingleVent", { ventID })
-                : ""
-            }
-            style={{ ...styles.borderBottom, ...styles.pa16 }}
-          >
-            <Text style={{ ...styles.fs20, ...styles.mb8 }}>{vent.title}</Text>
-
-            <Text
-              ellipsizeMode="tail"
-              numberOfLines={displayCommentField ? 150 : 3}
-              style={{ ...styles.colorGrey1, ...styles.fs20, ...styles.mb8 }}
-            >
-              {vent.description}
-            </Text>
+              {isUserOnline === "online" && (
+                <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
+              )}
+              <KarmaBadge userBasicInfo={author} />
+            </View>
+          </TouchableOpacity>
+          {vent.is_birthday_post && (
             <View
               style={{
+                ...styles.flexFill,
                 ...styles.flexRow,
                 ...styles.alignCenter,
-                ...styles.justifyEnd,
               }}
             >
               <FontAwesomeIcon
-                icon={faClock}
-                style={{
-                  ...styles.colorGrey5,
-                  ...styles.mr8,
-                }}
+                icon={faBirthdayCake}
+                size={32}
+                style={{ ...styles.colorMain, ...styles.mr8 }}
               />
-              <Text
-                style={{
-                  ...styles.colorGrey5,
-                  ...styles.fs16,
-                }}
-              >
-                {dayjs(vent.server_timestamp).fromNow()}
-              </Text>
+              <FontAwesomeIcon
+                icon={faBirthdayCake}
+                size={32}
+                style={{ ...styles.colorMain }}
+              />
             </View>
-          </SmartLink>
+          )}
+          {user && (
+            <ContentOptions
+              canUserInteractFunction={
+                signUpProgressFunction ? signUpProgressFunction : false
+              }
+              deleteFunction={(ventID) => {
+                deleteVent(navigate, ventID);
+              }}
+              editFunction={() => {
+                navigation.jumpTo("NewVent", { ventID: vent.id });
+              }}
+              objectID={vent.id}
+              objectUserID={vent.userID}
+              reportFunction={(option) => {
+                if (signUpProgressFunction) return signUpProgressFunction();
 
-          {!searchPreviewMode && (
-            <View
+                reportVent(option, user.uid, vent.id);
+              }}
+              userID={user.uid}
+            />
+          )}
+        </View>
+
+        {vent.new_tags && vent.new_tags.length > 0 && (
+          <View style={{ ...styles.flexRow, ...styles.wrap }}>
+            {vent.new_tags.map((tagID, index) => (
+              <Tag key={index} navigation={navigation} tagID={tagID} />
+            ))}
+          </View>
+        )}
+      </View>
+      <SmartLink
+        disablePostOnClick={disablePostOnClick}
+        onPress={
+          vent && vent.id
+            ? () => navigation.jumpTo("SingleVent", { ventID })
+            : ""
+        }
+        style={{ ...styles.borderBottom, ...styles.pa16 }}
+      >
+        <Text style={{ ...styles.fs20, ...styles.mb8 }}>{vent.title}</Text>
+
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={displayCommentField ? 150 : 3}
+          style={{ ...styles.colorGrey1, ...styles.fs20, ...styles.mb8 }}
+        >
+          {vent.description}
+        </Text>
+        <View
+          style={{
+            ...styles.flexRow,
+            ...styles.alignCenter,
+            ...styles.justifyEnd,
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faClock}
+            style={{
+              ...styles.colorGrey5,
+              ...styles.mr8,
+            }}
+          />
+          <Text
+            style={{
+              ...styles.colorGrey5,
+              ...styles.fs16,
+            }}
+          >
+            {dayjs(vent.server_timestamp).fromNow()}
+          </Text>
+        </View>
+      </SmartLink>
+
+      {!searchPreviewMode && (
+        <View
+          style={{
+            ...styles.flexRow,
+            ...styles.justifyBetween,
+            ...styles.wrap,
+            ...styles.pa16,
+            ...(!searchPreviewMode && displayCommentField
+              ? styles.borderBottom
+              : {}),
+          }}
+        >
+          <View
+            style={{
+              ...styles.flexRow,
+              ...styles.alignCenter,
+              ...styles.mr8,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                if (signUpProgressFunction) return signUpProgressFunction();
+
+                likeOrUnlikeVent(hasLiked, setHasLiked, setVent, user, vent);
+              }}
               style={{
                 ...styles.flexRow,
-                ...styles.justifyBetween,
-                ...styles.wrap,
-                ...styles.pa16,
-                ...(!searchPreviewMode && displayCommentField
-                  ? styles.borderBottom
-                  : {}),
+                ...styles.alignCenter,
+                ...styles.mr8,
               }}
             >
-              <View
+              {hasLiked ? (
+                <Image
+                  source={require("../../assets/support-active.png")}
+                  style={{ width: 34, height: 34 }}
+                />
+              ) : (
+                <Image
+                  source={require("../../assets/support.png")}
+                  style={{ width: 34, height: 34 }}
+                />
+              )}
+
+              <Text style={{ ...styles.colorGrey5, ...styles.fs24 }}>
+                {vent.like_counter ? vent.like_counter : 0}
+              </Text>
+            </TouchableOpacity>
+
+            <SmartLink
+              disablePostOnClick={disablePostOnClick}
+              onPress={
+                vent && vent.id
+                  ? () => navigation.jumpTo("SingleVent", { ventID })
+                  : ""
+              }
+              style={{ ...styles.flexRow, ...styles.alignCenter }}
+            >
+              <FontAwesomeIcon
+                icon={faComments}
+                onClick={() => {
+                  if (disablePostOnClick) textInput.current.focus();
+                }}
+                size={32}
+                style={{ ...styles.colorMain, ...styles.mr4 }}
+              />
+              <Text style={{ ...styles.colorGrey5, ...styles.fs24 }}>
+                {vent.comment_counter ? vent.comment_counter : 0}
+              </Text>
+            </SmartLink>
+          </View>
+
+          {(!user || (user && user.uid !== vent.userID && author.id)) && (
+            <TouchableOpacity
+              onPress={() => {
+                if (signUpProgressFunction) return signUpProgressFunction();
+
+                startConversation(navigate, user, vent.userID);
+              }}
+              style={{
+                ...styles.buttonPrimary,
+                ...styles.flexFill,
+                ...styles.px16,
+                ...styles.py8,
+              }}
+            >
+              <Text
                 style={{
-                  ...styles.flexRow,
-                  ...styles.alignCenter,
-                  ...styles.mr8,
+                  ...styles.colorWhite,
+                  ...styles.fs20,
+                  ...styles.tac,
                 }}
               >
-                <TouchableOpacity
-                  onPress={() => {
-                    if (signUpProgressFunction) return signUpProgressFunction();
-
-                    likeOrUnlikeVent(
-                      hasLiked,
-                      setHasLiked,
-                      setVent,
-                      user,
-                      vent
-                    );
-                  }}
-                  style={{
-                    ...styles.flexRow,
-                    ...styles.alignCenter,
-                    ...styles.mr8,
-                  }}
-                >
-                  {hasLiked ? (
-                    <Image
-                      source={require("../../assets/support-active.png")}
-                      style={{ width: 34, height: 34 }}
-                    />
-                  ) : (
-                    <Image
-                      source={require("../../assets/support.png")}
-                      style={{ width: 34, height: 34 }}
-                    />
-                  )}
-
-                  <Text style={{ ...styles.colorGrey5, ...styles.fs24 }}>
-                    {vent.like_counter ? vent.like_counter : 0}
-                  </Text>
-                </TouchableOpacity>
-
-                <SmartLink
-                  disablePostOnClick={disablePostOnClick}
-                  onPress={
-                    vent && vent.id
-                      ? () => navigation.jumpTo("SingleVent", { ventID })
-                      : ""
-                  }
-                  style={{ ...styles.flexRow, ...styles.alignCenter }}
-                >
-                  <FontAwesomeIcon
-                    icon={faComments}
-                    onClick={() => {
-                      if (disablePostOnClick) textInput.current.focus();
-                    }}
-                    size={32}
-                    style={{ ...styles.colorMain, ...styles.mr4 }}
-                  />
-                  <Text style={{ ...styles.colorGrey5, ...styles.fs24 }}>
-                    {vent.comment_counter ? vent.comment_counter : 0}
-                  </Text>
-                </SmartLink>
-              </View>
-
-              {(!user || (user && user.uid !== vent.userID && author.id)) && (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (signUpProgressFunction) return signUpProgressFunction();
-
-                    startConversation(navigate, user, vent.userID);
-                  }}
-                  style={{
-                    ...styles.buttonPrimary,
-                    ...styles.flexFill,
-                    ...styles.px16,
-                    ...styles.py8,
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...styles.colorWhite,
-                      ...styles.fs20,
-                      ...styles.tac,
-                    }}
-                  >
-                    Message {capitolizeFirstChar(author.displayName)}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
+                Message {capitolizeFirstChar(author.displayName)}
+              </Text>
+            </TouchableOpacity>
           )}
+        </View>
+      )}
 
-          {!searchPreviewMode && displayCommentField && comments && (
-            <View>
-              {vent.comment_counter > 0 && (
-                <View
-                  style={{
-                    ...styles.borderBottom,
-                    ...styles.px32,
-                    ...styles.py16,
-                  }}
-                >
-                  <TouchableOpacity className="blue">
-                    <Text>Sort By: {activeSort}</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              {comments && comments.length > 0 && (
-                <View className="column px32 pb16">
-                  {comments.map((comment, index) => {
-                    return (
-                      <Comment
-                        arrayLength={comments.length}
-                        commentID={comment.id}
-                        commentIndex={index}
-                        comment2={comment}
-                        setComments={setComments}
-                        ventUserID={vent.userID}
-                        key={comment.id}
-                      />
-                    );
-                  })}
-                  {canLoadMoreComments && (
-                    <TouchableOpacity
-                      className="blue underline"
-                      onClick={() => {
-                        getVentComments(
-                          activeSort,
-                          comments,
-                          setCanLoadMoreComments,
-                          setComments,
-                          true,
-                          vent.id
-                        );
-                      }}
-                      key={comments.length}
-                    >
-                      <Text>Load More Comments</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )}
-              {vent.comment_counter === 0 &&
-                (!comments || (comments && comments.length === 0)) && (
-                  <Text className="tac px32 py16">
-                    There are no comments yet. Please help this person :)
-                  </Text>
-                )}
-            </View>
-          )}
-          {displayCommentField && !comments && (
-            <View className="x-fill full-center">
-              <Text>Loading</Text>
-            </View>
-          )}
-
-          {false && !searchPreviewMode && displayCommentField && (
+      {!searchPreviewMode && displayCommentField && comments && (
+        <View>
+          {vent.comment_counter > 0 && (
             <View
-              className="sticky column x-fill bg-white border-top shadow-2 br8 pa16"
-              style={{ bottom: 0 }}
+              style={{
+                ...styles.borderBottom,
+                ...styles.px32,
+                ...styles.py16,
+              }}
             >
-              {isUserAccountNewLocal && (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.jumpTo("Rules");
-                  }}
-                >
-                  <Text>Read Our VWS Rules</Text>
-                </TouchableOpacity>
-              )}
-              <View className="flex-fill align-center gap8">
-                <View className="relative column flex-fill">
-                  <MentionsInput
-                    className="mentions"
-                    onChange={(e) => {
-                      if (signUpProgressFunction)
-                        return signUpProgressFunction();
-
-                      if (!isUserKarmaSufficient(userBasicInfo))
-                        return showMessage({
-                          message:
-                            "Your karma is too low to interact with this",
-                          type: "error",
-                        });
-
-                      setCommentString(e.target.value);
-                    }}
-                    placeholder="Say something nice :)"
-                    inputRef={textInput}
-                    value={commentString}
-                  >
-                    <Mention
-                      className="mentions__mention"
-                      data={(currentTypingTag, callback) => {
-                        findPossibleUsersToTag(
-                          currentTypingTag,
-                          vent.id,
-                          callback
-                        );
-                      }}
-                      markup="@[__display__](__id__)"
-                      renderSuggestion={(
-                        entry,
-                        search,
-                        highlightedDisplay,
-                        index,
-                        focused
-                      ) => {
-                        return (
-                          <View className="flex-fill align-center pa8 gap8">
-                            <MakeAvatar
-                              displayName={entry.displayName}
-                              userBasicInfo={entry}
-                            />
-                            <View className="button-7">
-                              <Text className="ellipsis fw-400 mr8">
-                                {capitolizeFirstChar(entry.displayName)}
-                              </Text>
-                            </View>
-                            <KarmaBadge userBasicInfo={entry} noOnClick />
-                          </View>
-                        );
-                      }}
-                      trigger="@"
-                    />
-                  </MentionsInput>
-                </View>
-                <TouchableOpacity
-                  onClick={async () => {
-                    if (signUpProgressFunction) return signUpProgressFunction();
-
-                    if (!commentString) return;
-                    commentVent(commentString, setVent, user, vent, vent.id);
-
-                    setCommentString("");
-                  }}
-                >
-                  <Text>Send</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity className="blue">
+                <Text>Sort By: {activeSort}</Text>
+              </TouchableOpacity>
             </View>
           )}
+          {comments && comments.length > 0 && (
+            <View className="column px32 pb16">
+              {comments.map((comment, index) => {
+                return (
+                  <Comment
+                    arrayLength={comments.length}
+                    commentID={comment.id}
+                    commentIndex={index}
+                    comment2={comment}
+                    setComments={setComments}
+                    ventUserID={vent.userID}
+                    key={comment.id}
+                  />
+                );
+              })}
+              {canLoadMoreComments && (
+                <TouchableOpacity
+                  className="blue underline"
+                  onClick={() => {
+                    getVentComments(
+                      activeSort,
+                      comments,
+                      setCanLoadMoreComments,
+                      setComments,
+                      true,
+                      vent.id
+                    );
+                  }}
+                  key={comments.length}
+                >
+                  <Text>Load More Comments</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+          {vent.comment_counter === 0 &&
+            (!comments || (comments && comments.length === 0)) && (
+              <Text className="tac px32 py16">
+                There are no comments yet. Please help this person :)
+              </Text>
+            )}
+        </View>
+      )}
+      {displayCommentField && !comments && (
+        <View className="x-fill full-center">
+          <Text>Loading</Text>
+        </View>
+      )}
+    </View>
+  );
+
+  return (
+    <View style={{ ...styles.flexFill }}>
+      {isOnSingleVentPage ? (
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
+          }
+          style={{ ...styles.flexFill }}
+        >
+          <View style={{ ...styles.pa16 }}>{something}</View>
+        </ScrollView>
+      ) : (
+        something
+      )}
+
+      {!searchPreviewMode && displayCommentField && (
+        <View
+          style={{
+            ...styles.bgWhite,
+            ...styles.pa16,
+          }}
+        >
+          {isUserAccountNewLocal && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.jumpTo("Rules");
+              }}
+            >
+              <Text>Read Our VWS Rules</Text>
+            </TouchableOpacity>
+          )}
+          <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+            <View style={{ ...styles.flexFill }}>
+              <MentionInput
+                containerStyle={{
+                  flex: 1,
+                }}
+                onChange={(commentString) => {
+                  if (signUpProgressFunction) return signUpProgressFunction();
+
+                  if (!isUserKarmaSufficient(userBasicInfo))
+                    return showMessage({
+                      message: "Your karma is too low to interact with this",
+                      type: "error",
+                    });
+
+                  setCommentString(commentString);
+                }}
+                partTypes={[
+                  {
+                    trigger: "@",
+                    renderSuggestions: ({ keyword, onSuggestionPress }) =>
+                      renderSuggestions({ keyword, onSuggestionPress, ventID }),
+                    textStyle: { fontWeight: "bold", color: colors.main },
+                  },
+                ]}
+                style={{
+                  ...styles.input,
+                  marginBottom: -2,
+                }}
+                value={commentString}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                if (signUpProgressFunction) return signUpProgressFunction();
+
+                if (!commentString) return;
+                commentVent(commentString, setVent, user, vent, vent.id);
+
+                setCommentString("");
+              }}
+              style={{ ...styles.buttonPrimary, ...styles.ml8 }}
+            >
+              <Text style={{ ...styles.fs20, ...styles.colorWhite }}>Send</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
 
@@ -647,5 +648,61 @@ function Something({}) {
     </View>
   );
 }
+
+const renderSuggestions = ({ keyword, onSuggestionPress, ventID }) => {
+  const [possibleUsersToTag, setPossibleUsersToTag] = useState([]);
+
+  useEffect(() => {
+    if (keyword) findPossibleUsersToTag(keyword, ventID, setPossibleUsersToTag);
+    else setPossibleUsersToTag([]);
+  }, [keyword]);
+
+  if (!possibleUsersToTag || possibleUsersToTag.length === 0)
+    return <View></View>;
+
+  return (
+    <View
+      style={{
+        position: "absolute",
+        bottom: "140%",
+        maxHeight: 300,
+        ...styles.xFill,
+        ...styles.bgWhite,
+        ...styles.shadowAll,
+        ...styles.br4,
+      }}
+    >
+      <ScrollView
+        style={{
+          ...styles.pa8,
+        }}
+      >
+        {possibleUsersToTag.map((possibleUserToTag, index) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                setPossibleUsersToTag([]);
+                onSuggestionPress({
+                  id: possibleUserToTag.id,
+                  name: possibleUserToTag.displayName,
+                });
+              }}
+              style={{ ...styles.flexRow, ...styles.alignCenter }}
+            >
+              <MakeAvatar
+                displayName={possibleUserToTag.displayName}
+                userBasicInfo={possibleUserToTag}
+              />
+              <Text style={{ ...styles.fs20, ...styles.mx8 }}>
+                {capitolizeFirstChar(possibleUserToTag.displayName)}
+              </Text>
+              <KarmaBadge userBasicInfo={possibleUserToTag} noOnClick />
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};
 
 export default VentComponent;
