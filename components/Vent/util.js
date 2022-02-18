@@ -55,10 +55,12 @@ export const commentVent = async (
 
 export const deleteVent = async (navigation, ventID) => {
   await deleteDoc(doc(db, "vents", ventID));
+
   showMessage({
     message: "Vent deleted!",
     type: "success",
   });
+
   navigation.jumpTo("Feed");
 };
 

@@ -41,7 +41,7 @@ import {
 } from "./util";
 
 function QuoteContestScreen({ navigation }) {
-  const { user, userBasicInfo } = useContext(UserContext);
+  const { setUserBasicInfo, user, userBasicInfo } = useContext(UserContext);
 
   const [canLoadMoreQuotes, setCanLoadMoreQuotes] = useState(true);
   const [canUserCreateQuote, setCanUserCreateQuote] = useState(true);
@@ -53,7 +53,15 @@ function QuoteContestScreen({ navigation }) {
   const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
-    if (user) getCanUserCreateQuote(setCanUserCreateQuote, user.uid);
+    if (user) {
+      getCanUserCreateQuote(setCanUserCreateQuote, user.uid);
+    }
+
+    getUserBasicInfo((newBasicUserInfo) => {
+      setUserBasicInfo(newBasicUserInfo);
+    }, user.uid);
+
+    setQuotes([]);
     getQuotes(undefined, setCanLoadMoreQuotes, setQuotes);
     let timeLeftDayjs = new dayjs().utcOffset(0).add(1, "day");
     timeLeftDayjs = timeLeftDayjs.set("hour", 0);
@@ -132,7 +140,7 @@ function QuoteContestScreen({ navigation }) {
         }}
       >
         <TextInput
-          onChange={(text) => {
+          onChangeText={(text) => {
             const userInteractionIssues = userSignUpProgress(user);
 
             if (userInteractionIssues) {
@@ -175,7 +183,7 @@ function QuoteContestScreen({ navigation }) {
           style={{ ...styles.buttonPrimary, ...styles.mb16 }}
         >
           <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
-            Submit My Quote
+            {quoteID ? "Save Quote" : "Submit My Quote"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -219,7 +227,7 @@ function Quote({
         user.uid
       );
     }
-  }, [quote.id, quote.userID, user]);
+  }, [quote, user]);
 
   if (isContentBlocked) return <View />;
 

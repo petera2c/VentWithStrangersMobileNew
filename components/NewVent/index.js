@@ -67,6 +67,9 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
   const [postingDisableFunction, setPostingDisableFunction] = useState();
 
   useEffect(() => {
+    setSaving(false);
+    setUserVentTimeOut(false);
+    setUserVentTimeOutFormatted("");
     let interval;
 
     setPlaceholderText(selectEncouragingMessage());
@@ -149,7 +152,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
             </TouchableOpacity>
           </View>
         )}
-        {!miniVersion && userVentTimeOut > 0 && !ventID && (
+        {!miniVersion && userVentTimeOut > 0 && !ventID ? (
           <View>
             <Text style={{ ...styles.tac }}>
               To avoid spam, people can only post once every few hours. With
@@ -157,7 +160,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
             </Text>
             <Text style={{ ...styles.tac }}>{userVentTimeOutFormatted}</Text>
           </View>
-        )}
+        ) : null}
         <View
           style={{
             ...styles.flexRow,
@@ -165,10 +168,11 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
           }}
         >
           <View style={{ ...styles.xFill }}>
-            {!isMinified && (
+            {!isMinified ? (
               <Text style={{ ...styles.fs22, ...styles.mb8 }}>Description</Text>
-            )}
+            ) : null}
             <TextInput
+              autoCorrect={false}
               multiline={!isMinified}
               onChangeText={(text) => {
                 if (postingDisableFunction) return postingDisableFunction();
@@ -202,6 +206,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
           <View style={{ ...styles.mb16 }}>
             <Text style={{ ...styles.fs22, ...styles.mb8 }}>Title</Text>
             <TextInput
+              autoCorrect={false}
               multiline
               onChangeText={(text) => {
                 if (postingDisableFunction) return postingDisableFunction();
@@ -247,6 +252,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
           <View>
             <Text style={{ ...styles.fs22, ...styles.mb8 }}>Tag this vent</Text>
             <TextInput
+              autoCorrect={false}
               multiline
               onChangeText={(text) => {
                 if (postingDisableFunction) return postingDisableFunction();

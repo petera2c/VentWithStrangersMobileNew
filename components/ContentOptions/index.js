@@ -48,6 +48,7 @@ function OptionsComponent({
         canUserInteractFunction={canUserInteractFunction}
         deleteFunction={deleteFunction}
         editFunction={editFunction}
+        objectID={objectID}
         objectUserID={objectUserID}
         reportFunction={reportFunction}
         setOptionsModal={setOptionsModal}

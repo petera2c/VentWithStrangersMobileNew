@@ -244,7 +244,7 @@ function VentComponent({
                 signUpProgressFunction ? signUpProgressFunction : false
               }
               deleteFunction={(ventID) => {
-                deleteVent(navigate, ventID);
+                deleteVent(navigation, ventID);
               }}
               editFunction={() => {
                 navigation.jumpTo("NewVent", { ventID: vent.id });
@@ -534,22 +534,23 @@ function VentComponent({
 
   return (
     <View style={{ ...styles.flexFill }}>
-      {isOnSingleVentPage ? (
-        <ScrollView
-          ref={scrollRef}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => setRefreshing(true)}
-            />
-          }
-          style={{ ...styles.flexFill }}
-        >
-          <View style={{ ...styles.pa16 }}>{mainVentBody}</View>
-        </ScrollView>
-      ) : (
-        mainVentBody
-      )}
+      {vent &&
+        (isOnSingleVentPage ? (
+          <ScrollView
+            ref={scrollRef}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
+            }
+            style={{ ...styles.flexFill }}
+          >
+            <View style={{ ...styles.pa16 }}>{mainVentBody}</View>
+          </ScrollView>
+        ) : (
+          mainVentBody
+        ))}
 
       {!searchPreviewMode && displayCommentField && (
         <View
