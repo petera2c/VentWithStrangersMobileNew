@@ -58,7 +58,7 @@ function ChatWithStrangersScreen({ navigation }) {
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}
-        visible={starterModal}
+        visible={Boolean(starterModal)}
       />
     </Screen>
   );

@@ -45,9 +45,10 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
               >
                 <FontAwesomeIcon
                   icon={faChevronLeft}
+                  size={24}
                   style={{ ...styles.colorMain }}
                 />
-                <Text style={{ ...styles.fs16, ...styles.colorMain }}>
+                <Text style={{ ...styles.fs18, ...styles.colorMain }}>
                   Go Back
                 </Text>
               </TouchableOpacity>

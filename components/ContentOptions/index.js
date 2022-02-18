@@ -38,11 +38,12 @@ function OptionsComponent({
 
   return (
     <View>
-      <TouchableOpacity
-        onPress={() => setOptionsModal(true)}
-        style={{ ...styles.pa16 }}
-      >
-        <FontAwesomeIcon icon={faEllipsisV} style={{ ...styles.colorGrey9 }} />
+      <TouchableOpacity onPress={() => setOptionsModal(true)}>
+        <FontAwesomeIcon
+          icon={faEllipsisV}
+          size={24}
+          style={{ ...styles.colorGrey9 }}
+        />
       </TouchableOpacity>
 
       <OptionsModal

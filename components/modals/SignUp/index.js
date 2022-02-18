@@ -25,6 +25,10 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
   const { setUserBasicInfo } = useContext(UserContext);
 
   const [canSeePassword, setCanSeePassword] = useState(false);
+  const [confirmPasswordString, setConfirmPasswordString] = useState("");
+  const [displayNameString, setDisplayNameString] = useState("");
+  const [emailString, setEmailString] = useState("");
+  const [passwordString, setPasswordString] = useState("");
 
   return (
     <Modal transparent={true} visible={visible}>
@@ -60,16 +64,20 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                 <TextInput
                   autoCapitalize="none"
                   name="displayName"
+                  onChangeText={(text) => setDisplayNameString(text)}
                   placeholder="Display Name"
                   placeholderTextColor={colors.grey1}
                   style={{ ...styles.input }}
+                  value={displayNameString}
                 />
                 <TextInput
                   autoCapitalize="none"
                   name="email"
+                  onChangeText={(text) => setEmailString(text)}
                   placeholder="Email Address"
                   placeholderTextColor={colors.grey1}
                   style={{ ...styles.input }}
+                  value={emailString}
                 />
                 <Text style={{ ...styles.pTag, ...styles.tac, ...styles.mb16 }}>
                   (Your email address will never be shown to anyone.)
@@ -79,12 +87,14 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                     <TextInput
                       autoCapitalize="none"
                       name="password"
+                      onChangeText={(text) => setPasswordString(text)}
                       placeholder="Password"
                       placeholderTextColor={colors.grey1}
                       required
                       secureTextEntry={canSeePassword ? false : true}
                       style={{ ...styles.input }}
                       type={canSeePassword ? "" : "password"}
+                      value={passwordString}
                     />
                   </View>
                   <View>
@@ -92,6 +102,7 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                       <TextInput
                         autoCapitalize="none"
                         name="passwordConfirm"
+                        onChangeText={(text) => confirmPasswordString(text)}
                         placeholder="Confirm Password"
                         placeholderTextColor={colors.grey1}
                         secureTextEntry={canSeePassword ? false : true}
@@ -100,6 +111,7 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                           ...styles.flexFill,
                           ...styles.mr8,
                         }}
+                        value={confirmPasswordString}
                       />
                       <TouchableOpacity
                         onPress={() => setCanSeePassword(!canSeePassword)}

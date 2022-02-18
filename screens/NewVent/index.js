@@ -52,7 +52,7 @@ function NewVentScreen({ navigation, route }) {
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}
-        visible={starterModal}
+        visible={Boolean(starterModal)}
       />
     </Screen>
   );

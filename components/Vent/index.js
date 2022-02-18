@@ -616,7 +616,7 @@ function VentComponent({
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}
-        visible={starterModal}
+        visible={Boolean(starterModal)}
       />
     </View>
   );

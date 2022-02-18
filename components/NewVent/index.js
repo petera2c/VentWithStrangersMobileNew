@@ -165,14 +165,6 @@ function NewVentScreen({ miniVersion, navigation, route }) {
             ...styles.alignCenter,
           }}
         >
-          {false && isMinified && (
-            <TouchableOpacity onPress={() => navigation.jumpTo("Avatar")}>
-              <MakeAvatar
-                displayName={userBasicInfo.displayName}
-                userBasicInfo={userBasicInfo}
-              />
-            </TouchableOpacity>
-          )}
           <View style={{ ...styles.xFill }}>
             {!isMinified && (
               <Text style={{ ...styles.fs22, ...styles.mb8 }}>Description</Text>
@@ -442,7 +434,7 @@ function NewVentScreen({ miniVersion, navigation, route }) {
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}
-        visible={starterModal}
+        visible={Boolean(starterModal)}
       />
     </View>
   );

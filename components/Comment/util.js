@@ -7,7 +7,7 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../config/db_init";
+import { db } from "../../config/firebase_init";
 import { showMessage } from "react-native-flash-message";
 
 export const getComment = async (commentID, setComment, ventID) => {
@@ -48,12 +48,7 @@ export const editComment = async (commentID, commentString, setComments) => {
   });
 };
 
-export const getCommentHasLiked = async (
-  commentID,
-  isMounted,
-  setHasLiked,
-  userID
-) => {
+export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
   const snapshot = await getDoc(
     doc(db, "comment_likes", commentID + "|||" + userID)
   );
@@ -61,7 +56,7 @@ export const getCommentHasLiked = async (
   if (!snapshot || !snapshot.data()) return;
   let value = snapshot.data();
   value = value.liked;
-  if (isMounted()) setHasLiked(Boolean(value));
+  setHasLiked(Boolean(value));
 };
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user) => {

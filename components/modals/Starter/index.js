@@ -9,8 +9,11 @@ function StarterModal({ activeModal = "", setActiveModal, visible }) {
   const [localActiveModal, setLocalActiveModal] = useState(activeModal);
 
   useEffect(() => {
-    setLocalActiveModal(activeModal);
+    if (activeModal !== localActiveModal) setLocalActiveModal(activeModal);
   }, [activeModal]);
+
+  console.log(localActiveModal);
+  console.log(localActiveModal === "signUp");
 
   if (localActiveModal === "signUp")
     return (

@@ -11,7 +11,6 @@ import dayjs from "dayjs";
 import { showMessage } from "react-native-flash-message";
 
 import { faChevronCircleUp } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
-import { faQuoteLeft } from "@fortawesome/pro-regular-svg-icons/faQuoteLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import ContentOptions from "../../components/ContentOptions";
@@ -183,7 +182,7 @@ function QuoteContestScreen({ navigation }) {
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}
-        visible={starterModal}
+        visible={Boolean(starterModal)}
       />
     </Screen>
   );
@@ -226,14 +225,7 @@ function Quote({
 
   return (
     <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
-      <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
-        {false && (
-          <FontAwesomeIcon
-            icon={faQuoteLeft}
-            size={32}
-            style={{ ...styles.colorMain, ...styles.mr8 }}
-          />
-        )}
+      <View style={{ ...styles.flexRow }}>
         <View style={{ ...styles.flexFill }}>
           <Text
             style={{
@@ -257,80 +249,83 @@ function Quote({
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-      <View style={{ ...styles.flexRow, ...styles.justifyEnd }}>
-        <View style={{ ...styles.justifyEnd, ...styles.mr8 }}>
-          <Text style={{ ...styles.fs20, ...styles.colorGrey5, ...styles.tac }}>
-            {quote.like_counter ? quote.like_counter : 0}
-          </Text>
-        </View>
-        <View
-          style={{
-            ...styles.alignCenter,
-            ...(user ? styles.justifyBetween : styles.justifyEnd),
-          }}
-        >
-          {user && (
-            <ContentOptions
-              canUserInteractFunction={
-                userSignUpProgress(user, true)
-                  ? () => {
-                      const userInteractionIssues = userSignUpProgress(user);
-
-                      if (userInteractionIssues) {
-                        if (userInteractionIssues === "NSI")
-                          return setStarterModal(true);
-                      }
-                    }
-                  : false
-              }
-              deleteFunction={(quoteID) =>
-                deleteQuote(
-                  quoteID,
-                  setCanUserCreateQuote,
-                  setQuoteID,
-                  setQuotes
-                )
-              }
-              editFunction={() => {
-                setQuoteID(quote.id);
-                setMyQuote(quote.value);
-              }}
-              objectID={quote.id}
-              objectUserID={quote.userID}
-              reportFunction={(option) => {
-                reportQuote(option, quote.id, user.uid);
-              }}
-              userID={user.uid}
-            />
-          )}
-          <TouchableOpacity
-            onPress={async () => {
-              const userInteractionIssues = userSignUpProgress(user);
-
-              if (userInteractionIssues) {
-                if (userInteractionIssues === "NSI") setStarterModal(true);
-                return;
-              }
-
-              await likeOrUnlikeQuote(hasLiked, quote, user);
-
-              await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
-
-              if (!quote.like_counter) quote.like_counter = 0;
-              if (hasLiked) quote.like_counter--;
-              else quote.like_counter++;
-
-              setQuote({ ...quote });
+        <View style={{ ...styles.flexRow }}>
+          <View style={{ ...styles.justifyEnd, ...styles.mr8 }}>
+            <Text
+              style={{ ...styles.fs20, ...styles.colorGrey5, ...styles.tac }}
+            >
+              {quote.like_counter ? quote.like_counter : 0}
+            </Text>
+          </View>
+          <View
+            style={{
+              ...styles.alignCenter,
+              ...(user ? styles.justifyBetween : styles.justifyEnd),
             }}
           >
-            <FontAwesomeIcon
-              icon={faChevronCircleUp}
-              size={24}
-              style={{ ...(hasLiked ? styles.colorMain : styles.colorGrey9) }}
-            />
-          </TouchableOpacity>
+            {user && (
+              <ContentOptions
+                canUserInteractFunction={
+                  userSignUpProgress(user, true)
+                    ? () => {
+                        const userInteractionIssues = userSignUpProgress(user);
+
+                        if (userInteractionIssues) {
+                          if (userInteractionIssues === "NSI")
+                            return setStarterModal(true);
+                        }
+                      }
+                    : false
+                }
+                deleteFunction={(quoteID) =>
+                  deleteQuote(
+                    quoteID,
+                    setCanUserCreateQuote,
+                    setQuoteID,
+                    setQuotes
+                  )
+                }
+                editFunction={() => {
+                  setQuoteID(quote.id);
+                  setMyQuote(quote.value);
+                }}
+                objectID={quote.id}
+                objectUserID={quote.userID}
+                reportFunction={(option) => {
+                  reportQuote(option, quote.id, user.uid);
+                }}
+                userID={user.uid}
+              />
+            )}
+            <TouchableOpacity
+              onPress={async () => {
+                const userInteractionIssues = userSignUpProgress(user);
+
+                if (userInteractionIssues) {
+                  if (userInteractionIssues === "NSI") setStarterModal(true);
+                  return;
+                }
+
+                await likeOrUnlikeQuote(hasLiked, quote, user);
+
+                await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
+
+                if (!quote.like_counter) quote.like_counter = 0;
+                if (hasLiked) quote.like_counter--;
+                else quote.like_counter++;
+
+                setQuote({ ...quote });
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faChevronCircleUp}
+                size={24}
+                style={{
+                  ...(hasLiked ? styles.colorMain : styles.colorGrey9),
+                }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>

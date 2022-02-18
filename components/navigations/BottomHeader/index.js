@@ -3,7 +3,6 @@ import useState from "react-usestateref";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { sendEmailVerification } from "firebase/auth";
-import { Button } from "react-native-paper";
 
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
 import { faBell } from "@fortawesome/pro-solid-svg-icons/faBell";
@@ -143,10 +142,11 @@ function BottomHeader({ navigation, route }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                resetUnreadConversationCount(
-                  setUnreadConversationsCount,
-                  user.uid
-                );
+                if (user)
+                  resetUnreadConversationCount(
+                    setUnreadConversationsCount,
+                    user.uid
+                  );
 
                 navigation.navigate("Chats");
               }}

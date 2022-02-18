@@ -69,65 +69,83 @@ function ChatsScreen({ navigation }) {
     <Screen navigation={navigation}>
       {!activeConversation && (
         <View className="flex-fill column ov-auto bg-white pa8 br4">
-          {conversations.length === 0 && (
-            <TouchableOpacity className="" to="/people-online">
-              <Text className="TouchableOpacity-1 grey-1 tac">
-                <Text className="blue">Start</Text> a conversation with someone!
+          {user && conversations.length === 0 && (
+            <TouchableOpacity
+              onPress={() => navigation.jumpTo("OnlineUsers")}
+              style={{ ...styles.box, ...styles.ma16, ...styles.pa16 }}
+            >
+              <Text style={{ ...styles.title }}>
+                <Text style={{ ...styles.colorMain }}>Start</Text> a
+                conversation with someone!
               </Text>
             </TouchableOpacity>
           )}
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={() => setRefreshing(true)}
-              />
-            }
-          >
-            <View style={{ ...styles.pa16 }}>
-              {conversations.map((conversation, index) => {
-                return (
-                  <ConversationOption
-                    activeChatUserBasicInfos={activeChatUserBasicInfos}
-                    conversation={conversation}
-                    isActive={
-                      activeConversation
-                        ? conversation.id === activeConversation.id
-                        : false
-                    }
-                    key={conversation.id}
-                    setActiveConversation={setActiveConversation}
-                    setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
-                    setConversations={setConversations}
-                    userID={user.uid}
-                  />
-                );
-              })}
-              {!userSignUpProgress(user, true) && canLoadMore && (
-                <TouchableOpacity
-                  onPress={() => {
-                    getConversations(
-                      conversations,
-                      (newConversations) => {
-                        if (newConversations.length < 5) setCanLoadMore(false);
+          {!user && conversations.length === 0 && (
+            <TouchableOpacity
+              onPress={() => setStarterModal(true)}
+              style={{ ...styles.box, ...styles.ma16, ...styles.pa16 }}
+            >
+              <Text style={{ ...styles.title }}>
+                <Text style={{ ...styles.colorMain }}>Sign In</Text> to view
+                your conversations
+              </Text>
+            </TouchableOpacity>
+          )}
+          {user && conversations.length > 0 && (
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={() => setRefreshing(true)}
+                />
+              }
+            >
+              <View style={{ ...styles.pa16 }}>
+                {conversations.map((conversation, index) => {
+                  return (
+                    <ConversationOption
+                      activeChatUserBasicInfos={activeChatUserBasicInfos}
+                      conversation={conversation}
+                      isActive={
+                        activeConversation
+                          ? conversation.id === activeConversation.id
+                          : false
+                      }
+                      key={conversation.id}
+                      setActiveConversation={setActiveConversation}
+                      setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
+                      setConversations={setConversations}
+                      userID={user.uid}
+                    />
+                  );
+                })}
+                {!userSignUpProgress(user, true) && canLoadMore && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      getConversations(
+                        conversations,
+                        (newConversations) => {
+                          if (newConversations.length < 5)
+                            setCanLoadMore(false);
 
-                        setConversations((oldConversations) => [
-                          ...oldConversations,
-                          ...newConversations,
-                        ]);
-                      },
-                      user.uid
-                    );
-                  }}
-                  style={{ ...styles.buttonPrimary }}
-                >
-                  <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
-                    Load More Conversations
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </ScrollView>
+                          setConversations((oldConversations) => [
+                            ...oldConversations,
+                            ...newConversations,
+                          ]);
+                        },
+                        user.uid
+                      );
+                    }}
+                    style={{ ...styles.buttonPrimary }}
+                  >
+                    <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                      Load More Conversations
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </ScrollView>
+          )}
         </View>
       )}
       {activeConversation && (
@@ -179,7 +197,7 @@ function ChatsScreen({ navigation }) {
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}
-        visible={starterModal}
+        visible={Boolean(starterModal)}
       />
     </Screen>
   );
