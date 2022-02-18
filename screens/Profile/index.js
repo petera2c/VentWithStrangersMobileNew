@@ -44,7 +44,6 @@ import {
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
-  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import {
@@ -389,7 +388,6 @@ function ProfileScreen({ navigation, route }) {
                               }
 
                               followOrUnfollowUser(
-                                isMounted,
                                 !isFollowing,
                                 setIsFollowing,
                                 user.uid,
@@ -500,13 +498,7 @@ function ProfileScreen({ navigation, route }) {
                 </View>
               }
               next={() =>
-                getUsersVents(
-                  isMounted,
-                  userID,
-                  setCanLoadMoreVents,
-                  setVents,
-                  vents
-                )
+                getUsersVents(userID, setCanLoadMoreVents, setVents, vents)
               }
               scrollableTarget="scrollable-div"
             >
@@ -553,19 +545,15 @@ function ProfileScreen({ navigation, route }) {
               )}
               {canLoadMoreComments && (
                 <TouchableOpacity
-                  block
                   className="mt16"
-                  onClick={() =>
+                  onPress={() =>
                     getUsersComments(
-                      isMounted,
                       userID,
                       setCanLoadMoreComments,
                       setComments,
                       comments
                     )
                   }
-                  size="large"
-                  type="primary"
                 >
                   <Text>Load More Comments</Text>
                 </TouchableOpacity>

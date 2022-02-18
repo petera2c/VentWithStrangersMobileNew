@@ -85,7 +85,9 @@ function CommentComponent({
 
   return (
     <View style={{ ...styles.pa16 }}>
-      <View style={{ ...styles.mb16 }}>
+      <View
+        style={{ ...styles.flexRow, ...styles.justifyBetween, ...styles.mb16 }}
+      >
         <DisplayName
           displayName={userBasicInfo.displayName}
           isUserOnline={isUserOnline}
@@ -93,37 +95,42 @@ function CommentComponent({
           userID={comment.userID}
         />
 
-        <View className="relative column full-center">
-          {false && user && (
-            <Options
-              canUserInteractFunction={
-                userSignUpProgress(user, true)
-                  ? () => {
-                      const userInteractionIssues = userSignUpProgress(user);
+        {user && (
+          <ContentOptions
+            canUserInteractFunction={
+              userSignUpProgress(user, true)
+                ? () => {
+                    const userInteractionIssues = userSignUpProgress(user);
 
-                      if (userInteractionIssues) {
-                        if (userInteractionIssues === "NSI")
-                          return setStarterModal(true);
-                      }
+                    if (userInteractionIssues) {
+                      if (userInteractionIssues === "NSI")
+                        return setStarterModal(true);
                     }
-                  : false
+                  }
+                : false
+            }
+            deleteFunction={(commentID) => {
+              deleteComment(comment.id, setComments);
+            }}
+            editFunction={() => {
+              setCommentString(comment.text);
+              setEditingComment(true);
+            }}
+            objectID={comment.id}
+            objectUserID={comment.userID}
+            reportFunction={() => {
+              const userInteractionIssues = userSignUpProgress(user);
+
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
               }
-              deleteFunction={(commentID) => {
-                deleteComment(comment.id, setComments);
-              }}
-              editFunction={() => {
-                setCommentString(comment.text);
-                setEditingComment(true);
-              }}
-              objectID={comment.id}
-              objectUserID={comment.userID}
-              reportFunction={(option) => {
-                reportComment(option, comment.id, user.uid, comment.ventID);
-              }}
-              userID={user.uid}
-            />
-          )}
-        </View>
+
+              reportComment(comment.id, user.uid, comment.ventID);
+            }}
+            userID={user.uid}
+          />
+        )}
       </View>
       {!editingComment && (
         <Text style={{ ...styles.pTag, ...styles.mb16 }}>

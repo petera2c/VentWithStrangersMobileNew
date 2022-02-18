@@ -19,7 +19,6 @@ import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import Comment from "../Comment";
-//import ConfirmAlertModal from "../modals/ConfirmAlert";
 import ContentOptions from "../ContentOptions";
 import KarmaBadge from "../views/KarmaBadge";
 import MakeAvatar from "../views/MakeAvatar";
@@ -481,7 +480,7 @@ function VentComponent({
             />
           )}
           {comments && comments.length > 0 && (
-            <View className="column px32 pb16">
+            <View>
               {comments.map((comment, index) => {
                 return (
                   <Comment
@@ -497,8 +496,7 @@ function VentComponent({
               })}
               {canLoadMoreComments && (
                 <TouchableOpacity
-                  className="blue underline"
-                  onClick={() => {
+                  onPress={() => {
                     getVentComments(
                       activeSort,
                       comments,
@@ -509,15 +507,18 @@ function VentComponent({
                     );
                   }}
                   key={comments.length}
+                  style={{ ...styles.buttonPrimary, ...styles.ma16 }}
                 >
-                  <Text>Load More Comments</Text>
+                  <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                    Load More Comments
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
           )}
           {vent.comment_counter === 0 &&
             (!comments || (comments && comments.length === 0)) && (
-              <Text className="tac px32 py16">
+              <Text style={{ ...styles.pTag, ...styles.tac, ...styles.pa16 }}>
                 There are no comments yet. Please help this person :)
               </Text>
             )}

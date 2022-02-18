@@ -45,10 +45,9 @@ const tagsIndex = searchClient.initIndex("vent_tags");
 const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
 
-function NewVentScreen({ miniVersion, navigation, route }) {
+function NewVentScreen({ miniVersion, navigation, route, ventID }) {
   const { user, userBasicInfo } = useContext(UserContext);
 
-  const ventID = "";
   const isBirthdayPost = false;
 
   const [description, setDescription] = useState("");
@@ -128,8 +127,6 @@ function NewVentScreen({ miniVersion, navigation, route }) {
       if (interval) clearInterval(interval);
     };
   }, [user, userBasicInfo, ventID]);
-
-  console.log(title);
 
   return (
     <View style={{ ...styles.bgWhite, ...styles.br8 }}>

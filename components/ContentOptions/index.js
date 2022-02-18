@@ -46,6 +46,8 @@ function OptionsComponent({
       <OptionsModal
         blockUser={blockUser}
         canUserInteractFunction={canUserInteractFunction}
+        deleteFunction={deleteFunction}
+        editFunction={editFunction}
         objectUserID={objectUserID}
         reportFunction={reportFunction}
         setOptionsModal={setOptionsModal}
@@ -59,6 +61,9 @@ function OptionsComponent({
 function OptionsModal({
   blockUser,
   canUserInteractFunction,
+  deleteFunction,
+  editFunction,
+  objectID,
   objectUserID,
   reportFunction,
   setOptionsModal,
@@ -98,6 +103,7 @@ function OptionsModal({
                     className="button-8 clickable align-center justify-between gap8"
                     onPress={() => {
                       editFunction(objectID);
+                      setOptionsModal(false);
                     }}
                     style={{
                       ...styles.buttonSecondary,
@@ -110,6 +116,7 @@ function OptionsModal({
                         ...styles.fs20,
                         ...styles.colorMain,
                         ...styles.tac,
+                        ...styles.mr8,
                       }}
                     >
                       Edit
@@ -118,7 +125,6 @@ function OptionsModal({
                       icon={faEdit}
                       style={{
                         ...styles.colorMain,
-                        ...styles.mr8,
                       }}
                     />
                   </TouchableOpacity>
@@ -127,6 +133,7 @@ function OptionsModal({
                   <TouchableOpacity
                     onPress={() => {
                       deleteFunction(objectID);
+                      setOptionsModal(false);
                     }}
                     style={{
                       ...styles.buttonSecondary,
@@ -138,6 +145,7 @@ function OptionsModal({
                         ...styles.fs20,
                         ...styles.colorMain,
                         ...styles.tac,
+                        ...styles.mr8,
                       }}
                     >
                       Delete
@@ -146,7 +154,6 @@ function OptionsModal({
                       icon={faTrash}
                       style={{
                         ...styles.colorMain,
-                        ...styles.mr8,
                       }}
                     />
                   </TouchableOpacity>

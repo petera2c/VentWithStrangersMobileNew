@@ -73,10 +73,9 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user) => {
   });
 };
 
-export const reportComment = async (commentID, option, userID, ventID) => {
+export const reportComment = async (commentID, userID, ventID) => {
   await setDoc(doc(db, "comment_reports", commentID + "|||" + userID), {
     commentID,
-    option,
     userID,
     ventID,
   });
