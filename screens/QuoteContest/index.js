@@ -140,6 +140,7 @@ function QuoteContestScreen({ navigation }) {
         }}
       >
         <TextInput
+          autocorrect={false}
           onChangeText={(text) => {
             const userInteractionIssues = userSignUpProgress(user);
 
@@ -169,7 +170,7 @@ function QuoteContestScreen({ navigation }) {
               if (userInteractionIssues === "NSI") return setStarterModal(true);
             }
 
-            if (myQuote)
+            if (myQuote) {
               saveQuote(
                 canUserCreateQuote,
                 myQuote,
@@ -179,6 +180,9 @@ function QuoteContestScreen({ navigation }) {
                 setQuotes,
                 user.uid
               );
+
+              if (quoteID) setQuoteID(null);
+            }
           }}
           style={{ ...styles.buttonPrimary, ...styles.mb16 }}
         >

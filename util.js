@@ -274,11 +274,7 @@ export const signOut2 = (userID) => {
   });
 };
 
-export const soundNotify = (sound = "bing") => {
-  let audio = new Audio("/static/" + sound + ".mp3");
-
-  audio.play();
-};
+export const soundNotify = (sound = "bing") => {};
 
 export const urlify = (text) =>
   reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (

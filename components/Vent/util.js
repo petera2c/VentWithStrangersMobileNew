@@ -151,10 +151,7 @@ export const newVentCommentListener = (
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-        if (
-          querySnapshot.docChanges()[0].type === "added" ||
-          querySnapshot.docChanges()[0].type === "removed"
-        ) {
+        if (querySnapshot.docChanges()[0].type === "added") {
           if (querySnapshot.docs[0].data().userID === userID)
             setComments((oldComments) => [
               ...oldComments,

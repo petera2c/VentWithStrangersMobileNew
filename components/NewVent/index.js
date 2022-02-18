@@ -45,7 +45,7 @@ const tagsIndex = searchClient.initIndex("vent_tags");
 const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
 
-function NewVentScreen({ miniVersion, navigation, route, ventID }) {
+function NewVentScreen({ miniVersion, navigation, refreshing, route, ventID }) {
   const { user, userBasicInfo } = useContext(UserContext);
 
   const isBirthdayPost = false;
@@ -129,7 +129,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [user, userBasicInfo, ventID]);
+  }, [refreshing, user, userBasicInfo, ventID]);
 
   return (
     <View style={{ ...styles.bgWhite, ...styles.br8 }}>
@@ -152,7 +152,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
             </TouchableOpacity>
           </View>
         )}
-        {!miniVersion && userVentTimeOut > 0 && !ventID ? (
+        {!miniVersion && userVentTimeOut > 0 && !ventID && (
           <View>
             <Text style={{ ...styles.tac }}>
               To avoid spam, people can only post once every few hours. With
@@ -160,7 +160,7 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
             </Text>
             <Text style={{ ...styles.tac }}>{userVentTimeOutFormatted}</Text>
           </View>
-        ) : null}
+        )}
         <View
           style={{
             ...styles.flexRow,
@@ -168,9 +168,9 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
           }}
         >
           <View style={{ ...styles.xFill }}>
-            {!isMinified ? (
+            {!isMinified && (
               <Text style={{ ...styles.fs22, ...styles.mb8 }}>Description</Text>
-            ) : null}
+            )}
             <TextInput
               autoCorrect={false}
               multiline={!isMinified}
@@ -334,7 +334,9 @@ function NewVentScreen({ miniVersion, navigation, route, ventID }) {
 
                     saveVent(
                       (vent) => {
+                        setDescription("");
                         setSaving(false);
+                        setTitle("");
                         navigation.jumpTo("SingleVent", { ventID: vent.id });
                       },
                       isBirthdayPost,

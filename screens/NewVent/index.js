@@ -42,6 +42,7 @@ function NewVentScreen({ navigation, route }) {
         <View style={{ ...styles.pa16 }}>
           <NewVentComponent
             navigation={navigation}
+            refreshing={refreshing}
             route={route}
             ventID={
               route.params && route.params.ventID ? route.params.ventID : null

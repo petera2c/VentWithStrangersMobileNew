@@ -202,9 +202,17 @@ function FeedScreen({ navigation, route }) {
                 setVents((vents) => [...waitingVents, ...vents]);
                 setWaitingVents([]);
               }}
-              style={{ ...styles.bgWhite, ...styles.border, ...styles.br32 }}
+              style={{
+                ...styles.bgWhite,
+                ...styles.border,
+                ...styles.br32,
+                ...styles.mb16,
+                ...styles.pa8,
+              }}
             >
-              <View>Load New Vent{waitingVents.length > 1 ? "s" : ""}</View>
+              <Text style={{ ...styles.fs20, ...styles.tac }}>
+                Load New Vent{waitingVents.length > 1 ? "s" : ""}
+              </Text>
             </TouchableOpacity>
           )}
           {vents &&

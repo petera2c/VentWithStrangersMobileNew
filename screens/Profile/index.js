@@ -513,7 +513,9 @@ function ProfileScreen({ navigation, route }) {
                       ventInit={vent}
                     />
                   ))}
-                {vents && vents.length === 0 && <Text>No vents found.</Text>}
+                {vents && vents.length === 0 && (
+                  <Text style={{ ...styles.pTag }}>No vents found.</Text>
+                )}
               </View>
             </View>
           )}
@@ -541,7 +543,7 @@ function ProfileScreen({ navigation, route }) {
                 </View>
               )}
               {comments && comments.length === 0 && (
-                <Text>No comments found.</Text>
+                <Text style={{ ...styles.pTag }}>No comments found.</Text>
               )}
               {canLoadMoreComments && (
                 <TouchableOpacity
