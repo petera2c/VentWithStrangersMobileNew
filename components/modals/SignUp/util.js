@@ -61,7 +61,7 @@ export const signUp = (
         });
 
         setActiveModal(false);
-        navigate("/rules");
+        navigation.jumpTo("Rules");
       }
     })
     .catch((e) => {

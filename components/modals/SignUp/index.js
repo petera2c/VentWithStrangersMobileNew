@@ -21,14 +21,14 @@ import { colors, styles } from "../../../styles";
 import { UserContext } from "../../../context";
 import { signUp } from "./util";
 
-function SignUpModal({ navigate, setActiveModal, visible }) {
+function SignUpModal({ navigation, setActiveModal, visible }) {
   const { setUserBasicInfo } = useContext(UserContext);
 
   const [canSeePassword, setCanSeePassword] = useState(false);
-  const [confirmPasswordString, setConfirmPasswordString] = useState("");
-  const [displayNameString, setDisplayNameString] = useState("");
-  const [emailString, setEmailString] = useState("");
-  const [passwordString, setPasswordString] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <Modal transparent={true} visible={visible}>
@@ -64,20 +64,20 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                 <TextInput
                   autoCapitalize="none"
                   name="displayName"
-                  onChangeText={(text) => setDisplayNameString(text)}
+                  onChangeText={(text) => setDisplayName(text)}
                   placeholder="Display Name"
                   placeholderTextColor={colors.grey1}
                   style={{ ...styles.input }}
-                  value={displayNameString}
+                  value={displayName}
                 />
                 <TextInput
                   autoCapitalize="none"
                   name="email"
-                  onChangeText={(text) => setEmailString(text)}
+                  onChangeText={(text) => setEmail(text)}
                   placeholder="Email Address"
                   placeholderTextColor={colors.grey1}
                   style={{ ...styles.input }}
-                  value={emailString}
+                  value={email}
                 />
                 <Text style={{ ...styles.pTag, ...styles.tac, ...styles.mb16 }}>
                   (Your email address will never be shown to anyone.)
@@ -87,14 +87,14 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                     <TextInput
                       autoCapitalize="none"
                       name="password"
-                      onChangeText={(text) => setPasswordString(text)}
+                      onChangeText={(text) => setPassword(text)}
                       placeholder="Password"
                       placeholderTextColor={colors.grey1}
                       required
                       secureTextEntry={canSeePassword ? false : true}
                       style={{ ...styles.input }}
                       type={canSeePassword ? "" : "password"}
-                      value={passwordString}
+                      value={password}
                     />
                   </View>
                   <View>
@@ -102,7 +102,7 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                       <TextInput
                         autoCapitalize="none"
                         name="passwordConfirm"
-                        onChangeText={(text) => confirmPasswordString(text)}
+                        onChangeText={(text) => setPasswordConfirm(text)}
                         placeholder="Confirm Password"
                         placeholderTextColor={colors.grey1}
                         secureTextEntry={canSeePassword ? false : true}
@@ -111,7 +111,7 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                           ...styles.flexFill,
                           ...styles.mr8,
                         }}
-                        value={confirmPasswordString}
+                        value={passwordConfirm}
                       />
                       <TouchableOpacity
                         onPress={() => setCanSeePassword(!canSeePassword)}
@@ -129,7 +129,14 @@ function SignUpModal({ navigate, setActiveModal, visible }) {
                   </View>
                 </View>
                 <TouchableOpacity
-                  onPress={() => {}}
+                  onPress={() =>
+                    signUp(
+                      { email, displayName, password, passwordConfirm },
+                      navigation,
+                      setActiveModal,
+                      setUserBasicInfo
+                    )
+                  }
                   style={{
                     ...styles.buttonPrimary,
                     ...styles.mb16,
