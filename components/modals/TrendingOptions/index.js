@@ -15,7 +15,7 @@ import {
 
 import { colors, styles } from "../../../styles";
 
-function ForgotPasswordModal({ close, options, visible }) {
+function TrendingOptionsModal({ close, options, visible }) {
   return (
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
@@ -49,6 +49,7 @@ function ForgotPasswordModal({ close, options, visible }) {
                 {options.map((option, index) => (
                   <Option
                     isActive={option.isActive}
+                    key={index}
                     onPress={() => {
                       option.onClick();
                       close();
@@ -81,4 +82,4 @@ function Option({ isActive, onPress, title }) {
   );
 }
 
-export default ForgotPasswordModal;
+export default TrendingOptionsModal;

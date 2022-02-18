@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 
@@ -15,27 +15,38 @@ function AllTagsScreen({ navigation }) {
   }, [setTags, tags]);
 
   return (
-    <Screen goBack navigation={navigation} style={{ ...styles.pa16 }}>
-      <View style={{ ...styles.box, ...styles.pa32 }}>
-        <Text style={{ ...styles.title, ...styles.tac, ...styles.mb8 }}>
-          All Tag Categories
-        </Text>
-        <Text style={{ ...styles.pTag, ...styles.tac }}>
-          Click on a category to find problems just like yours
-        </Text>
-      </View>
+    <Screen goBack navigation={navigation}>
       <View
         style={{
-          ...styles.flexRow,
-          ...styles.fullCenter,
-          ...styles.wrap,
-          ...styles.py16,
+          ...styles.shadowBottom,
+          zIndex: 1,
+          ...styles.px16,
+          ...styles.pt16,
         }}
       >
-        {tags.map((tag, index) => (
-          <Tag key={tag.id} navigation={navigation} tag={tag} />
-        ))}
+        <View style={{ ...styles.box, ...styles.pa32 }}>
+          <Text style={{ ...styles.title, ...styles.tac, ...styles.mb8 }}>
+            All Tag Categories
+          </Text>
+          <Text style={{ ...styles.pTag, ...styles.tac }}>
+            Click on a category to find problems just like yours
+          </Text>
+        </View>
       </View>
+      <ScrollView>
+        <View
+          style={{
+            ...styles.flexRow,
+            ...styles.fullCenter,
+            ...styles.wrap,
+            ...styles.pa16,
+          }}
+        >
+          {tags.map((tag, index) => (
+            <Tag key={tag.id} navigation={navigation} tag={tag} />
+          ))}
+        </View>
+      </ScrollView>
     </Screen>
   );
 }

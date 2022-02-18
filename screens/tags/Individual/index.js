@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 import Vent from "../../../components/Vent";
@@ -20,21 +20,30 @@ function IndividualTagScreen({ navigation, route }) {
   }, [setVents, tagID]);
 
   return (
-    <Screen navigation={navigation} goBack style={{ ...styles.pa16 }}>
-      <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
-        <Text
-          style={{ ...styles.title, ...styles.mb16 }}
-        >{`Recent Vents About ${viewTagFunction(tagID)}`}</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AllTags")}
-          style={{ ...styles.buttonPrimary }}
-        >
-          <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
-            View All Tags
-          </Text>
-        </TouchableOpacity>
+    <Screen navigation={navigation} goBack>
+      <View
+        style={{
+          ...styles.shadowBottom,
+          zIndex: 1,
+          ...styles.px16,
+          ...styles.pt16,
+        }}
+      >
+        <View style={{ ...styles.box, ...styles.pa32 }}>
+          <Text
+            style={{ ...styles.title, ...styles.mb16 }}
+          >{`Recent Vents About ${viewTagFunction(tagID)}`}</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AllTags")}
+            style={{ ...styles.buttonPrimary }}
+          >
+            <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+              View All Tags
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View>
+      <ScrollView style={{ ...styles.pa16 }}>
         {vents.map((vent, index) => (
           <Vent
             key={vent.id}
@@ -46,19 +55,19 @@ function IndividualTagScreen({ navigation, route }) {
             ventInit={{ ...vent, id: vent.id }}
           />
         ))}
-      </View>
-      {canLoadMoreVents && (
-        <TouchableOpacity
-          onClick={() => {
-            getTagVents(setCanLoadMoreVents, setVents, tagID, vents);
-          }}
-          style={{ ...styles.buttonPrimary }}
-        >
-          <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
-            Load More Vents
-          </Text>
-        </TouchableOpacity>
-      )}
+        {canLoadMoreVents && (
+          <TouchableOpacity
+            onClick={() => {
+              getTagVents(setCanLoadMoreVents, setVents, tagID, vents);
+            }}
+            style={{ ...styles.buttonPrimary }}
+          >
+            <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+              Load More Vents
+            </Text>
+          </TouchableOpacity>
+        )}
+      </ScrollView>
     </Screen>
   );
 }
