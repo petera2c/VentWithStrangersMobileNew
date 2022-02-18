@@ -561,7 +561,11 @@ function VentComponent({
                 navigation.jumpTo("Rules");
               }}
             >
-              <Text>Read Our VWS Rules</Text>
+              <Text
+                style={{ ...styles.fs20, ...styles.colorMain, ...styles.mb8 }}
+              >
+                Read Our VWS Rules
+              </Text>
             </TouchableOpacity>
           )}
           <View style={{ ...styles.flexRow, ...styles.alignCenter }}>

@@ -32,7 +32,7 @@ import {
   getVent,
   selectEncouragingMessage,
 } from "./util";
-import { checks } from "./util";
+import { checks, saveVent } from "./util";
 
 import { styles } from "../../styles";
 
@@ -129,6 +129,8 @@ function NewVentScreen({ miniVersion, navigation, route }) {
     };
   }, [user, userBasicInfo, ventID]);
 
+  console.log(title);
+
   return (
     <View style={{ ...styles.bgWhite, ...styles.br8 }}>
       <View style={{ ...styles.br4, ...styles.pa32 }}>
@@ -170,11 +172,11 @@ function NewVentScreen({ miniVersion, navigation, route }) {
               <Text style={{ ...styles.fs22, ...styles.mb8 }}>Description</Text>
             )}
             <TextInput
-              multiline
-              onChangeText={(event) => {
+              multiline={!isMinified}
+              onChangeText={(text) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
-                setDescription(event.target.value);
+                setDescription(text);
               }}
               onFocus={() => {
                 setIsMinified(false);
@@ -204,10 +206,10 @@ function NewVentScreen({ miniVersion, navigation, route }) {
             <Text style={{ ...styles.fs22, ...styles.mb8 }}>Title</Text>
             <TextInput
               multiline
-              onChangeText={(e) => {
+              onChangeText={(text) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
-                if (e.target.value.length > TITLE_LENGTH_MAXIMUM) {
+                if (text.length > TITLE_LENGTH_MAXIMUM) {
                   return showMessage({
                     message:
                       "Vent titles can't have more than " +
@@ -217,7 +219,7 @@ function NewVentScreen({ miniVersion, navigation, route }) {
                   });
                 }
 
-                setTitle(e.target.value);
+                setTitle(text);
                 setSaving(false);
               }}
               placeholder="Our community is listening :)"
@@ -249,18 +251,18 @@ function NewVentScreen({ miniVersion, navigation, route }) {
             <Text style={{ ...styles.fs22, ...styles.mb8 }}>Tag this vent</Text>
             <TextInput
               multiline
-              onChangeText={(e) => {
+              onChangeText={(text) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
                 tagsIndex
-                  .search(e.target.value, {
+                  .search(text.value, {
                     hitsPerPage: 10,
                   })
                   .then(({ hits }) => {
                     setVentTags(hits);
                   });
 
-                setTagText(e.target.value);
+                setTagText(text.value);
               }}
               placeholder="Search tags"
               style={{
@@ -291,8 +293,10 @@ function NewVentScreen({ miniVersion, navigation, route }) {
         )}
         {!isMinified && tags && tags.length > 0 && (
           <View>
-            <Text>Selected Tags</Text>
-            <View style={{ ...styles.wrap }}>
+            <Text style={{ ...styles.titleSmall, ...styles.mb16 }}>
+              Selected Tags
+            </Text>
+            <View style={{ ...styles.flexRow, ...styles.wrap }}>
               {tags.map((tag, index) => (
                 <SelectedTag
                   postingDisableFunction={postingDisableFunction}
@@ -325,30 +329,20 @@ function NewVentScreen({ miniVersion, navigation, route }) {
                     setTagText("");
                     setSaving(true);
 
-                    import("./util").then((functions) => {
-                      functions.saveVent(
-                        (vent) => {
-                          setSaving(false);
-                          navigate(
-                            "/vent/" +
-                              vent.id +
-                              "/" +
-                              vent.title
-                                .replace(/[^a-zA-Z ]/g, "")
-                                .replace(/ /g, "-")
-                                .toLowerCase()
-                          );
-                        },
-                        isBirthdayPost,
-                        tags,
-                        {
-                          description,
-                          title,
-                        },
-                        ventID,
-                        user
-                      );
-                    });
+                    saveVent(
+                      (vent) => {
+                        setSaving(false);
+                        navigation.jumpTo("SingleVent", { ventID: vent.id });
+                      },
+                      isBirthdayPost,
+                      tags,
+                      {
+                        description,
+                        title,
+                      },
+                      ventID,
+                      user
+                    );
                   }
                 }}
                 style={{ ...styles.buttonPrimary, ...styles.mt16 }}
@@ -475,7 +469,6 @@ function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
 function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
   return (
     <TouchableOpacity
-      className="button-2 br4 gap8 pa8"
       onPress={() => {
         if (postingDisableFunction) return postingDisableFunction();
 
@@ -483,10 +476,23 @@ function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
         temp.splice(index, 1);
         setTags(temp);
       }}
+      style={{
+        ...styles.buttonSecondary,
+        ...styles.br4,
+        ...styles.mr8,
+        ...styles.mb8,
+        ...styles.pa8,
+      }}
     >
-      <Text className="ic flex-fill">{viewTagFunction(tag.objectID)}</Text>
+      <Text style={{ ...styles.fs20, ...styles.colorMain, ...styles.mr8 }}>
+        {viewTagFunction(tag.objectID)}
+      </Text>
 
-      <FontAwesomeIcon icon={faTimes} />
+      <FontAwesomeIcon
+        icon={faTimes}
+        size={24}
+        style={{ ...styles.colorMain }}
+      />
     </TouchableOpacity>
   );
 }

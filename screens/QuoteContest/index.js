@@ -132,7 +132,7 @@ function QuoteContestScreen({ navigation }) {
         }}
       >
         <TextInput
-          onChange={(event) => {
+          onChange={(text) => {
             const userInteractionIssues = userSignUpProgress(user);
 
             if (userInteractionIssues) {
@@ -146,8 +146,8 @@ function QuoteContestScreen({ navigation }) {
                 type: "info",
               });
 
-            if (!event.target.value && quoteID) setQuoteID(null);
-            setMyQuote(event.target.value);
+            if (!text && quoteID) setQuoteID(null);
+            setMyQuote(text);
           }}
           placeholder="Change someone's day :)"
           style={{ ...styles.input, ...styles.mb8 }}

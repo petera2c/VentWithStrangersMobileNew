@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getReactNativePersistence } from "firebase/auth/react-native";
 import { getApp, initializeApp } from "firebase/app";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
 import {
@@ -18,24 +20,13 @@ var firebaseConfig = {
   storageBucket: "vent-with-strangers-2acc6.appspot.com",
 };
 
-//__DEV__
-/*if (__DEV__)
-  firebaseConfig = {
-    apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
-    appId: "1:440569980458:web:870c6bde68871e5fd78553",
-    authDomain: "vent-with-strangers-2acc6.firebaseapp.com",
-    databaseURL: "http://localhost:8080?ns=vent-with-strangers-2acc6",
-    measurementId: "G-N5NTVEZHSN",
-    messagingSenderId: "440569980458",
-    projectId: "vent-with-strangers-2acc6",
-    storageBucket: "vent-with-strangers-2acc6.appspot.com",
-  };*/
-
 const createFirebaseApp = (config = {}) => {
   try {
     return getApp();
   } catch (e) {
-    return initializeApp(config);
+    return initializeApp(config, {
+      persistence: getReactNativePersistence(AsyncStorage),
+    });
   }
 };
 

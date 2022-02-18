@@ -94,18 +94,18 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
               <h4>Change Chat Name or Add Users</h4>
               <input
                 className="fs-22 br4 pa8"
-                onChange={(e) => {
-                  setChatNameString(e.target.value);
+                onChange={(text) => {
+                  setChatNameString(text);
                 }}
                 placeholder="Chat Name"
                 value={chatNameString}
               />
               <input
                 className="fs-22 br4 pa8"
-                onChange={(e) => {
-                  setUserSearchString(e.target.value);
+                onChange={(text) => {
+                  setUserSearchString(text);
                   usersIndex
-                    .search(e.target.value, {
+                    .search(text, {
                       hitsPerPage: 10,
                     })
                     .then(({ hits }) => {

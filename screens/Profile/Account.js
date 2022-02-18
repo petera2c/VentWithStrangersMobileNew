@@ -149,7 +149,6 @@ function AccountScreen({ navigation }) {
                 name="pronouns"
                 placeholder="she/her he/him its/them"
                 style={{ ...styles.input }}
-                type="text"
                 value={pronouns}
               />
             </View>
@@ -157,7 +156,7 @@ function AccountScreen({ navigation }) {
             <Text style={{ ...styles.fs20, ...styles.mb8 }}>Bio</Text>
             <TextInput
               multiline
-              onChangeText={(event) => {
+              onChangeText={(text) => {
                 if (calculateKarma(userBasicInfo) < 20)
                   return showMessage({
                     message:
@@ -165,7 +164,7 @@ function AccountScreen({ navigation }) {
                     type: "info",
                   });
 
-                setBio(event.target.value);
+                setBio(text);
               }}
               placeholder="Let us know about you :)"
               style={{ ...styles.input }}

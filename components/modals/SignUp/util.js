@@ -11,7 +11,7 @@ import { displayNameErrors } from "../../../util";
 
 export const signUp = (
   { email, displayName, password, passwordConfirm },
-  navigate,
+  navigation,
   setActiveModal,
   setUserBasicInfo
 ) => {

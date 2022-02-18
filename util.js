@@ -314,18 +314,19 @@ export const userSignUpProgress = (user, noAlert) => {
     return "NSI";
   } else if (!user.emailVerified) {
     if (!noAlert) {
+      user.reload();
       sendEmailVerification(user)
         .then(() => {
-          Modal.info({
-            title: "Verify Email",
-            centered: true,
-            content: "We have re-sent you a verification email :)",
+          showMessage({
+            description: "We have re-sent you a verification email :)",
+            message: "Verify Email",
           });
         })
         .catch((err) => {
-          Modal.error({
-            title: "Verify Email",
-            content: err,
+          showMessage({
+            description: err,
+            message: "Verify Email",
+            type: "error",
           });
         });
     }
@@ -337,21 +338,24 @@ export const userSignUpProgressFunction = (setStarterModal, user) => {
   if (!user) {
     return () => () => setStarterModal(true);
   } else if (!user.emailVerified) {
-    return () => () =>
-      sendEmailVerification(user)
+    return () => () => {
+      user.reload();
+      return sendEmailVerification(user)
         .then(() => {
-          return Modal.info({
-            title: "Verify Email",
-            centered: true,
-            content: "We have re-sent you a verification email :)",
+          return showMessage({
+            description: "We have re-sent you a verification email :)",
+            message: "Verify Email",
+            type: "info",
           });
         })
         .catch((err) => {
-          return Modal.error({
-            title: "Verify Email",
-            content: err,
+          return showMessage({
+            description: err,
+            message: "Verify Email",
+            type: "error",
           });
         });
+    };
   } else return false;
 };
 

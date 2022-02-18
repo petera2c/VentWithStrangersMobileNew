@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import useState from "react-usestateref";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
-import { sendEmailVerification } from "firebase/auth";
 
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
 import { faBell } from "@fortawesome/pro-solid-svg-icons/faBell";
