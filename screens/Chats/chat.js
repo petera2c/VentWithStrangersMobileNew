@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { off } from "firebase/database";
+import { showMessage } from "react-native-flash-message";
 
 import KarmaBadge from "../../components/views/KarmaBadge";
 import MakeAvatar from "../../components/views/MakeAvatar";

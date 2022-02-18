@@ -1,12 +1,19 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { showMessage } from "react-native-flash-message";
 
 export const sendPasswordReset = ({ email }) => {
   sendPasswordResetEmail(getAuth(), email)
     .then(() => {
       // Email sent.
-      alert("Email password reset link sent!");
+      showMessage({
+        message: "Email password reset link sent!",
+        type: "success",
+      });
     })
     .catch((error) => {
-      message.error(error);
+      showMessage({
+        message: error,
+        type: "error",
+      });
     });
 };

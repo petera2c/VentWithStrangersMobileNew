@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { off } from "firebase/database";
 import loadable from "@loadable/component";
-import { Divider, message } from "antd";
 import algoliasearch from "algoliasearch";
+import { showMessage } from "react-native-flash-message";
 
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -157,9 +157,10 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
                           key={user.id}
                           onClick={() => {
                             if (user.id === userBasicInfo.id) {
-                              return message.error(
-                                "You can not remove yourself."
-                              );
+                              return showMessage({
+                                message: "You can not remove yourself.",
+                                type: "error",
+                              });
                             }
 
                             setUsers((users) => {
@@ -248,7 +249,10 @@ function HitDisplay({ existingUsers, hit, setUsers }) {
       onClick={() => {
         setUsers((users) => {
           if (existingUsers.length + users.length >= GROUP_MAX) {
-            message.info(`Groups can have a max of ${GROUP_MAX} people!`);
+            showMessage({
+              message: `Groups can have a max of ${GROUP_MAX} people!`,
+              type: "info",
+            });
             return users;
           }
           users.push(userBasicInfo);
@@ -326,7 +330,10 @@ function DisplayExistingUser({
           icon={faTimes}
           onClick={() => {
             if (user.id === userBasicInfo.id) {
-              return message.error("You can not remove yourself.");
+              return showMessage({
+                message: "You can not remove yourself.",
+                type: "error",
+              });
             }
 
             setExistingUsers((users) => {

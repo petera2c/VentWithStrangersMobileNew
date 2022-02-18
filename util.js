@@ -21,14 +21,18 @@ import {
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/firebase_init";
 import dayjs from "dayjs";
+import { showMessage } from "react-native-flash-message";
 
 import { setUserOnlineStatus } from "./screens/util";
 
 export const blockUser = async (userID, userIDToBlock) => {
   await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);
 
-  message.success("User has been blocked");
-  window.location.reload();
+  showMessage({
+    message: "User has been blocked",
+    type: "success",
+  });
+  NativeModules.DevSettings.reload();
 };
 
 export const calculateKarma = (usereBasicInfo) => {
@@ -81,12 +85,17 @@ export const countdown = (dayjsTimeout, setTimeout, setTimeOutFormatted) => {
 
 export const displayNameErrors = (displayName) => {
   if (getInvalidCharacters(displayName)) {
-    return message.error(
-      "These characters are not allowed in your display name. " +
-        getInvalidCharacters(displayName)
-    );
+    return showMessage({
+      message:
+        "These characters are not allowed in your display name. " +
+        getInvalidCharacters(displayName),
+      type: "error",
+    });
   } else if (displayName.length > 15)
-    return message.error("Display name is too long :'(");
+    return showMessage({
+      message: "Display name is too long :'(",
+      type: "error",
+    });
   else return false;
 };
 

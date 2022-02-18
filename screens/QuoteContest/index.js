@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import dayjs from "dayjs";
+import { showMessage } from "react-native-flash-message";
 
 import { faChevronCircleUp } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
 import { faQuoteLeft } from "@fortawesome/pro-regular-svg-icons/faQuoteLeft";
@@ -141,9 +142,10 @@ function QuoteContestScreen({ navigation }) {
             if (userInteractionIssues) return;
 
             if (calculateKarma(userBasicInfo) < 20)
-              return message.info(
-                "You need 20 karma points to interact with this :)"
-              );
+              return showMessage({
+                message: "You need 20 karma points to interact with this :)",
+                type: "info",
+              });
 
             if (!event.target.value && quoteID) setQuoteID(null);
             setMyQuote(event.target.value);

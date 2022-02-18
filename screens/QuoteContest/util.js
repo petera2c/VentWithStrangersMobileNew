@@ -17,6 +17,7 @@ import {
 import { db } from "../../config/firebase_init";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { showMessage } from "react-native-flash-message";
 
 import { getEndAtValueTimestamp } from "../../util";
 
@@ -40,7 +41,10 @@ export const deleteQuote = async (
     });
   setCanUserCreateQuote(true);
   setQuoteID(null);
-  message.success("Quote deleted!");
+  showMessage({
+    message: "Quote deleted!",
+    type: "success",
+  });
 };
 
 export const getCanUserCreateQuote = async (setCanUserCreateQuote, userID) => {
@@ -112,9 +116,10 @@ export const getQuotes = async (quotes, setCanLoadMoreQuotes, setQuotes) => {
 
 export const likeOrUnlikeQuote = (hasLiked, quote, user) => {
   if (!user)
-    return message.info(
-      "You must sign in or register an account to support a comment!"
-    );
+    return showMessage({
+      message: "You must sign in or register an account to support a comment!",
+      type: "info",
+    });
 
   setDoc(doc(db, "quote_likes", quote.id + "|||" + user.uid), {
     liked: !hasLiked,
@@ -130,7 +135,10 @@ export const reportQuote = (option, quoteID, userID) => {
     userID,
   });
 
-  message.success("Report successful :)");
+  showMessage({
+    message: "Report successful :)",
+    type: "success",
+  });
 };
 
 export const saveQuote = async (
@@ -143,9 +151,12 @@ export const saveQuote = async (
   userID
 ) => {
   if (quote.length > 150)
-    return message.error(
-      "Your quote has too many characters. There is a max of 150 characters."
-    );
+    return showMessage({
+      message:
+        "Your quote has too many characters. There is a max of 150 characters.",
+      type: "error",
+    });
+
   if (quoteID) {
     await updateDoc(doc(db, "quotes", quoteID), { userID, value: quote });
 
@@ -155,7 +166,10 @@ export const saveQuote = async (
       return [...oldQuotes];
     });
     setMyQuote("");
-    message.success("Updated successfully! :)");
+    showMessage({
+      message: "Updated successfully! :)",
+      type: "success",
+    });
   } else if (canUserCreateQuote) {
     const newQuote = await addDoc(collection(db, "quotes"), {
       userID,
@@ -164,7 +178,10 @@ export const saveQuote = async (
 
     const newQuoteDoc = await getDoc(newQuote);
 
-    message.success("Quote saved!");
+    showMessage({
+      message: "Quote saved!",
+      type: "success",
+    });
 
     setQuotes((oldQuotes) => [
       { id: newQuote.id, doc: newQuoteDoc, ...newQuoteDoc.data() },
@@ -173,6 +190,9 @@ export const saveQuote = async (
     setCanUserCreateQuote(false);
     setMyQuote("");
   } else {
-    message.error("You can only create one quote per day");
+    showMessage({
+      message: "You can only create one quote per day",
+      type: "error",
+    });
   }
 };

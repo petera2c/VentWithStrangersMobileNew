@@ -15,6 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase_init";
+import { showMessage } from "react-native-flash-message";
 
 import {
   getEndAtValueTimestamp,
@@ -52,10 +53,13 @@ export const commentVent = async (
   return true;
 };
 
-export const deleteVent = async (navigate, ventID) => {
+export const deleteVent = async (navigation, ventID) => {
   await deleteDoc(doc(db, "vents", ventID));
-  message.success("Vent deleted!");
-  navigate("/");
+  showMessage({
+    message: "Vent deleted!",
+    type: "success",
+  });
+  navigation.jumpTo("Feed");
 };
 
 export const findPossibleUsersToTag = async (
@@ -297,7 +301,10 @@ export const reportVent = async (option, userID, ventID) => {
     ventID,
   });
 
-  message.success("Report successful :)");
+  showMessage({
+    message: "Report successful :)",
+    type: "success",
+  });
 };
 
 export const tagUser = (

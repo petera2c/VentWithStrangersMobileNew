@@ -1,6 +1,8 @@
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../config/db_init";
 
+import { showMessage } from "react-native-flash-message";
+
 export const getActiveSection = (activeSection) => {
   if (activeSection === 0) return "topType";
   else if (activeSection === 1) return "accessoriesType";
@@ -22,7 +24,10 @@ export const saveAvatar = async (avatar, setUserBasicInfo, userID) => {
     return temp;
   });
 
-  message.success("Avatar saved!");
+  showMessage({
+    message: "Avatar saved!",
+    type: "success",
+  });
 };
 
 export const topArray = [

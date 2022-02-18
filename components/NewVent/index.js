@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import algoliasearch from "algoliasearch";
+import { showMessage } from "react-native-flash-message";
 
 import { faAngleUp } from "@fortawesome/pro-solid-svg-icons/faAngleUp";
 import { faQuestionCircle } from "@fortawesome/pro-solid-svg-icons/faQuestionCircle";
@@ -215,11 +216,13 @@ function NewVentScreen({ miniVersion, navigation, route }) {
                 if (postingDisableFunction) return postingDisableFunction();
 
                 if (e.target.value.length > TITLE_LENGTH_MAXIMUM) {
-                  return message.info(
-                    "Vent titles can't have more than " +
+                  return showMessage({
+                    message:
+                      "Vent titles can't have more than " +
                       TITLE_LENGTH_MAXIMUM +
-                      " characters :("
-                  );
+                      " characters :(",
+                    type: "info",
+                  });
                 }
 
                 setTitle(e.target.value);
@@ -320,7 +323,10 @@ function NewVentScreen({ miniVersion, navigation, route }) {
                   if (postingDisableFunction) return postingDisableFunction();
 
                   if (!description) {
-                    return message.info("You need to enter a description :)");
+                    return showMessage({
+                      message: "You need to enter a description :)",
+                      type: "info",
+                    });
                   } else if (!checkVentTitle(title)) {
                     return;
                   } else {
@@ -449,7 +455,10 @@ function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
         if (postingDisableFunction) return postingDisableFunction();
 
         if (tags && tags.length >= 3) {
-          return message.info("You can not set more than 3 tags in a vent!");
+          return showMessage({
+            message: "You can not set more than 3 tags in a vent!",
+            type: "info",
+          });
         }
         import("./util").then((functions) => {
           functions.updateTags(setTags, tagHit);

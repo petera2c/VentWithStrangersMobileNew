@@ -25,6 +25,7 @@ import {
   update,
 } from "firebase/database";
 import { db, db2 } from "../../config/firebase_init";
+import { showMessage } from "react-native-flash-message";
 
 import {
   getEndAtValueTimestamp,
@@ -83,7 +84,10 @@ export const deleteConversation = async (
   setActiveConversation(false);
   navigate("/chat");
 
-  message.success("Success :)!");
+  showMessage({
+    message: "Success :)!",
+    type: "success",
+  });
 };
 
 export const deleteMessage = async (conversationID, messageID, setMessages) => {
@@ -98,7 +102,10 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
     );
     return [...messages];
   });
-  message.success("Message deleted!");
+  showMessage({
+    message: "Message deleted!",
+    type: "success",
+  });
 };
 
 export const getConversationPartnerUserID = (members, userID) => {

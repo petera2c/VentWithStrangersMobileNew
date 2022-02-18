@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { showMessage } from "react-native-flash-message";
 
 import { faBirthdayCake } from "@fortawesome/pro-regular-svg-icons/faBirthdayCake";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
@@ -487,9 +488,11 @@ function VentComponent({
                         return signUpProgressFunction();
 
                       if (!isUserKarmaSufficient(userBasicInfo))
-                        return message.error(
-                          "Your karma is too low to interact with this"
-                        );
+                        return showMessage({
+                          message:
+                            "Your karma is too low to interact with this",
+                          type: "error",
+                        });
 
                       setCommentString(e.target.value);
                     }}

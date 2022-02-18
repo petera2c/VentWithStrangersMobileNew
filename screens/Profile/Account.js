@@ -7,6 +7,8 @@ import {
   View,
 } from "react-native";
 import dayjs from "dayjs";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { showMessage } from "react-native-flash-message";
 
 import { faBirthdayCake } from "@fortawesome/pro-solid-svg-icons/faBirthdayCake";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
@@ -119,10 +121,11 @@ function AccountScreen({ navigation }) {
               <TextInput
                 onChangeText={(text) => {
                   if (text.length > 50)
-                    return message.info(
-                      "You can not write more than 50 characters for your gender"
-                    );
-
+                    return showMessage({
+                      message:
+                        "You can not write more than 50 characters for your gender",
+                      type: "info",
+                    });
                   setGender(text);
                 }}
                 placeholder="Any"
@@ -136,10 +139,11 @@ function AccountScreen({ navigation }) {
               <TextInput
                 onChangeText={(text) => {
                   if (text.length > 50)
-                    return message.info(
-                      "You can not write more than 50 characters for your pronoun"
-                    );
-
+                    return showMessage({
+                      message:
+                        "You can not write more than 50 characters for your pronoun",
+                      type: "info",
+                    });
                   setPronouns(text);
                 }}
                 name="pronouns"
@@ -155,9 +159,11 @@ function AccountScreen({ navigation }) {
               multiline
               onChangeText={(event) => {
                 if (calculateKarma(userBasicInfo) < 20)
-                  return message.info(
-                    "You need 20 karma points to interact with this :)"
-                  );
+                  return showMessage({
+                    message:
+                      "You need 20 karma points to interact with this :)",
+                    type: "info",
+                  });
 
                 setBio(event.target.value);
               }}
@@ -180,6 +186,26 @@ function AccountScreen({ navigation }) {
                   style={{ ...styles.colorPrimary }}
                 />
               </View>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={birthDate ? new Date(birthDate) : new Date()}
+                mode={"date"}
+                is24Hour={true}
+                display="default"
+                onChange={(event, selectedDate) => {
+                  if (!selectedDate) return setBirthDate(null);
+                  const date = new dayjs(selectedDate);
+
+                  const diffInYears = new dayjs().diff(date) / 31536000000;
+                  if (diffInYears > 11) setBirthDate(date);
+                  else {
+                    showMessage({
+                      message: "You are too young to use this application :'(",
+                      type: "error",
+                    });
+                  }
+                }}
+              />
 
               <Text style={{ ...styles.fs20, ...styles.tac }}>
                 This information will be used to connect you with other users
@@ -538,31 +564,5 @@ function AccountScreen({ navigation }) {
     </Screen>
   );
 }
-
-/*<View className="align-center">
-  {false && (
-    <DatePicker
-      value={
-        birthDate
-          ? dayjs(birthDate.format("YYYY/MM/DD"), "YYYY/MM/DD")
-          : null
-      }
-      format="YYYY/MM/DD"
-      onChange={(dateString) => {
-        if (!dateString) return setBirthDate(null);
-        const date = new dayjs(dateString);
-
-        const diffInYears = new dayjs().diff(date) / 31536000000;
-        if (diffInYears > 11) setBirthDate(date);
-        else
-          message.error(
-            "You are too young to use this application :'("
-          );
-      }}
-      size="large"
-    />
-  )}
-</View>
-*/
 
 export default AccountScreen;

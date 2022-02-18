@@ -3,6 +3,7 @@ import { AppState } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import FlashMessage from "react-native-flash-message";
 
 import BottomHeader from "../components/navigations/BottomHeader";
 import Drawer from "../components/navigations/Drawer";
@@ -90,6 +91,7 @@ function Routes() {
           </NavigationContainer>
         </RouteContext.Provider>
       </OnlineUsersContext.Provider>
+      <FlashMessage position="top" />
     </UserContext.Provider>
   );
 }

@@ -18,7 +18,6 @@ function DeleteAccountModal({ close, submit, visible }) {
 
   const [inputString, setInputString] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  console.log("here");
 
   return (
     <Modal transparent={true} visible={visible}>

@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { showMessage } from "react-native-flash-message";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
@@ -288,9 +289,11 @@ function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
     onClick={(e) => {
       setIsMuted(!isMuted);
       muteChat(conversation.id, userID, !isMuted);
-      message.success(
-        "Chat is " + (isMuted ? "unmuted" : "muted") + " :)"
-      );
+      showMessage({
+        message: "Chat is " + (isMuted ? "unmuted" : "muted") + " :)",
+        type: "success",
+      });
+
     }}
   >
     <Text className="flex-fill ic">

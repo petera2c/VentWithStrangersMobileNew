@@ -7,6 +7,7 @@ import {
   limit,
   orderBy,
   query,
+  setDoc,
   startAfter,
   updateDoc,
   where,
@@ -28,6 +29,8 @@ import {
 } from "firebase/auth";
 
 import { db, db2 } from "../../config/firebase_init";
+
+import { showMessage } from "react-native-flash-message";
 
 import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
 
@@ -55,9 +58,11 @@ export const followOrUnfollowUser = async (
   );
 
   setIsFollowing(option);
-  message.success(
-    option ? "Followed Successfully :)" : "Unfollowed Successfully :)"
-  );
+
+  showMessage({
+    message: option ? "Followed Successfully :)" : "Unfollowed Successfully :)",
+    type: "success",
+  });
 };
 
 export const getBlockedUsers = async (
@@ -116,7 +121,10 @@ export const getIsFollowing = async (
 
 export const getUser = async (callback, userID) => {
   if (!userID) {
-    message.error("Reload the page please. An unexpected error has occurred.");
+    showMessage({
+      message: "Reload the page please. An unexpected error has occurred.",
+      type: "error",
+    });
     return {};
   }
 
@@ -211,7 +219,11 @@ export const unblockUser = async (blockedUserID, setBlockedUsers, userID) => {
     );
     return [...blockedUsers];
   });
-  message.success("User has been unblocked :)");
+
+  showMessage({
+    message: "User has been unblocked :)",
+    type: "success",
+  });
 };
 
 export const updateUser = async (
@@ -251,11 +263,20 @@ export const updateUser = async (
     userInfo.religion !== religion
   ) {
     if (gender && gender.length > 15)
-      return message.error("Gender can only be a maximum of 15 characters.");
+      return showMessage({
+        message: "Gender can only be a maximum of 15 characters.",
+        type: "error",
+      });
     if (pronouns && pronouns.length > 15)
-      return message.error("Pronouns can only be a maximum of 15 characters.");
+      return showMessage({
+        message: "Pronouns can only be a maximum of 15 characters.",
+        type: "error",
+      });
     if (bio && bio.length > 500)
-      return message.error("Bio has a maximum of 500 characters");
+      return showMessage({
+        message: "Bio has a maximum of 500 characters",
+        type: "error",
+      });
 
     changesFound = true;
 
@@ -265,22 +286,29 @@ export const updateUser = async (
     if (politics === undefined) deleteAccountField("politics", user.uid);
     if (religion === undefined) deleteAccountField("religion", user.uid);
 
-    updateDoc(doc(db, "users_info", user.uid), {
-      bio,
-      birth_date: birthDate ? birthDate.valueOf() : null,
-      gender,
-      pronouns,
-      ...whatInformationHasChanged(
-        education,
-        kids,
-        partying,
-        politics,
-        religion,
-        userInfo
-      ),
-    });
+    setDoc(
+      doc(db, "users_info", user.uid),
+      {
+        bio,
+        birth_date: birthDate ? birthDate.valueOf() : null,
+        gender,
+        pronouns,
+        ...whatInformationHasChanged(
+          education,
+          kids,
+          partying,
+          politics,
+          religion,
+          userInfo
+        ),
+      },
+      { merge: true }
+    );
 
-    message.success("Your account information has been changed");
+    showMessage({
+      message: "Your account information has been changed",
+      type: "success",
+    });
   }
 
   if (displayName && displayName !== user.displayName) {
@@ -302,10 +330,16 @@ export const updateUser = async (
           return temp;
         });
 
-        message.success("Display name updated!");
+        showMessage({
+          message: "Display name updated!",
+          type: "success",
+        });
       })
       .catch((error) => {
-        message.error(error.message);
+        showMessage({
+          message: error.message,
+          type: "error",
+        });
       });
   }
 
@@ -315,14 +349,23 @@ export const updateUser = async (
       .then(() => {
         sendEmailVerification(user)
           .then(() => {
-            message.success("Verification email sent! :)");
+            showMessage({
+              message: "Verification email sent! :)",
+              type: "success",
+            });
           })
           .catch((error) => {
-            message.error(error);
+            showMessage({
+              message: error,
+              type: "error",
+            });
           });
       })
       .catch((error) => {
-        message.error(error.message);
+        showMessage({
+          message: error.message,
+          type: "error",
+        });
       });
   }
   if (newPassword && confirmPassword)
@@ -332,14 +375,30 @@ export const updateUser = async (
       user
         .updatePassword(newPassword)
         .then(() => {
-          message.success("Changed password successfully!");
+          showMessage({
+            message: "Changed password successfully!",
+            type: "success",
+          });
         })
         .catch((error) => {
-          message.error(error.message);
+          showMessage({
+            message: error.message,
+            type: "error",
+          });
         });
-    } else message.error("Passwords are not the same!");
+    } else {
+      showMessage({
+        message: "Passwords are not the same!",
+        type: "error",
+      });
+    }
 
-  if (!changesFound) message.info("No changes!");
+  if (!changesFound) {
+    showMessage({
+      message: "No changes!",
+      type: "info",
+    });
+  }
 };
 
 const whatInformationHasChanged = (

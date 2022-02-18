@@ -11,6 +11,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { showMessage } from "react-native-flash-message";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -32,7 +33,11 @@ export const checks = (
   userVentTimeOut
 ) => {
   if (userVentTimeOut && !ventID) {
-    return () => () => message.info("You need to wait to vent again");
+    return () => () =>
+      showMessage({
+        message: "You need to wait to vent again",
+        type: "info",
+      });
   }
 
   const userInteractionIssues = userSignUpProgress(user, true);
@@ -45,11 +50,13 @@ export const checks = (
 
   if (!isUserKarmaSufficient) {
     return () => () =>
-      message.error(
-        "Your karma is currently " +
+      showMessage({
+        message:
+          "Your karma is currently " +
           calculateKarma(userBasicInfo) +
-          ". This indicates you have not been following our rules and are now forbidden to comment or post."
-      );
+          ". This indicates you have not been following our rules and are now forbidden to comment or post.",
+        type: "error",
+      });
   }
 
   return false;
@@ -57,13 +64,22 @@ export const checks = (
 
 export const checkVentTitle = (title) => {
   if (title.length > TITLE_LENGTH_MAXIMUM) {
-    message.info("Title is too long! :(");
+    showMessage({
+      message: "Title is too long! :(",
+      type: "info",
+    });
     return false;
   } else if (title.length < TITLE_LENGTH_MINIMUM) {
-    message.info("Your title is too short! :(");
+    showMessage({
+      message: "Your title is too short! :(",
+      type: "info",
+    });
     return false;
   } else if (!title.trim()) {
-    message.info("Your title needs more than just white space :(");
+    showMessage({
+      message: "Your title needs more than just white space :(",
+      type: "info",
+    });
     return false;
   }
 
@@ -159,7 +175,10 @@ export const saveVent = async (
   ventObject.new_tags = tagIDs.sort();
 
   if (ventObject.new_tags && ventObject.new_tags.length >= 4)
-    return message.info("You can not set more than 3 tags in a vent!");
+    return showMessage({
+      message: "You can not set more than 3 tags in a vent!",
+      type: "info",
+    });
 
   if (isBirthdayPost) ventObject.is_birthday_post = isBirthdayPost;
 
@@ -189,7 +208,10 @@ export const updateTags = (setTags, tag) => {
       oldTags &&
       oldTags.findIndex((oldTag) => oldTag.objectID === tag.objectID) >= 0
     ) {
-      message.info("Tag is already added :)");
+      showMessage({
+        message: "Tag is already added :)",
+        type: "info",
+      });
       return oldTags;
     } else {
       return [tag, ...oldTags].sort((a, b) => {
