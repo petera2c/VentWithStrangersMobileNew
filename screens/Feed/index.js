@@ -175,8 +175,23 @@ function FeedScreen({ navigation, route }) {
 
         <TrendingOptions
           close={() => setTrendingOptions(false)}
-          pathname={pathname}
-          setPathname={setPathname}
+          options={[
+            {
+              isActive: pathname === "/trending",
+              onClick: () => setPathname("/trending"),
+              title: "Trending Today",
+            },
+            {
+              isActive: pathname === "/trending/this-week",
+              onClick: () => setPathname("/trending/this-week"),
+              title: "Trending This Week",
+            },
+            {
+              isActive: pathname === "/trending/this-month",
+              onClick: () => setPathname("/trending/this-month"),
+              title: "Trending This Month",
+            },
+          ]}
           visible={trendingOptions}
         />
 

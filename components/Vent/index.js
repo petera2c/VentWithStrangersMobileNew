@@ -24,6 +24,7 @@ import ContentOptions from "../ContentOptions";
 import KarmaBadge from "../views/KarmaBadge";
 import MakeAvatar from "../views/MakeAvatar";
 import StarterModal from "../modals/Starter";
+import TrendingOptions from "../../components/modals/TrendingOptions";
 
 import { colors, styles } from "../../styles";
 
@@ -80,6 +81,7 @@ function VentComponent({
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
+  const [trendingOptions, setTrendingOptions] = useState(false);
   const [vent, setVent] = useState(ventInit);
 
   const [isUserAccountNewLocal, setIsUserAccountNewLocal] = useState();
@@ -172,7 +174,7 @@ function VentComponent({
 
   if (isContentBlocked) return <View />;
 
-  const something = (
+  const mainVentBody = (
     <View style={{ ...styles.box, ...styles.mb16, ...styles.pt16 }}>
       <View style={{ ...styles.borderBottom, ...styles.pa16 }}>
         <View
@@ -408,18 +410,74 @@ function VentComponent({
 
       {!searchPreviewMode && displayCommentField && comments && (
         <View>
+          <View
+            style={{
+              ...styles.borderBottom,
+              ...styles.px32,
+              ...styles.py16,
+            }}
+          >
+            <TouchableOpacity onPress={() => setTrendingOptions(true)}>
+              <Text style={{ ...styles.fs20, ...styles.colorMain }}>
+                Sort By: {activeSort}
+              </Text>
+            </TouchableOpacity>
+          </View>
           {vent.comment_counter > 0 && (
-            <View
-              style={{
-                ...styles.borderBottom,
-                ...styles.px32,
-                ...styles.py16,
-              }}
-            >
-              <TouchableOpacity className="blue">
-                <Text>Sort By: {activeSort}</Text>
-              </TouchableOpacity>
-            </View>
+            <TrendingOptions
+              close={() => setTrendingOptions(false)}
+              options={[
+                {
+                  isActive: activeSort === "First",
+                  onClick: () => {
+                    setActiveSort("First");
+
+                    getVentComments(
+                      "First",
+                      [],
+                      setCanLoadMoreComments,
+                      setComments,
+                      false,
+                      ventID ? ventID : vent.id
+                    );
+                  },
+                  title: "First",
+                },
+                {
+                  isActive: activeSort === "Best",
+                  onClick: () => {
+                    setActiveSort("Best");
+
+                    getVentComments(
+                      "Best",
+                      [],
+                      setCanLoadMoreComments,
+                      setComments,
+                      false,
+                      ventID ? ventID : vent.id
+                    );
+                  },
+                  title: "Best",
+                },
+                {
+                  isActive: activeSort === "Last",
+                  onClick: () => {
+                    setActiveSort("Last");
+
+                    getVentComments(
+                      "Last",
+                      [],
+                      setCanLoadMoreComments,
+                      setComments,
+                      false,
+                      ventID ? ventID : vent.id
+                    );
+                  },
+                  title: "Last",
+                },
+              ]}
+              visible={trendingOptions}
+            />
           )}
           {comments && comments.length > 0 && (
             <View className="column px32 pb16">
@@ -484,10 +542,10 @@ function VentComponent({
           }
           style={{ ...styles.flexFill }}
         >
-          <View style={{ ...styles.pa16 }}>{something}</View>
+          <View style={{ ...styles.pa16 }}>{mainVentBody}</View>
         </ScrollView>
       ) : (
-        something
+        mainVentBody
       )}
 
       {!searchPreviewMode && displayCommentField && (
@@ -588,64 +646,6 @@ function Tag({ navigation, tagID }) {
         {viewTagFunction(tagID)}
       </Text>
     </TouchableOpacity>
-  );
-}
-
-function Something({}) {
-  return (
-    <View className="column bg-white shadow-2 pa8 br8">
-      <Text
-        className="button-4 py8"
-        onClick={() => {
-          setActiveSort("First");
-
-          getVentComments(
-            "First",
-            [],
-            setCanLoadMoreComments,
-            setComments,
-            false,
-            ventID ? ventID : vent.id
-          );
-        }}
-      >
-        First
-      </Text>
-      <Text
-        className="button-4 py8"
-        onClick={() => {
-          setActiveSort("Best");
-
-          getVentComments(
-            "Best",
-            [],
-            setCanLoadMoreComments,
-            setComments,
-            false,
-            ventID ? ventID : vent.id
-          );
-        }}
-      >
-        Best
-      </Text>
-      <Text
-        className="button-4 py8"
-        onClick={() => {
-          setActiveSort("Last");
-
-          getVentComments(
-            "Last",
-            [],
-            setCanLoadMoreComments,
-            setComments,
-            false,
-            ventID ? ventID : vent.id
-          );
-        }}
-      >
-        Last
-      </Text>
-    </View>
   );
 }
 

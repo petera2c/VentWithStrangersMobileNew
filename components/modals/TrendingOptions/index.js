@@ -15,7 +15,7 @@ import {
 
 import { colors, styles } from "../../../styles";
 
-function ForgotPasswordModal({ close, pathname, setPathname, visible }) {
+function ForgotPasswordModal({ close, options, visible }) {
   return (
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
@@ -46,30 +46,16 @@ function ForgotPasswordModal({ close, pathname, setPathname, visible }) {
                 </Text>
               </View>
               <View style={{ ...styles.pa16 }}>
-                <Option
-                  isActive={pathname === "/trending"}
-                  onPress={() => {
-                    setPathname("/trending");
-                    close();
-                  }}
-                  title="Trending Today"
-                />
-                <Option
-                  isActive={pathname === "/trending/this-week"}
-                  onPress={() => {
-                    setPathname("/trending/this-week");
-                    close();
-                  }}
-                  title="Trending This Week"
-                />
-                <Option
-                  isActive={pathname === "/trending/this-month"}
-                  onPress={() => {
-                    setPathname("/trending/this-month");
-                    close();
-                  }}
-                  title="Trending This Month"
-                />
+                {options.map((option, index) => (
+                  <Option
+                    isActive={option.isActive}
+                    onPress={() => {
+                      option.onClick();
+                      close();
+                    }}
+                    title={option.title}
+                  />
+                ))}
               </View>
             </SafeAreaView>
           </TouchableWithoutFeedback>
