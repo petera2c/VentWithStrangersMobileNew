@@ -26,7 +26,6 @@ import {
 import { findPossibleUsersToTag } from "../Vent/util";
 import {
   deleteComment,
-  editComment,
   getCommentHasLiked,
   likeOrUnlikeComment,
   reportComment,
@@ -40,14 +39,15 @@ function CommentComponent({
   comment2,
   commentID,
   commentIndex,
+  navigation,
   setComments,
+  setCommentString,
+  setEdittingCommentID,
   ventUserID,
 }) {
   const { user } = useContext(UserContext);
 
   const [comment, setComment] = useState(comment2);
-  const [commentString, setCommentString] = useState("");
-  const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [isUserOnline, setIsUserOnline] = useState(false);
@@ -55,6 +55,7 @@ function CommentComponent({
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
   useEffect(() => {
+    setComment(comment2);
     let isUserOnlineSubscribe;
 
     if (user) {
@@ -65,21 +66,21 @@ function CommentComponent({
         },
         user.uid
       );
-      hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
+      hasUserBlockedUser(user.uid, comment2.userID, setIsContentBlocked);
     }
 
     getUserBasicInfo((newBasicUserInfo) => {
       setUserBasicInfo(newBasicUserInfo);
-    }, comment.userID);
+    }, comment2.userID);
 
     isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
       setIsUserOnline(isUserOnline.state);
-    }, comment.userID);
+    }, comment2.userID);
 
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [commentID, comment.text, comment.userID, user]);
+  }, [commentID, comment2, user]);
 
   if (isContentBlocked) return <View />;
 
@@ -91,6 +92,7 @@ function CommentComponent({
         <DisplayName
           displayName={userBasicInfo.displayName}
           isUserOnline={isUserOnline}
+          navigation={navigation}
           userBasicInfo={userBasicInfo}
           userID={comment.userID}
         />
@@ -113,8 +115,8 @@ function CommentComponent({
               deleteComment(comment.id, setComments);
             }}
             editFunction={() => {
+              setEdittingCommentID(comment.id);
               setCommentString(comment.text);
-              setEditingComment(true);
             }}
             objectID={comment.id}
             objectUserID={comment.userID}
@@ -132,11 +134,9 @@ function CommentComponent({
           />
         )}
       </View>
-      {!editingComment && (
-        <Text style={{ ...styles.pTag, ...styles.mb16 }}>
-          {swapTags(comment.text)}
-        </Text>
-      )}
+      <Text style={{ ...styles.pTag, ...styles.mb16 }}>
+        {swapTags(comment.text)}
+      </Text>
 
       <View
         style={{

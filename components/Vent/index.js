@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Image,
+  Keyboard,
   RefreshControl,
   ScrollView,
   Text,
@@ -14,8 +15,10 @@ import { showMessage } from "react-native-flash-message";
 import { MentionInput } from "react-native-controlled-mentions";
 
 import { faBirthdayCake } from "@fortawesome/pro-regular-svg-icons/faBirthdayCake";
+import { faCheck } from "@fortawesome/pro-regular-svg-icons/faCheck";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faTimes } from "@fortawesome/pro-regular-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import Comment from "../Comment";
@@ -42,6 +45,7 @@ import {
 import {
   commentVent,
   deleteVent,
+  editComment,
   findPossibleUsersToTag,
   getVent,
   getVentComments,
@@ -79,6 +83,7 @@ function VentComponent({
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentString, setCommentString] = useState("");
+  const [edittingCommentID, setEdittingCommentID] = useState("");
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [isUserOnline, setIsUserOnline] = useState(false);
@@ -167,6 +172,7 @@ function VentComponent({
     ventInit,
     ventID,
   ]);
+  console.log(refreshing);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (
@@ -488,7 +494,10 @@ function VentComponent({
                     commentID={comment.id}
                     commentIndex={index}
                     comment2={comment}
+                    navigation={navigation}
                     setComments={setComments}
+                    setCommentString={setCommentString}
+                    setEdittingCommentID={setEdittingCommentID}
                     ventUserID={vent.userID}
                     key={comment.id}
                   />
@@ -604,20 +613,73 @@ function VentComponent({
                 value={commentString}
               />
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                if (signUpProgressFunction) return signUpProgressFunction();
+            {Boolean(edittingCommentID) ? (
+              <View style={{ ...styles.flexRow, ...styles.ml8 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log(edittingCommentID);
+                    editComment(edittingCommentID, commentString, setComments);
 
-                if (!commentString) return;
-                commentVent(commentString, setVent, user, vent, vent.id);
+                    console.log("jere");
+                    setEdittingCommentID(false);
+                    setCommentString("");
 
-                scrollToBottom();
-                setCommentString("");
-              }}
-              style={{ ...styles.buttonPrimary, ...styles.ml8 }}
-            >
-              <Text style={{ ...styles.fs20, ...styles.colorWhite }}>Send</Text>
-            </TouchableOpacity>
+                    Keyboard.dismiss();
+                  }}
+                  style={{
+                    ...styles.border,
+                    borderColor: colors.main,
+                    ...styles.fullCenter,
+                    ...styles.pa16,
+                    ...styles.mr8,
+                    ...styles.br4,
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    style={{ ...styles.colorMain }}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    setEdittingCommentID(false);
+                    setCommentString("");
+                  }}
+                  style={{
+                    ...styles.border,
+                    ...styles.fullCenter,
+                    ...styles.pa16,
+                    ...styles.br4,
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    style={{
+                      ...styles.tac,
+                      ...styles.colorGrey1,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  if (signUpProgressFunction) return signUpProgressFunction();
+
+                  if (!commentString) return;
+                  commentVent(commentString, setVent, user, vent, vent.id);
+
+                  scrollToBottom();
+                  setCommentString("");
+                }}
+                style={{ ...styles.buttonPrimary, ...styles.ml8 }}
+              >
+                <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                  Send
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       )}

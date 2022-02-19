@@ -12,6 +12,7 @@ import {
   setDoc,
   startAfter,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase_init";
@@ -62,6 +63,21 @@ export const deleteVent = async (navigation, ventID) => {
   });
 
   navigation.jumpTo("Feed");
+};
+
+export const editComment = async (commentID, commentString, setComments) => {
+  updateDoc(doc(db, "comments", commentID), {
+    text: commentString,
+    last_updated: Timestamp.now().toMillis(),
+  });
+
+  setComments((comments) => {
+    const commentIndex = comments.findIndex(
+      (comment) => comment.id === commentID
+    );
+    comments[commentIndex].text = commentString;
+    return [...comments];
+  });
 };
 
 export const findPossibleUsersToTag = async (

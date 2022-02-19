@@ -33,21 +33,6 @@ export const deleteComment = async (commentID, setComments) => {
   });
 };
 
-export const editComment = async (commentID, commentString, setComments) => {
-  updateDoc(doc(db, "comments", commentID), {
-    text: commentString,
-    last_updated: Timestamp.now().toMillis(),
-  });
-
-  setComments((comments) => {
-    const commentIndex = comments.findIndex(
-      (comment) => comment.id === commentID
-    );
-    comments[commentIndex].text = commentString;
-    return [...comments];
-  });
-};
-
 export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
   const snapshot = await getDoc(
     doc(db, "comment_likes", commentID + "|||" + userID)

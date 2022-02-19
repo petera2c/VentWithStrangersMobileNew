@@ -520,15 +520,19 @@ function ProfileScreen({ navigation, route }) {
             </View>
           )}
           {!postsSection && (
-            <View className="x-fill column">
+            <View>
               {comments && comments.length > 0 && (
-                <View className="column bg-white br8 px32 py16">
+                <View style={{ ...styles.box }}>
                   {comments &&
                     comments.map((comment, index) => {
                       return (
                         <TouchableOpacity
                           key={index}
-                          to={"/vent/" + comment.ventID + "/"}
+                          onPress={() => {
+                            navigation.jumpTo("SingleVent", {
+                              ventID: comment.ventID,
+                            });
+                          }}
                         >
                           <Comment
                             arrayLength={comments.length}
@@ -536,6 +540,7 @@ function ProfileScreen({ navigation, route }) {
                             commentIndex={index}
                             comment2={comment}
                             key={index}
+                            navigation={navigation}
                           />
                         </TouchableOpacity>
                       );
