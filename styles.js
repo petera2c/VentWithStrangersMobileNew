@@ -253,7 +253,9 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   buttonPrimary: {
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     borderRadius: 4,
     backgroundColor: colors.main,
     padding: 8,
@@ -261,6 +263,7 @@ export const styles = StyleSheet.create({
   buttonSecondary: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     borderRadius: 4,
     borderWidth: 2,
     borderColor: colors.blue2,

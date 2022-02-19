@@ -1,9 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  KeyboardAvoidingView,
+  Modal,
   RefreshControl,
+  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { off } from "firebase/database";
@@ -66,6 +70,7 @@ function ProfileScreen({ navigation, route }) {
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [showSomeModal, setShowSomeModal] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
@@ -366,64 +371,17 @@ function ProfileScreen({ navigation, route }) {
                     </Text>
                   )}
                 </View>
-                {false &&
-                  userBasicInfo.displayName &&
+                {userBasicInfo.displayName &&
                   userID &&
                   user &&
                   userID !== user.uid && (
-                    <Dropdown
-                      overlay={
-                        <View className="column x-fill bg-white border-all px16 py8 br8">
-                          <View
-                            className="button-8 clickable align-center"
-                            onClick={() => {
-                              const userInteractionIssues = userSignUpProgress(
-                                user
-                              );
-
-                              if (userInteractionIssues) {
-                                if (userInteractionIssues === "NSI")
-                                  setStarterModal(true);
-                                return;
-                              }
-
-                              followOrUnfollowUser(
-                                !isFollowing,
-                                setIsFollowing,
-                                user.uid,
-                                userBasicInfo.id
-                              );
-                            }}
-                          >
-                            <Text className="ic ellipsis">
-                              {isFollowing ? "Unfollow" : "Follow"}{" "}
-                              {capitolizeFirstChar(userBasicInfo.displayName)}
-                            </Text>
-                          </View>
-                          <View
-                            className="button-8 clickable align-center"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              //setBlockModal(!blockModal);
-                            }}
-                          >
-                            <Text className=" flex-fill">Block Person</Text>
-                            <FontAwesomeIcon
-                              className="ml8"
-                              icon={faUserLock}
-                            />
-                          </View>
-                        </View>
-                      }
-                      placement="bottomRight"
-                      trigger={["click"]}
-                    >
+                    <TouchableOpacity onPress={() => setShowSomeModal(true)}>
                       <FontAwesomeIcon
                         className="clickable grey-9"
                         icon={faEllipsisV}
                         style={{ width: "50px" }}
                       />
-                    </Dropdown>
+                    </TouchableOpacity>
                   )}
               </View>
             </View>
@@ -574,6 +532,86 @@ function ProfileScreen({ navigation, route }) {
           )}
         </View>
       </ScrollView>
+
+      <Modal transparent={true} visible={Boolean(showSomeModal)}>
+        <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              setShowSomeModal(false);
+            }}
+            style={{
+              ...styles.fill,
+              display: "flex",
+              justifyContent: "flex-end",
+              backgroundColor: "rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <TouchableWithoutFeedback>
+              <SafeAreaView
+                style={{
+                  ...styles.bgWhite,
+                  overflow: "hidden",
+                  ...styles.br8,
+                }}
+              >
+                <View style={{ ...styles.bgBlue1, ...styles.pa16 }}>
+                  <Text style={{ ...styles.title }}>Trending Options</Text>
+                </View>
+                <View style={{ ...styles.pa16 }}>
+                  <TouchableOpacity
+                    className="button-8 clickable align-center"
+                    onPress={() => {
+                      const userInteractionIssues = userSignUpProgress(user);
+
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          setStarterModal(true);
+                        return;
+                      }
+
+                      followOrUnfollowUser(
+                        !isFollowing,
+                        setIsFollowing,
+                        user.uid,
+                        userBasicInfo.id
+                      );
+                    }}
+                    style={{ ...styles.buttonPrimary, ...styles.mb8 }}
+                  >
+                    <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                      {isFollowing ? "Unfollow" : "Follow"}{" "}
+                      {capitolizeFirstChar(userBasicInfo.displayName)}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      blockUser(user.uid, userID);
+                    }}
+                    style={{ ...styles.buttonPrimary }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.fs20,
+                        ...styles.colorWhite,
+                        ...styles.mr8,
+                      }}
+                    >
+                      Block {capitolizeFirstChar(userBasicInfo.displayName)}
+                    </Text>
+                    <FontAwesomeIcon
+                      icon={faUserLock}
+                      size={24}
+                      style={{ ...styles.colorWhite }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </SafeAreaView>
+            </TouchableWithoutFeedback>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </Modal>
+
       <StarterModal
         activeModal={starterModal}
         setActiveModal={setStarterModal}

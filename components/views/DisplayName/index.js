@@ -49,7 +49,7 @@ function DisplayName({
                 {capitolizedDisplayName}
               </Text>
               {isUserOnline === "online" && (
-                <View style={{ ...styles.onlineDot }} />
+                <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
               )}
             </View>
           )}
