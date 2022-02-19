@@ -37,8 +37,7 @@ function LoginModal({ setActiveModal, visible }) {
           }}
           style={{
             ...styles.fill,
-            display: "flex",
-            justifyContent: "flex-end",
+            ...styles.justifyEnd,
             backgroundColor: "rgba(0, 0, 0, 0.2)",
           }}
         >

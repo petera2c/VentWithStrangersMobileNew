@@ -172,7 +172,6 @@ function VentComponent({
     ventInit,
     ventID,
   ]);
-  console.log(refreshing);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (
@@ -617,10 +616,8 @@ function VentComponent({
               <View style={{ ...styles.flexRow, ...styles.ml8 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log(edittingCommentID);
                     editComment(edittingCommentID, commentString, setComments);
 
-                    console.log("jere");
                     setEdittingCommentID(false);
                     setCommentString("");
 

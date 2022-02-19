@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
-
-import { faComet } from "@fortawesome/pro-duotone-svg-icons/faComet";
-import { faMeteor } from "@fortawesome/pro-duotone-svg-icons/faMeteor";
-import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
+import {
+  KeyboardAvoidingView,
+  Modal,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { faComet } from "@fortawesome/pro-solid-svg-icons/faComet";
+import { faMeteor } from "@fortawesome/pro-solid-svg-icons/faMeteor";
+import { faStarShooting } from "@fortawesome/pro-solid-svg-icons/faStarShooting";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { styles } from "../../../styles";
 
-function NewRewardModal({ close, newReward }) {
+function NewRewardModal({ close, newReward, visible }) {
   const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
@@ -16,31 +23,73 @@ function NewRewardModal({ close, newReward }) {
   }, []);
 
   return (
-    <Modal
-      className="modal-container full-center"
-      onClick={(e) => {
-        if (canClose) close();
-      }}
-    >
-      <View
-        className={
-          "modal column align-center ov-auto bg-white pa32 br8 " +
-          (isMobileOrTablet ? "mx8" : "container medium")
-        }
-      >
-        <View className="column x-fill" size="large">
-          <View className="column">
-            <h1 className="blue tac">Congratulations!</h1>
-            <h4 className="tac">{newReward.title}</h4>
-            <p className="blue tac">+ {newReward.karma_gained} Karma Points</p>
-          </View>
-          <View>
-            <FontAwesomeIcon className="blue" icon={faComet} size="5x" />
-            <FontAwesomeIcon className="blue" icon={faMeteor} size="5x" />
-            <FontAwesomeIcon className="blue" icon={faStarShooting} size="5x" />
-          </View>
-        </View>
-      </View>
+    <Modal transparent={true} visible={visible}>
+      <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            close();
+          }}
+          style={{
+            ...styles.fill,
+            ...styles.fullCenter,
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <TouchableWithoutFeedback>
+            <SafeAreaView>
+              <View
+                style={{
+                  ...styles.box,
+                  ...styles.pa32,
+                }}
+              >
+                <View style={{ ...styles.mb16 }}>
+                  <Text style={{ ...styles.title, ...styles.mb8 }}>
+                    Congratulations!
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.pTag,
+                      ...styles.tac,
+                      ...styles.mb8,
+                    }}
+                  >
+                    {newReward.title}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.fs20,
+                      ...styles.colorMain,
+                      ...styles.tac,
+                      ...styles.mb8,
+                    }}
+                  >
+                    + {newReward.karma_gained} Karma Points
+                  </Text>
+                </View>
+                <View style={{ ...styles.flexRow, ...styles.fullCenter }}>
+                  <FontAwesomeIcon
+                    icon={faComet}
+                    size={48}
+                    style={{ ...styles.colorMain }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faMeteor}
+                    size={48}
+                    style={{ ...styles.colorMain }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faStarShooting}
+                    size={48}
+                    style={{ ...styles.colorMain }}
+                  />
+                </View>
+              </View>
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

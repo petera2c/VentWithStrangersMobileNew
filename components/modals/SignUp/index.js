@@ -42,8 +42,7 @@ function SignUpModal({ setActiveModal, visible }) {
           }}
           style={{
             ...styles.fill,
-            display: "flex",
-            justifyContent: "flex-end",
+            ...styles.justifyEnd,
             backgroundColor: "rgba(0, 0, 0, 0.2)",
           }}
         >
@@ -64,6 +63,7 @@ function SignUpModal({ setActiveModal, visible }) {
               <View style={{ ...styles.pa16 }}>
                 <TextInput
                   autoCapitalize="none"
+                  autocorrect={false}
                   name="displayName"
                   onChangeText={(text) => setDisplayName(text)}
                   placeholder="Display Name"
@@ -73,6 +73,7 @@ function SignUpModal({ setActiveModal, visible }) {
                 />
                 <TextInput
                   autoCapitalize="none"
+                  autocorrect={false}
                   name="email"
                   onChangeText={(text) => setEmail(text)}
                   placeholder="Email Address"
@@ -87,6 +88,7 @@ function SignUpModal({ setActiveModal, visible }) {
                   <View>
                     <TextInput
                       autoCapitalize="none"
+                      autocorrect={false}
                       name="password"
                       onChangeText={(text) => setPassword(text)}
                       placeholder="Password"
@@ -102,6 +104,7 @@ function SignUpModal({ setActiveModal, visible }) {
                     <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
                       <TextInput
                         autoCapitalize="none"
+                        autocorrect={false}
                         name="passwordConfirm"
                         onChangeText={(text) => setPasswordConfirm(text)}
                         placeholder="Confirm Password"

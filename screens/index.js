@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import FlashMessage from "react-native-flash-message";
 
+import NewRewardModal from "../components/modals/NewReward";
 import BottomHeader from "../components/navigations/BottomHeader";
 import Drawer from "../components/navigations/Drawer";
 
@@ -89,6 +90,16 @@ function Routes() {
           <NavigationContainer>
             <Drawer />
           </NavigationContainer>
+          {newReward && (
+            <NewRewardModal
+              close={() => setNewReward(false)}
+              newReward={newReward}
+              visible={Boolean(newReward)}
+            />
+          )}
+          {isUsersBirthday && (
+            <BirthdayModal close={() => setIsUsersBirthday(false)} />
+          )}
         </RouteContext.Provider>
       </OnlineUsersContext.Provider>
       <FlashMessage position="top" />
