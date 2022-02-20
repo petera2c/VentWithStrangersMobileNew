@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "440569980458",
+    "firebase_url": "https://vent-with-strangers-2acc6.firebaseio.com",
+    "project_id": "vent-with-strangers-2acc6",
+    "storage_bucket": "vent-with-strangers-2acc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440569980458:android:9245e0fdcaa50cb8d78553",
+        "android_client_info": {
+          "package_name": "com.commontech.ventwithstrangers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440569980458-sk0shqfgmrur54fuop36fo2bmg254r1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5o-OCXztPZfLfHkImdhlT1_MxqODz4fc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440569980458-sk0shqfgmrur54fuop36fo2bmg254r1c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "440569980458-q2o26mpjjvtpdmleqg82tjkcm7sqhac9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.commontech.ventwithstrangers",
+                "app_store_id": "1509120090"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
