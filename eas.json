@@ -9,10 +9,7 @@
         "gradleCommand": ":app:assembleDebug"
       },
       "ios": {
-        "buildConfiguration": "Debug",
-        "supportsTablet": true,
-        "buildNumber": "40",
-        "bundleIdentifier": "com.commontech.ventwithstrangers"
+        "buildConfiguration": "Debug"
       }
     },
     "preview": {
