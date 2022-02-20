@@ -56,15 +56,12 @@ function SearchScreen({ navigation }) {
         style={{
           ...styles.flexRow,
           ...styles.box,
-          ...styles.ma16,
+          ...styles.mt16,
+          ...styles.mx16,
           ...styles.pa16,
         }}
       >
         <TouchableOpacity
-          className={
-            "TouchableOpacity-2 no-bold py8 px16 my16 br8 " +
-            (isUsers ? "active" : "")
-          }
           onPress={() => setIsUsers(true)}
           style={{
             ...styles.flexFill,
@@ -82,10 +79,6 @@ function SearchScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className={
-            "TouchableOpacity-2 no-bold py8 px16 my16 br8 " +
-            (isUsers ? "" : "active")
-          }
           onPress={() => setIsUsers(false)}
           style={{
             ...styles.flexFill,
@@ -117,6 +110,7 @@ function SearchScreen({ navigation }) {
                   <User
                     displayName={displayName}
                     key={user.objectID}
+                    navigation={navigation}
                     showAdditionaluserInformation={false}
                     showMessageUser={false}
                     userID={user.objectID}
@@ -129,35 +123,31 @@ function SearchScreen({ navigation }) {
               </View>
             )}
             {users && users.length === 0 && (
-              <Text className="fw-400">No users found.</Text>
+              <Text style={{ ...styles.title }}>No users found.</Text>
             )}
           </View>
         )}
         {!isUsers && (
-          <View className={"column align-center py32 "}>
-            {vents && (
-              <View className="x-fill" direction="vertical" size="middle">
-                {vents &&
-                  vents.map((vent, index) => (
-                    <Vent
-                      key={vent.objectID}
-                      previewMode={true}
-                      showVentHeader={false}
-                      ventID={vent.objectID}
-                      ventIndex={index}
-                      ventInit={{ ...vent, id: vent.objectID }}
-                      searchPreviewMode={true}
-                    />
-                  ))}
-              </View>
-            )}
+          <View>
+            {vents &&
+              vents.map((vent, index) => (
+                <Vent
+                  key={vent.objectID}
+                  previewMode={true}
+                  showVentHeader={false}
+                  ventID={vent.objectID}
+                  ventIndex={index}
+                  ventInit={{ ...vent, id: vent.objectID }}
+                  searchPreviewMode={true}
+                />
+              ))}
             {!vents && (
               <View>
                 <Text>Loading</Text>
               </View>
             )}
             {vents && vents.length === 0 && (
-              <Text className="fw-400">No vents found.</Text>
+              <Text style={{ ...styles.title }}>No vents found.</Text>
             )}
           </View>
         )}
