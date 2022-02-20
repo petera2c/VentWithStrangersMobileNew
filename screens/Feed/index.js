@@ -178,17 +178,17 @@ function FeedScreen({ navigation, route }) {
           options={[
             {
               isActive: pathname === "/trending",
-              onClick: () => setPathname("/trending"),
+              onPress: () => setPathname("/trending"),
               title: "Trending Today",
             },
             {
               isActive: pathname === "/trending/this-week",
-              onClick: () => setPathname("/trending/this-week"),
+              onPress: () => setPathname("/trending/this-week"),
               title: "Trending This Week",
             },
             {
               isActive: pathname === "/trending/this-month",
-              onClick: () => setPathname("/trending/this-month"),
+              onPress: () => setPathname("/trending/this-month"),
               title: "Trending This Month",
             },
           ]}

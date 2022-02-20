@@ -238,7 +238,7 @@ function SettingsScreen({ navigation }) {
             ))}
             {canLoadMore && (
               <TouchableOpacity
-                onClick={() => {
+                onPress={() => {
                   getBlockedUsers(
                     blockedUsers,
                     setBlockedUsers,
@@ -246,10 +246,11 @@ function SettingsScreen({ navigation }) {
                     user.uid
                   );
                 }}
-                size="large"
-                type="primary"
+                style={{ ...styles.buttonPrimary }}
               >
-                <Text>Load More</Text>
+                <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                  Load More
+                </Text>
               </TouchableOpacity>
             )}
           </View>

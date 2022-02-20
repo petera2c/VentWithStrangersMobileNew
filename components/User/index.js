@@ -103,9 +103,7 @@ function UserComponent({
             )}
             {(!user || (user && user.uid !== userID)) && (
               <TouchableOpacity
-                onClick={(e) => {
-                  e.preventDefault();
-
+                onPress={() => {
                   const userInteractionIssues = userSignUpProgress(user);
 
                   if (userInteractionIssues) {

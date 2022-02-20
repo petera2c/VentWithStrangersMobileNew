@@ -434,7 +434,7 @@ function VentComponent({
               options={[
                 {
                   isActive: activeSort === "First",
-                  onClick: () => {
+                  onPress: () => {
                     setActiveSort("First");
 
                     getVentComments(
@@ -450,7 +450,7 @@ function VentComponent({
                 },
                 {
                   isActive: activeSort === "Best",
-                  onClick: () => {
+                  onPress: () => {
                     setActiveSort("Best");
 
                     getVentComments(
@@ -466,7 +466,7 @@ function VentComponent({
                 },
                 {
                   isActive: activeSort === "Last",
-                  onClick: () => {
+                  onPress: () => {
                     setActiveSort("Last");
 
                     getVentComments(

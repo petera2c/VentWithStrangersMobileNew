@@ -50,7 +50,7 @@ function TrendingOptionsModal({ close, options, visible }) {
                     isActive={option.isActive}
                     key={index}
                     onPress={() => {
-                      option.onClick();
+                      option.onPress();
                       close();
                     }}
                     title={option.title}

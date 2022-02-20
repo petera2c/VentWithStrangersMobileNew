@@ -57,7 +57,7 @@ function IndividualTagScreen({ navigation, route }) {
         ))}
         {canLoadMoreVents && (
           <TouchableOpacity
-            onClick={() => {
+            onPress={() => {
               getTagVents(setCanLoadMoreVents, setVents, tagID, vents);
             }}
             style={{ ...styles.buttonPrimary }}
