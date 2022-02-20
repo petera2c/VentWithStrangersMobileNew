@@ -458,11 +458,16 @@ function ProfileScreen({ navigation, route }) {
                 )}
               </View>
               {canLoadMoreVents && (
-                <View>
-                  <TouchableOpacity onPress={() => {}}>
-                    <Text>Load More Vents</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    getUsersVents(userID, setCanLoadMoreVents, setVents, vents)
+                  }
+                  style={{ ...styles.buttonPrimary, ...styles.mt16 }}
+                >
+                  <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                    Load More Vents
+                  </Text>
+                </TouchableOpacity>
               )}
             </View>
           )}
@@ -505,8 +510,11 @@ function ProfileScreen({ navigation, route }) {
                       comments
                     )
                   }
+                  style={{ ...styles.buttonPrimary, ...styles.mt16 }}
                 >
-                  <Text>Load More Comments</Text>
+                  <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                    Load More Comments
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
