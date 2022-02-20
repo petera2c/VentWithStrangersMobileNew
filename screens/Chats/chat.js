@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { off } from "firebase/database";
-import { showMessage } from "react-native-flash-message";
 
 import KarmaBadge from "../../components/views/KarmaBadge";
 import MakeAvatar from "../../components/views/MakeAvatar";
@@ -161,7 +160,10 @@ function Chat({
             style={{
               ...styles.flexRow,
               ...styles.alignCenter,
-              width: activeChatUserBasicInfos.length * 36,
+              width:
+                activeChatUserBasicInfos.length > 1
+                  ? activeChatUserBasicInfos.length * 36
+                  : "auto",
               ...styles.mr8,
             }}
           >
@@ -201,9 +203,18 @@ function Chat({
                     userID: activeChatUserBasicInfos[0].id,
                   })
                 }
-                style={{ ...styles.flexRow, ...styles.alignCenter }}
+                style={{
+                  ...styles.flexRow,
+                  ...styles.flexFill,
+                  ...styles.alignCenter,
+                }}
               >
-                <Text style={{ ...styles.titleSmall, ...styles.mr8 }}>
+                <Text
+                  style={{
+                    ...styles.titleSmall,
+                    ...styles.mr8,
+                  }}
+                >
                   {capitolizeFirstChar(activeChatUserBasicInfos[0].displayName)}
                 </Text>
 
@@ -343,6 +354,7 @@ function Chat({
         }}
       >
         <TextInput
+          multiline
           onChangeText={(text) => {
             if (text === "\n") return;
             setMessageString(text);

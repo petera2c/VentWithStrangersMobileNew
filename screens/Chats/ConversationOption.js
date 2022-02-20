@@ -12,9 +12,9 @@ import { faVolume } from "@fortawesome/pro-solid-svg-icons/faVolume";
 import { faVolumeSlash } from "@fortawesome/pro-solid-svg-icons/faVolumeSlash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-//import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import KarmaBadge from "../../components/views/KarmaBadge";
 import MakeAvatar from "../../components/views/MakeAvatar";
+import OptionsModal from "../../components/modals/Options";
 
 import { styles } from "../../styles";
 
@@ -45,10 +45,8 @@ function ConversationOption({
   const unsubFromConversationUpdates = useRef(false);
 
   const [blockModal, setBlockModal] = useState(false);
-  const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
-    false
-  );
   const [isMuted, setIsMuted] = useState();
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [userBasicInfoArray, setUserBasicInfoArray] = useState([]);
   const hasSeen = conversation[userID];
 
@@ -112,7 +110,7 @@ function ConversationOption({
       }}
     >
       <View style={{ ...styles.flexFill }}>
-        <View style={{ ...styles.flexRow }}>
+        <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
           <View
             style={{
               ...styles.flexRow,
@@ -165,7 +163,10 @@ function ConversationOption({
             )}
           </View>
 
-          <TouchableOpacity onPress={() => {}} style={{ ...styles.justifyEnd }}>
+          <TouchableOpacity
+            onPress={() => setShowOptionsModal(true)}
+            style={{ ...styles.justifyEnd }}
+          >
             <FontAwesomeIcon
               icon={faEllipsisV}
               size={24}
@@ -200,41 +201,54 @@ function ConversationOption({
         </View>
       </View>
 
-      {deleteConversationConfirm && (
-        <ConfirmAlertModal
-          close={() => setDeleteConversationConfirm(false)}
-          message="Deleting this conversation will be permanent. Are you sure you would like to delete this conversation?"
-          submit={() => {
-            if (unsubFromConversationUpdates.current)
-              unsubFromConversationUpdates.current();
+      <OptionsModal
+        close={() => setShowOptionsModal(false)}
+        options={[
+          {
+            icon: isMuted ? faVolume : faVolumeSlash,
+            onPress: () => {
+              setIsMuted(!isMuted);
+              muteChat(conversation.id, userID, !isMuted);
+              showMessage({
+                message: "Chat is " + (isMuted ? "unmuted" : "muted") + " :)",
+                type: "success",
+              });
+            },
+            text: (isMuted ? "Unmute " : "Mute ") + "Chat",
+          },
+          {
+            icon: faUserLock,
+            onPress: () => {
+              blockUser(
+                userID,
+                conversation.members.find((memberID) => {
+                  if (memberID !== userID) return memberID;
+                  else return undefined;
+                })
+              );
+            },
+            text: "Block User",
+          },
+          {
+            icon: faTrash,
+            onPress: () => {
+              if (unsubFromConversationUpdates.current)
+                unsubFromConversationUpdates.current();
 
-            deleteConversation(
-              conversation.id,
-              navigate,
-              setActiveConversation,
-              setConversations,
-              userID
-            );
-          }}
-          title="Delete Conversation"
-        />
-      )}
-      {blockModal && (
-        <ConfirmAlertModal
-          close={() => setBlockModal(false)}
-          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
-          submit={() => {
-            blockUser(
-              userID,
-              conversation.members.find((memberID) => {
-                if (memberID !== userID) return memberID;
-                else return undefined;
-              })
-            );
-          }}
-          title="Block User"
-        />
-      )}
+              deleteConversation(
+                conversation.id,
+                navigate,
+                setActiveConversation,
+                setConversations,
+                userID
+              );
+            },
+            text: "Leave Chat",
+          },
+        ]}
+        title="Conversation Options"
+        visible={showOptionsModal}
+      />
     </TouchableOpacity>
   );
 }
@@ -259,9 +273,7 @@ function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
   }, [chatName, userBasicInfo]);
 
   return (
-    <View
-      style={{ ...styles.flexRow, ...styles.flexFill, ...styles.alignCenter }}
-    >
+    <View style={{ ...styles.flexRow, flexShrink: 1, ...styles.alignCenter }}>
       <Text
         style={{
           ...styles.titleSmall,
@@ -279,47 +291,5 @@ function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
     </View>
   );
 }
-
-/*
-<View className="column x-fill bg-white border-all px16 py8 br8">
-  <View
-    className="button-8 clickable align-center"
-    onClick={(e) => {
-      setIsMuted(!isMuted);
-      muteChat(conversation.id, userID, !isMuted);
-      showMessage({
-        message: "Chat is " + (isMuted ? "unmuted" : "muted") + " :)",
-        type: "success",
-      });
-
-    }}
-  >
-    <Text className="flex-fill ic">
-      {isMuted ? "Unmute " : "Mute "}Chat
-    </Text>
-    <FontAwesomeIcon
-      className="ml8"
-      icon={isMuted ? faVolume : faVolumeSlash}
-    />
-  </View>
-  <View
-    className="button-8 clickable align-center"
-    onClick={(e) => {
-      setBlockModal(!blockModal);
-    }}
-  >
-    <Text className="ic fw-400 flex-fill">Block User</Text>
-    <FontAwesomeIcon className="ml8" icon={faUserLock} />
-  </View>
-  <View
-    className="button-9 clickable align-center"
-    onClick={(e) => {
-      setDeleteConversationConfirm(true);
-    }}
-  >
-    <Text className="flex-fill ic">Leave Chat</Text>
-    <FontAwesomeIcon className="ml8" icon={faTrash} />
-  </View>
-</View>*/
 
 export default ConversationOption;

@@ -7,7 +7,7 @@ import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclam
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-//import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
+import OptionsModal from "../../components/modals/Options";
 
 import { styles } from "../../styles";
 
@@ -122,42 +122,44 @@ function Message({
                 {dayjs(message.server_timestamp).format("h:mm A")}
               </Text>
             </TouchableOpacity>
-            {messageOptions && (
-              <View
-                className="absolute top-100 left-0 pt4"
-                style={{ zIndex: 1 }}
-              >
-                <View className="column x-fill bg-white border-all px16 py8 br8">
-                  <TouchableOpacity
-                    className="button-8 clickable align-center"
-                    onPress={() => {
-                      if (message.userID === userID) {
-                        setDeleteMessageConfirm(true);
-                        setMessageOptions(false);
-                      } else {
-                        setReportModal(!reportModal);
-                      }
-                    }}
-                  >
-                    <Text className="flex-fill">
-                      {message.userID === userID
-                        ? "Delete Message"
-                        : "Report Message"}
-                    </Text>
-                    <FontAwesomeIcon
-                      className="ml8"
-                      icon={
-                        message.userID === userID
-                          ? faTrash
-                          : faExclamationTriangle
-                      }
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
           </View>
         </View>
+
+        <OptionsModal
+          close={() => setMessageOptions(false)}
+          options={
+            message.userID === userID
+              ? [
+                  {
+                    icon: faTrash,
+                    onPress: () => {
+                      setMessageOptions(false);
+                      deleteMessage(
+                        activeConversationID,
+                        message.id,
+                        setMessages
+                      );
+                    },
+                    text: "Delete Message",
+                  },
+                ]
+              : [
+                  {
+                    icon: faExclamationTriangle,
+                    onPress: () => {
+                      setMessageOptions(false);
+                      showMessage({
+                        message: "Message Reported :)",
+                        type: "success",
+                      });
+                    },
+                    text: "Report Message",
+                  },
+                ]
+          }
+          title="Conversation Options"
+          visible={messageOptions}
+        />
       </View>
     );
 }
@@ -167,7 +169,7 @@ function Message({
     close={() => setDeleteMessageConfirm(false)}
     message="Are you sure you would like to delete this message?"
     submit={() =>
-      deleteMessage(activeConversationID, message.id, setMessages)
+
     }
     title="Delete Message"
   />

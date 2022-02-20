@@ -70,7 +70,7 @@ function ProfileScreen({ navigation, route }) {
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [showSomeModal, setShowSomeModal] = useState(false);
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
@@ -375,7 +375,7 @@ function ProfileScreen({ navigation, route }) {
                   userID &&
                   user &&
                   userID !== user.uid && (
-                    <TouchableOpacity onPress={() => setShowSomeModal(true)}>
+                    <TouchableOpacity onPress={() => setShowOptionsModal(true)}>
                       <FontAwesomeIcon
                         className="clickable grey-9"
                         icon={faEllipsisV}
@@ -533,12 +533,12 @@ function ProfileScreen({ navigation, route }) {
         </View>
       </ScrollView>
 
-      <Modal transparent={true} visible={Boolean(showSomeModal)}>
+      <Modal transparent={true} visible={Boolean(showOptionsModal)}>
         <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              setShowSomeModal(false);
+              setShowOptionsModal(false);
             }}
             style={{
               ...styles.fill,

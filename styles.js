@@ -25,6 +25,7 @@ export const colors = {
 export const styles = StyleSheet.create({
   test: { backgroundColor: "red" },
 
+  ovHidden: { overflow: "hidden" },
   roundIconSmall: {
     width: 32,
     height: 32,
@@ -291,10 +292,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
   title: {
+    flexShrink: 1,
     textAlign: "center",
     fontSize: 28,
   },
   titleSmall: {
+    flexShrink: 1,
     fontSize: 24,
   },
 });
