@@ -8,6 +8,7 @@ import { db } from "../../../config/firebase_init";
 import dayjs from "dayjs";
 
 import { displayNameErrors } from "../../../util";
+import { registerForPushNotificationsAsync } from "../../../screens/util";
 
 export const signUp = (
   { email, displayName, password, passwordConfirm },
@@ -22,6 +23,8 @@ export const signUp = (
   createUserWithEmailAndPassword(getAuth(), email, password)
     .then(async (res) => {
       if (res.user) {
+        registerForPushNotificationsAsync(res.user);
+
         await setDoc(doc(db, "users_display_name", res.user.uid), {
           server_timestamp: new dayjs(res.user.metadata.creationTime).valueOf(),
           displayName,

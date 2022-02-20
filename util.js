@@ -1,13 +1,19 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { Linking, NativeModules, Text, TouchableOpacity } from "react-native";
 import reactStringReplace from "react-string-replace";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 import {
+  arrayRemove,
   collection,
   doc,
   getDoc,
   limit,
   onSnapshot,
   query,
+  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   get,
@@ -266,8 +272,46 @@ export const isUserAccountNew = (userBasicInfo) => {
   else return true;
 };
 
-export const signOut2 = (userID) => {
+const removeExpoToken = async (userID) => {
+  if (Constants.isDevice) {
+    const {
+      status: existingStatus,
+    } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
+
+    await setDoc(
+      doc(db, "user_expo_tokens", userID),
+      {
+        tokens: arrayRemove(token),
+      },
+      { merge: true }
+    );
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+};
+
+export const signOut2 = async (userID) => {
   setUserOnlineStatus("offline", userID);
+  await removeExpoToken(userID);
 
   signOut(getAuth()).then(() => {
     NativeModules.DevSettings.reload();

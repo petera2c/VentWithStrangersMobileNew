@@ -3,6 +3,7 @@ import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 import {
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -10,6 +11,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  setDoc,
   Timestamp,
   updateDoc,
   where,
@@ -93,10 +95,9 @@ export const registerForPushNotificationsAsync = async (user) => {
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
 
-    const userExpoTokensDoc = await db
-      .collection("user_expo_tokens")
-      .doc(user.uid)
-      .get();
+    const userExpoTokensDoc = await getDoc(
+      doc(db, "user_expo_tokens", user.uid)
+    );
 
     let hasAlreadySavedToken = false;
     if (userExpoTokensDoc.data())
@@ -105,20 +106,14 @@ export const registerForPushNotificationsAsync = async (user) => {
           hasAlreadySavedToken = true;
       }
 
-    if (!hasAlreadySavedToken && !userExpoTokensDoc.exists) {
-      await db
-        .collection("user_expo_tokens")
-        .doc(user.uid)
-        .set({
-          tokens: firebase.firestore.FieldValue.arrayUnion(token),
-        });
-    } else if (!hasAlreadySavedToken && userExpoTokensDoc.exists) {
-      await db
-        .collection("user_expo_tokens")
-        .doc(user.uid)
-        .update({
-          tokens: firebase.firestore.FieldValue.arrayUnion(token),
-        });
+    if (!hasAlreadySavedToken) {
+      await setDoc(
+        doc(db, "user_expo_tokens", user.uid),
+        {
+          tokens: arrayUnion(token),
+        },
+        { merge: true }
+      );
     }
   } else {
     alert("Must use physical device for Push Notifications");
