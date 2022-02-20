@@ -1,6 +1,5 @@
 import {
   collection,
-  deleteDoc,
   doc,
   getDocs,
   limit,
@@ -27,7 +26,7 @@ export const conversationsListener = (navigation, userID) => {
       if (snapshot.docs && snapshot.docs[0]) {
         const doc = snapshot.docs[0];
         if (doc.data().go_to_inbox)
-          navigation.navigate("Chat", { chatID: doc.id });
+          navigation.navigate("Chats", { chatID: doc.id });
       }
     }
   );
@@ -164,19 +163,6 @@ export const howCompleteIsUserProfile = (
   if (userBasicInfo.avatar) percentage += 0.125;
 
   setMissingAccountPercentage(percentage);
-};
-
-export const isUserInQueueListener = (setIsUserInQueue, userID) => {
-  const unsubscribe = onSnapshot(doc(db, "chat_queue", userID), (doc) => {
-    if (doc.data() && doc.data().userID === userID) setIsUserInQueue(true);
-    else setIsUserInQueue(false);
-  });
-
-  return unsubscribe;
-};
-
-export const leaveQueue = async (userID) => {
-  await deleteDoc(doc(db, "chat_queue", userID));
 };
 
 export const readNotifications = (notifications, setNotificationCounter) => {

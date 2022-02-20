@@ -2,11 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getReactNativePersistence } from "firebase/auth/react-native";
 import { getApp, initializeApp } from "firebase/app";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
-import {
-  connectFirestoreEmulator,
-  getFirestore,
-  settings,
-} from "firebase/firestore";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { getAuth, connectAuthEmulator } from "firebase/auth";
 
 var firebaseConfig = {
@@ -36,7 +32,7 @@ const db = getFirestore();
 const db2 = getDatabase();
 
 //__DEV__
-if (false) {
+if (__DEV__) {
   connectFirestoreEmulator(db, "192.168.100.244", 8080);
   connectDatabaseEmulator(db2, "192.168.100.244", 9000);
   const auth = getAuth();

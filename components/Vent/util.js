@@ -360,7 +360,7 @@ export const startConversation = async (navigation, user, ventUserID) => {
   );
 
   const goToPage = (conversationID) => {
-    navigation.jumpTo("Chat", { conversationID });
+    navigation.jumpTo("Chats", { chatID: conversationID });
   };
 
   let found;

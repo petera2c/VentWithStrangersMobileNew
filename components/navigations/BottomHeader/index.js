@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import useState from "react-usestateref";
+import React, { useContext, useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 
@@ -44,8 +43,6 @@ import {
   newNotificationsListener,
   getNotifications,
   getUnreadConversations,
-  isUserInQueueListener,
-  leaveQueue,
   readNotifications,
   resetUnreadConversationCount,
 } from "./util";
@@ -55,14 +52,12 @@ const Tab = createBottomTabNavigator();
 function BottomHeader({ navigation }) {
   const { user } = useContext(UserContext);
 
-  const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
   useEffect(() => {
     let conversationsUnsubscribe;
-    let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
     let newNotificationsListenerUnsubscribe;
 
@@ -76,10 +71,7 @@ function BottomHeader({ navigation }) {
       );
 
       conversationsUnsubscribe = conversationsListener(navigation, user.uid);
-      isUserInQueueUnsubscribe = isUserInQueueListener(
-        setIsUserInQueue,
-        user.uid
-      );
+
       newConversationsListenerUnsubscribe = getUnreadConversations(
         "",
         setUnreadConversationsCount,
@@ -96,18 +88,16 @@ function BottomHeader({ navigation }) {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
     };
 
     return () => {
       cleanup();
-      if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, [isUserInQueueRef, navigation, setIsUserInQueue, user]);
+  }, [navigation, user]);
 
   return (
     <Tab.Navigator

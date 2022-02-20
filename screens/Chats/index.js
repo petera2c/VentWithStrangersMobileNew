@@ -96,7 +96,12 @@ function ChatsScreen({ navigation, route }) {
           {user && conversations.length === 0 && (
             <TouchableOpacity
               onPress={() => navigation.jumpTo("OnlineUsers")}
-              style={{ ...styles.box, ...styles.mx16, ...styles.pa16 }}
+              style={{
+                ...styles.box,
+                ...styles.mx16,
+                ...styles.mt16,
+                ...styles.pa16,
+              }}
             >
               <Text style={{ ...styles.title }}>
                 <Text style={{ ...styles.colorMain }}>Start</Text> a

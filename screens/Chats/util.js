@@ -389,9 +389,9 @@ export const setInitialConversationsAndActiveConversation = async (
   setConversations
 ) => {
   const search =
-    route && route.params && route.params.conversationID
-      ? route.params.conversationID
-      : null;
+    route && route.params && route.params.chatID ? route.params.chatID : null;
+
+  console.log(search);
 
   if (newConversations.length < 5) setCanLoadMore(false);
 

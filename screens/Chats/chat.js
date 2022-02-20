@@ -160,7 +160,7 @@ function Chat({
               ...styles.flexRow,
               ...styles.alignCenter,
               width:
-                activeChatUserBasicInfos.length > 1
+                activeChatUserBasicInfos && activeChatUserBasicInfos.length > 1
                   ? activeChatUserBasicInfos.length * 36
                   : "auto",
               ...styles.mr8,

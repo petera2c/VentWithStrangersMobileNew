@@ -46,7 +46,7 @@ export const saveGroup = async (
   }
 
   if (!groupChatEditting)
-    navigation.jumpTo("Chats" + { conversationID: conversationDoc.id });
+    navigation.jumpTo("Chats" + { chatID: conversationDoc.id });
 
   showMessage({
     message: "Success! :)",
