@@ -30,11 +30,12 @@ import ChatWithStrangers from "../../../screens/ChatWithStrangers";
 import NewVent from "../../../screens/NewVent";
 import OnlineUsers from "../../../screens/OnlineUsers";
 import Rewards from "../../../screens/Rewards";
+import Search from "../../../screens/Search";
 
 import AllTags from "../../../screens/tags/All";
 import IndividualTag from "../../../screens/tags/Individual";
 
-import { RouteContext, UserContext } from "../../../context";
+import { UserContext } from "../../../context";
 
 import { styles } from "../../../styles";
 
@@ -333,6 +334,13 @@ function BottomHeader({ navigation }) {
       <Tab.Screen
         component={Rewards}
         name="Rewards"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        component={Search}
+        name="Search"
         options={{
           headerShown: false,
         }}

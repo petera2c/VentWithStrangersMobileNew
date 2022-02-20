@@ -171,6 +171,14 @@ function DrawerNavigation() {
                 />
 
                 <NavigationLink
+                  isActive={activeRoute === "Search"}
+                  onPress={() => {
+                    navigation.navigate("Search");
+                  }}
+                  title="Search"
+                />
+
+                <NavigationLink
                   isActive={activeRoute === "Rules"}
                   onPress={() => {
                     navigation.navigate("Rules");
