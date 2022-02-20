@@ -18,6 +18,7 @@ import {
   getIsUsersBirthday,
   getIsUserSubscribed,
   newRewardListener,
+  registerForPushNotificationsAsync,
   setIsUserOnlineToDatabase,
   setUserOnlineStatus,
 } from "./util";
@@ -61,11 +62,12 @@ function Routes() {
     };
 
     if (user) {
+      registerForPushNotificationsAsync(user);
+
       newRewardListenerUnsubscribe = newRewardListener(setNewReward, user.uid);
       getIsUsersBirthday(setIsUsersBirthday, user.uid);
       getIsUserSubscribed(setUserSubscription, user.uid);
       setIsUserOnlineToDatabase(user.uid);
-
       getUserBasicInfo((newBasicUserInfo) => {
         setUserBasicInfo(newBasicUserInfo);
       }, user.uid);
