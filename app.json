@@ -3,10 +3,6 @@
     "name": "VentWithStrangersMobileNew",
     "slug": "VentWithStrangersMobileNew",
     "version": "3.0.0",
-    "assetBundlePatterns": ["**/*"],
-    "icon": "./assets/icon.png",
-    "ios": {
-      "supportsTablet": true
-    }
+    "assetBundlePatterns": ["**/*"]
   }
 }
