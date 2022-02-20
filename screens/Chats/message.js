@@ -44,13 +44,18 @@ function Message({
   if (message.is_notice)
     return (
       <View style={{ ...styles.xFill }}>
-        {urlify(message.body).map((obj, index) => {
-          return (
-            <Text key={index} style={{ ...styles.fs20, ...styles.colorGrey11 }}>
-              {obj}
-            </Text>
-          );
-        })}
+        {urlify({ ...styles.fs20, ...styles.colorGrey11 }, message.body).map(
+          (obj, index) => {
+            return (
+              <Text
+                key={index}
+                style={{ ...styles.fs20, ...styles.colorGrey11 }}
+              >
+                {obj}
+              </Text>
+            );
+          }
+        )}
       </View>
     );
   else
@@ -76,11 +81,17 @@ function Message({
               ...styles.py8,
             }}
           >
-            {message.userID !== userID &&
-              shouldShowDisplayName &&
-              displayName && <Text className="orange">{displayName}</Text>}
+            {Boolean(
+              message.userID !== userID && shouldShowDisplayName && displayName
+            ) && <Text className="orange">{displayName}</Text>}
             <View>
-              {urlify(message.body).map((obj, index) => {
+              {urlify(
+                {
+                  ...styles.fs20,
+                  ...(message.userID === userID ? styles.colorWhite : {}),
+                },
+                message.body
+              ).map((obj, index) => {
                 return (
                   <Text
                     key={index}
@@ -96,8 +107,8 @@ function Message({
             </View>
           </View>
           <View style={{ ...styles.flexRow }}>
-            <View
-              onClick={() => {
+            <TouchableOpacity
+              onPress={() => {
                 setMessageOptions(!messageOptions);
               }}
               onMouseLeave={() => setMessageOptions(false)}
@@ -110,17 +121,16 @@ function Message({
               >
                 {dayjs(message.server_timestamp).format("h:mm A")}
               </Text>
-            </View>
+            </TouchableOpacity>
             {messageOptions && (
               <View
                 className="absolute top-100 left-0 pt4"
                 style={{ zIndex: 1 }}
               >
                 <View className="column x-fill bg-white border-all px16 py8 br8">
-                  <View
+                  <TouchableOpacity
                     className="button-8 clickable align-center"
-                    onClick={(e) => {
-                      e.preventDefault();
+                    onPress={() => {
                       if (message.userID === userID) {
                         setDeleteMessageConfirm(true);
                         setMessageOptions(false);
@@ -142,24 +152,25 @@ function Message({
                           : faExclamationTriangle
                       }
                     />
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}
           </View>
         </View>
-        {deleteMessageConfirm && (
-          <ConfirmAlertModal
-            close={() => setDeleteMessageConfirm(false)}
-            message="Are you sure you would like to delete this message?"
-            submit={() =>
-              deleteMessage(activeConversationID, message.id, setMessages)
-            }
-            title="Delete Message"
-          />
-        )}
       </View>
     );
 }
+
+/*{deleteMessageConfirm && (
+  <ConfirmAlertModal
+    close={() => setDeleteMessageConfirm(false)}
+    message="Are you sure you would like to delete this message?"
+    submit={() =>
+      deleteMessage(activeConversationID, message.id, setMessages)
+    }
+    title="Delete Message"
+  />
+)}*/
 
 export default Message;

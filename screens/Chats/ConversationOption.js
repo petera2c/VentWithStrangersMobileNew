@@ -40,8 +40,6 @@ function ConversationOption({
   setActiveConversation,
   setActiveChatUserBasicInfos,
   setConversations,
-  setGroupChatEditting,
-  setIsCreateGroupModalVisible,
   userID,
 }) {
   const unsubFromConversationUpdates = useRef(false);

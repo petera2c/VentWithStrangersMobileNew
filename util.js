@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { Linking, NativeModules, TouchableOpacity } from "react-native";
+import { Linking, NativeModules, Text, TouchableOpacity } from "react-native";
 import reactStringReplace from "react-string-replace";
 import {
   collection,
@@ -276,10 +276,9 @@ export const signOut2 = (userID) => {
 
 export const soundNotify = (sound = "bing") => {};
 
-export const urlify = (text) =>
+export const urlify = (style, text) =>
   reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
     <TouchableOpacity
-      className="button-1 no-bold no-hover"
       onPress={() => {
         Linking.canOpenURL(match).then((supported) => {
           if (supported) {
@@ -290,7 +289,7 @@ export const urlify = (text) =>
         });
       }}
     >
-      {match}
+      <Text style={style}>{match}</Text>
     </TouchableOpacity>
   ));
 

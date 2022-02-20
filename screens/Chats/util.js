@@ -380,25 +380,27 @@ export const setConversationIsTyping = (
 export const setInitialConversationsAndActiveConversation = async (
   newConversations,
   openFirstChat,
+  route,
   setActiveConversation,
   setCanLoadMore,
   setConversations
 ) => {
-  const search = "";
+  const search =
+    route && route.params && route.params.conversationID
+      ? route.params.conversationID
+      : null;
 
   if (newConversations.length < 5) setCanLoadMore(false);
 
   if (search) {
     const foundConversation = newConversations.find(
-      (conversation) => conversation.id === search.substring(1)
+      (conversation) => conversation.id === search
     );
 
     if (foundConversation) setActiveConversation(foundConversation);
     else {
       try {
-        const conversationDoc = await getDoc(
-          doc(db, "conversations", search.substring(1))
-        );
+        const conversationDoc = await getDoc(doc(db, "conversations", search));
 
         if (conversationDoc.exists())
           setActiveConversation({

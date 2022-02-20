@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 
+import CreateGroupChatModal from "../../components/modals/CreateGroupChat";
 import Screen from "../../components/containers/Screen";
 import StarterModal from "../../components/modals/Starter";
 
@@ -25,13 +26,15 @@ import {
   setInitialConversationsAndActiveConversation,
 } from "./util";
 
-function ChatsScreen({ navigation }) {
+function ChatsScreen({ navigation, route }) {
   const { user } = useContext(UserContext);
 
   const [activeChatUserBasicInfos, setActiveChatUserBasicInfos] = useState();
   const [activeConversation, setActiveConversation] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
+  const [groupChatEditting, setGroupChatEditting] = useState();
+  const [isCreateGroupModalVisible, setIsCreateGroupModalVisible] = useState();
   const [refreshing, setRefreshing] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
 
@@ -50,6 +53,7 @@ function ChatsScreen({ navigation }) {
           setInitialConversationsAndActiveConversation(
             newConversations,
             false,
+            route,
             setActiveConversation,
             setCanLoadMore,
             setConversations
@@ -68,11 +72,31 @@ function ChatsScreen({ navigation }) {
   return (
     <Screen navigation={navigation}>
       {!activeConversation && (
-        <View className="flex-fill column ov-auto bg-white pa8 br4">
+        <View style={{ ...styles.flexFill }}>
+          {user && user.emailVerified && (
+            <View style={{ ...styles.pt16, ...styles.px16 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setGroupChatEditting(false);
+                  setIsCreateGroupModalVisible(true);
+                }}
+                style={{ ...styles.buttonPrimary, ...styles.mb16 }}
+              >
+                <Text
+                  style={{
+                    ...styles.fs20,
+                    ...styles.colorWhite,
+                  }}
+                >
+                  New Group Chat
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
           {user && conversations.length === 0 && (
             <TouchableOpacity
               onPress={() => navigation.jumpTo("OnlineUsers")}
-              style={{ ...styles.box, ...styles.ma16, ...styles.pa16 }}
+              style={{ ...styles.box, ...styles.mx16, ...styles.pa16 }}
             >
               <Text style={{ ...styles.title }}>
                 <Text style={{ ...styles.colorMain }}>Start</Text> a
@@ -99,6 +123,7 @@ function ChatsScreen({ navigation }) {
                   onRefresh={() => setRefreshing(true)}
                 />
               }
+              style={{ flex: 1 }}
             >
               <View style={{ ...styles.pa16 }}>
                 {conversations.map((conversation, index) => {
@@ -112,8 +137,8 @@ function ChatsScreen({ navigation }) {
                           : false
                       }
                       key={conversation.id}
-                      setActiveConversation={setActiveConversation}
                       setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
+                      setActiveConversation={setActiveConversation}
                       setConversations={setConversations}
                       userID={user.uid}
                     />
@@ -187,8 +212,10 @@ function ChatsScreen({ navigation }) {
                   )
                 )}
                 navigation={navigation}
-                setActiveConversation={setActiveConversation}
                 setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
+                setActiveConversation={setActiveConversation}
+                setGroupChatEditting={setGroupChatEditting}
+                setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
                 userID={user.uid}
               />
             )}
@@ -199,6 +226,14 @@ function ChatsScreen({ navigation }) {
         setActiveModal={setStarterModal}
         visible={Boolean(starterModal)}
       />
+      {isCreateGroupModalVisible && (
+        <CreateGroupChatModal
+          close={() => setIsCreateGroupModalVisible(false)}
+          groupChatEditting={groupChatEditting}
+          navigation={navigation}
+          visible={Boolean(isCreateGroupModalVisible)}
+        />
+      )}
     </Screen>
   );
 }

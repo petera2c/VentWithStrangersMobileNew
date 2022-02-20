@@ -1,21 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { off } from "firebase/database";
-import loadable from "@loadable/component";
 import algoliasearch from "algoliasearch";
 import { showMessage } from "react-native-flash-message";
 
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import Container from "../../containers/Container";
 import KarmaBadge from "../../views/KarmaBadge";
+import MakeAvatar from "../../views/MakeAvatar";
 
 import { UserContext } from "../../../context";
 
-import { getIsUserOnline, getUserBasicInfo, useIsMounted } from "../../../util";
+import { colors, styles } from "../../../styles";
+
+import {
+  capitolizeFirstChar,
+  getIsUserOnline,
+  getUserBasicInfo,
+} from "../../../util";
 import { saveGroup } from "./util";
-const MakeAvatar = loadable(() => import("../../views/MakeAvatar"));
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
@@ -25,9 +41,12 @@ const searchClient = algoliasearch(
 const usersIndex = searchClient.initIndex("users");
 const GROUP_MAX = 5;
 
-function GroupChatCreateModal({ close, groupChatEditting }) {
-  const isMounted = useIsMounted();
-  const navigate = useNavigate();
+function GroupChatCreateModal({
+  close,
+  groupChatEditting,
+  navigation,
+  visible,
+}) {
   const { userBasicInfo } = useContext(UserContext);
 
   const [chatNameString, setChatNameString] = useState(
@@ -41,245 +60,276 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
   const [userSearchString, setUserSearchString] = useState("");
 
   useEffect(() => {
+    setExistingUsers([]);
+
     if (groupChatEditting && groupChatEditting.members) {
       for (let index in groupChatEditting.members) {
         getUserBasicInfo((userBasicInfo) => {
-          if (isMounted())
-            setExistingUsers((existingUsers) => {
-              existingUsers.push(userBasicInfo);
-              return [...existingUsers];
-            });
+          setExistingUsers((existingUsers) => {
+            existingUsers.push(userBasicInfo);
+            return [...existingUsers];
+          });
         }, groupChatEditting.members[index]);
       }
     }
-  }, [groupChatEditting, isMounted]);
+  }, [groupChatEditting]);
 
   const isNewGroupChatOrOwner =
     !groupChatEditting ||
     (groupChatEditting && groupChatEditting.group_owner === userBasicInfo.id);
 
   return (
-    <Container className="modal-container full-center normal-cursor">
-      <Container className="modal container large column bg-white br4">
-        <Container className="x-fill justify-center bg-grey-10 py16">
-          <h4 className="grey-11 tac">
-            {groupChatEditting
-              ? groupChatEditting.chat_name
-              : "Create New Group Chat"}
-          </h4>
-        </Container>
-        <Container className="column flex-fill ov-auto py16 px32">
-          {existingUsers && existingUsers.length > 0 && (
-            <Container className="column gap16">
-              <h4>Users In Chat</h4>
-              {existingUsers.map((user) => {
-                return (
-                  <DisplayExistingUser
-                    groupChatEditting={groupChatEditting}
-                    key={user.id}
-                    setExistingUsers={setExistingUsers}
-                    user={user}
-                    userBasicInfo={userBasicInfo}
-                  />
-                );
-              })}
-            </Container>
-          )}
-
-          {groupChatEditting &&
-            groupChatEditting.group_owner === userBasicInfo.id && <Divider />}
-
-          {isNewGroupChatOrOwner && (
-            <Container className="column gap16">
-              <h4>Change Chat Name or Add Users</h4>
-              <input
-                className="fs-22 br4 pa8"
-                onChange={(text) => {
-                  setChatNameString(text);
-                }}
-                placeholder="Chat Name"
-                value={chatNameString}
-              />
-              <input
-                className="fs-22 br4 pa8"
-                onChange={(text) => {
-                  setUserSearchString(text);
-                  usersIndex
-                    .search(text, {
-                      hitsPerPage: 10,
-                    })
-                    .then(({ hits }) => {
-                      setHits(hits);
-                    });
-                }}
-                placeholder="Search for people to add by name or their ID"
-                value={userSearchString}
-              />
-              {hits.length > 0 && (
-                <Container className="column gap16">
-                  <h4>Searched For People</h4>
-                  <Container className="wrap gap8">
-                    {hits.map((hit, index) => {
-                      if (
-                        users.find((user) => user.id === hit.objectID) ||
-                        existingUsers.find((user) => user.id === hit.objectID)
-                      ) {
-                        return (
-                          <div
-                            key={hit.objectID + "s"}
-                            style={{ display: "none" }}
-                          />
-                        );
-                      } else
-                        return (
-                          <HitDisplay
-                            existingUsers={existingUsers}
-                            hit={hit}
-                            key={hit.objectID}
-                            setUsers={setUsers}
-                          />
-                        );
-                    })}
-                  </Container>
-                </Container>
-              )}
-              {users.length > 0 && (
-                <Container className="column gap16">
-                  <h4>Selected People</h4>
-                  <Container
-                    className="align-start wrap gap8"
-                    style={{ maxHeight: "100px" }}
-                  >
-                    {users.map((user) => {
-                      return (
-                        <button
-                          className="button-2 br4 gap8 pa8"
-                          key={user.id}
-                          onClick={() => {
-                            if (user.id === userBasicInfo.id) {
-                              return showMessage({
-                                message: "You can not remove yourself.",
-                                type: "error",
-                              });
-                            }
-
-                            setUsers((users) => {
-                              users.splice(
-                                users.findIndex(
-                                  (user2) => user2.id === user.id
-                                ),
-                                1
-                              );
-                              return [...users];
-                            });
-                          }}
-                        >
-                          <Container className="gap4">
-                            <MakeAvatar
-                              displayName={user.displayName}
-                              size="small"
-                              userBasicInfo={user}
-                            />
-                            <Container className="full-center flex-fill ov-hidden ic">
-                              <h5 className="ic ellipsis fw-400 grey-11">
-                                {user.displayName}
-                              </h5>
-                            </Container>
-                          </Container>
-                          <KarmaBadge
-                            noOnClick={true}
-                            noTooltip={true}
-                            userBasicInfo={user}
-                          />
-                          <FontAwesomeIcon icon={faTimes} />
-                        </button>
-                      );
-                    })}
-                  </Container>
-                </Container>
-              )}
-            </Container>
-          )}
-        </Container>
-        {isNewGroupChatOrOwner && (
-          <Container className="full-center border-top pa16">
-            <button
-              className="grey-1 border-all py8 px32 mx4 br4"
-              onClick={() => close()}
-            >
-              Cancel
-            </button>
-            <button
-              className="button-2 py8 px32 mx4 br4"
-              onClick={() => {
-                saveGroup(
-                  chatNameString,
-                  existingUsers,
-                  groupChatEditting,
-                  navigate,
-                  userBasicInfo.id,
-                  users
-                );
-                close();
+    <Modal transparent={true} visible={visible}>
+      <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            close();
+            Keyboard.dismiss();
+          }}
+          style={{
+            ...styles.fill,
+            ...styles.justifyEnd,
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <TouchableWithoutFeedback>
+            <SafeAreaView
+              style={{
+                ...styles.bgWhite,
+                maxHeight: "60%",
+                ...styles.br8,
               }}
             >
-              Save
-            </button>
-          </Container>
-        )}
-      </Container>
-      <Container className="modal-background" onClick={close} />
-    </Container>
-  );
-}
+              <ScrollView>
+                <View onStartShouldSetResponder={() => true}>
+                  <View style={{ ...styles.bgMain, ...styles.pa16 }}>
+                    <Text style={{ ...styles.title, ...styles.colorWhite }}>
+                      {groupChatEditting
+                        ? groupChatEditting.chat_name
+                        : "Create New Group Chat"}{" "}
+                    </Text>
+                  </View>
 
-function HitDisplay({ existingUsers, hit, setUsers }) {
-  const isMounted = useIsMounted();
-  const [userBasicInfo, setUserBasicInfo] = useState();
+                  <View style={{ ...styles.pa32 }}>
+                    {existingUsers && existingUsers.length > 0 && (
+                      <View>
+                        <Text style={{ ...styles.titleSmall }}>
+                          Users In Chat
+                        </Text>
+                        {existingUsers.map((user) => {
+                          return (
+                            <DisplayExistingUser
+                              groupChatEditting={groupChatEditting}
+                              key={user.id}
+                              setExistingUsers={setExistingUsers}
+                              user={user}
+                              userBasicInfo={userBasicInfo}
+                            />
+                          );
+                        })}
+                      </View>
+                    )}
 
-  useEffect(() => {
-    getUserBasicInfo((userBasicInfo) => {
-      if (isMounted()) setUserBasicInfo(userBasicInfo);
-    }, hit.objectID);
-  }, [hit, isMounted, setUserBasicInfo]);
+                    {isNewGroupChatOrOwner && (
+                      <View>
+                        <Text style={{ ...styles.titleSmall, ...styles.mb16 }}>
+                          Change Chat Name or Add Users
+                        </Text>
+                        <TextInput
+                          onChangeText={(text) => {
+                            setChatNameString(text);
+                          }}
+                          placeholder="Group Chat Name"
+                          placeholderTextColor={colors.grey1}
+                          style={{ ...styles.input }}
+                          value={chatNameString}
+                        />
+                        <TextInput
+                          onChangeText={(text) => {
+                            setUserSearchString(text);
+                            usersIndex
+                              .search(text, {
+                                hitsPerPage: 10,
+                              })
+                              .then(({ hits }) => {
+                                setHits(hits);
+                              });
+                          }}
+                          placeholder="Search for people to add by name or their ID"
+                          placeholderTextColor={colors.grey1}
+                          style={{ ...styles.input, ...styles.mb16 }}
+                          value={userSearchString}
+                        />
+                        {hits.length > 0 && (
+                          <View>
+                            <Text
+                              style={{ ...styles.titleSmall, ...styles.mb16 }}
+                            >
+                              Searched For People
+                            </Text>
+                            <View style={{ ...styles.flexRow, ...styles.wrap }}>
+                              {hits.map((hit, index) => {
+                                if (
+                                  users.find(
+                                    (user) => user.id === hit.objectID
+                                  ) ||
+                                  existingUsers.find(
+                                    (user) => user.id === hit.objectID
+                                  )
+                                ) {
+                                  return (
+                                    <View
+                                      key={hit.objectID}
+                                      style={{ display: "none" }}
+                                    />
+                                  );
+                                } else
+                                  return (
+                                    <HitDisplay
+                                      existingUsers={existingUsers}
+                                      hit={hit}
+                                      key={hit.objectID}
+                                      setUsers={setUsers}
+                                    />
+                                  );
+                              })}
+                            </View>
+                          </View>
+                        )}
+                        {users.length > 0 && (
+                          <View>
+                            <Text
+                              style={{ ...styles.titleSmall, ...styles.mb16 }}
+                            >
+                              Selected People
+                            </Text>
+                            <View
+                              style={{
+                                ...styles.flexRow,
+                                ...styles.alignStart,
+                                ...styles.wrap,
+                              }}
+                            >
+                              {users.map((user) => {
+                                return (
+                                  <TouchableOpacity
+                                    key={user.id}
+                                    onPress={() => {
+                                      if (user.id === userBasicInfo.id) {
+                                        return showMessage({
+                                          message:
+                                            "You can not remove yourself.",
+                                          type: "error",
+                                        });
+                                      }
 
-  return (
-    <Container
-      className="button-8 align-center gap8"
-      onClick={() => {
-        setUsers((users) => {
-          if (existingUsers.length + users.length >= GROUP_MAX) {
-            showMessage({
-              message: `Groups can have a max of ${GROUP_MAX} people!`,
-              type: "info",
-            });
-            return users;
-          }
-          users.push(userBasicInfo);
-          return [...users];
-        });
-      }}
-    >
-      <Container className="gap4">
-        {userBasicInfo && (
-          <MakeAvatar
-            displayName={hit.displayName}
-            size="small"
-            userBasicInfo={userBasicInfo}
-          />
-        )}
-        <Container className="full-center flex-fill ov-hidden ic">
-          <h5 className="ic ellipsis fw-400 grey-11">{hit.displayName}</h5>
-        </Container>
-      </Container>
-      {userBasicInfo && (
-        <KarmaBadge
-          noOnClick={true}
-          noTooltip={true}
-          userBasicInfo={userBasicInfo}
-        />
-      )}
-    </Container>
+                                      setUsers((users) => {
+                                        users.splice(
+                                          users.findIndex(
+                                            (user2) => user2.id === user.id
+                                          ),
+                                          1
+                                        );
+                                        return [...users];
+                                      });
+                                    }}
+                                    style={{ ...styles.buttonSecondary }}
+                                  >
+                                    <View
+                                      style={{
+                                        ...styles.flexRow,
+                                        ...styles.alignCenter,
+                                      }}
+                                    >
+                                      <MakeAvatar
+                                        displayName={user.displayName}
+                                        size="small"
+                                        userBasicInfo={user}
+                                      />
+                                      <Text
+                                        style={{
+                                          ...styles.pTag,
+                                          ...styles.mx8,
+                                        }}
+                                      >
+                                        {capitolizeFirstChar(user.displayName)}
+                                      </Text>
+                                    </View>
+                                    <KarmaBadge
+                                      noOnClick={true}
+                                      noTooltip={true}
+                                      userBasicInfo={user}
+                                    />
+                                    <FontAwesomeIcon
+                                      icon={faTimes}
+                                      size={24}
+                                      style={{ ...styles.colorMain }}
+                                    />
+                                  </TouchableOpacity>
+                                );
+                              })}
+                            </View>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                  </View>
+                  {isNewGroupChatOrOwner && (
+                    <View
+                      className="full-center border-top pa16"
+                      style={{
+                        ...styles.flexRow,
+                        ...styles.alignCenter,
+                        ...styles.px8,
+                      }}
+                    >
+                      <TouchableOpacity
+                        className="grey-1 border-all py8 px32 mx4 br4"
+                        onPress={() => close()}
+                        style={{
+                          ...styles.flexFill,
+                          ...styles.fullCenter,
+                          ...styles.border,
+                          ...styles.br4,
+                          ...styles.mr8,
+                          ...styles.pa8,
+                        }}
+                      >
+                        <Text style={{ ...styles.pTag }}>Cancel</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        className="TouchableOpacity-2 py8 px32 mx4 br4"
+                        onPress={() => {
+                          saveGroup(
+                            chatNameString,
+                            existingUsers,
+                            groupChatEditting,
+                            navigation,
+                            userBasicInfo.id,
+                            users
+                          );
+                          close();
+                        }}
+                        style={{
+                          ...styles.buttonPrimary,
+                          ...styles.flexFill,
+                          ...styles.ml8,
+                        }}
+                      >
+                        <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                          Save
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              </ScrollView>
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </Modal>
   );
 }
 
@@ -289,14 +339,13 @@ function DisplayExistingUser({
   user,
   userBasicInfo,
 }) {
-  const isMounted = useIsMounted();
   const [isUserOnline, setIsUserOnline] = useState(false);
 
   useEffect(() => {
     let isUserOnlineSubscribe;
 
     isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
-      if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
+      if (isUserOnlineObj && isUserOnlineObj.state) {
         if (isUserOnlineObj.state === "online") setIsUserOnline(true);
         else setIsUserOnline(false);
       }
@@ -305,30 +354,32 @@ function DisplayExistingUser({
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [isMounted, user]);
+  }, [user]);
 
   return (
-    <Container className="align-center br4 gap8">
-      <Container className="align-center gap8">
+    <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+      <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
         <MakeAvatar
           displayName={user.displayName}
           size="small"
           userBasicInfo={user}
         />
-        <Link
+        <TouchableOpacity
           className="full-center flex-fill ov-hidden ic gap4"
-          to={"/profile?" + user.id}
+          onPress={() => navigation.jumpTo("Profile", { userID: user.id })}
         >
-          <h5 className="button-1 ellipsis grey-11">{user.displayName}</h5>
-        </Link>
-        {isUserOnline && <div className="online-dot" />}
-      </Container>
+          <Text style={{ ...styles.pTag, ...styles.mr8 }}>
+            {user.displayName}
+          </Text>
+        </TouchableOpacity>
+        {isUserOnline && (
+          <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
+        )}
+      </View>
       <KarmaBadge noOnClick={true} noTooltip={true} userBasicInfo={user} />
       {groupChatEditting && groupChatEditting.group_owner === userBasicInfo.id && (
-        <FontAwesomeIcon
-          className="button-9"
-          icon={faTimes}
-          onClick={() => {
+        <TouchableOpacity
+          onPress={() => {
             if (user.id === userBasicInfo.id) {
               return showMessage({
                 message: "You can not remove yourself.",
@@ -344,9 +395,65 @@ function DisplayExistingUser({
               return [...users];
             });
           }}
+          style={{ ...styles.ml8 }}
+        >
+          <FontAwesomeIcon
+            icon={faTimes}
+            size={24}
+            style={{ ...styles.colorGrey1 }}
+          />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+}
+
+function HitDisplay({ existingUsers, hit, setUsers }) {
+  const [userBasicInfo, setUserBasicInfo] = useState();
+
+  useEffect(() => {
+    getUserBasicInfo((userBasicInfo) => {
+      setUserBasicInfo(userBasicInfo);
+    }, hit.objectID);
+  }, [hit, setUserBasicInfo]);
+
+  return (
+    <TouchableOpacity
+      className="TouchableOpacity-8 align-center gap8"
+      onPress={() => {
+        setUsers((users) => {
+          if (existingUsers.length + users.length >= GROUP_MAX) {
+            showMessage({
+              message: `Groups can have a max of ${GROUP_MAX} people!`,
+              type: "info",
+            });
+            return users;
+          }
+          users.push(userBasicInfo);
+          return [...users];
+        });
+      }}
+    >
+      <View className="gap4">
+        {userBasicInfo && (
+          <MakeAvatar
+            displayName={hit.displayName}
+            size="small"
+            userBasicInfo={userBasicInfo}
+          />
+        )}
+        <View className="full-center flex-fill ov-hidden ic">
+          <Text className="ic ellipsis fw-400 grey-11">{hit.displayName}</Text>
+        </View>
+      </View>
+      {userBasicInfo && (
+        <KarmaBadge
+          noOnClick={true}
+          noTooltip={true}
+          userBasicInfo={userBasicInfo}
         />
       )}
-    </Container>
+    </TouchableOpacity>
   );
 }
 

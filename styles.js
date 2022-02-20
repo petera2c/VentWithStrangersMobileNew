@@ -107,6 +107,8 @@ export const styles = StyleSheet.create({
   bgGrey10: { backgroundColor: colors.grey10 },
   bgWhite: { backgroundColor: colors.white },
   bgRed: { backgroundColor: colors.red },
+  bgGreen: { backgroundColor: "green" },
+  bgBlue: { backgroundColor: "blue" },
 
   bgMain: { backgroundColor: colors.main },
   bgBlue1: { backgroundColor: colors.blue1 },

@@ -1,3 +1,4 @@
+import { showMessage } from "react-native-flash-message";
 import {
   addDoc,
   collection,
@@ -11,7 +12,7 @@ export const saveGroup = async (
   chatNameString,
   existingUsers,
   groupChatEditting,
-  navigate,
+  navigation,
   userID,
   users
 ) => {
@@ -44,5 +45,11 @@ export const saveGroup = async (
     });
   }
 
-  if (!groupChatEditting) navigate("/chat?" + conversationDoc.id);
+  if (!groupChatEditting)
+    navigation.jumpTo("Chats" + { conversationID: conversationDoc.id });
+
+  showMessage({
+    message: "Success! :)",
+    type: "success",
+  });
 };

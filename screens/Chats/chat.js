@@ -145,8 +145,8 @@ function Chat({
           ...styles.pa16,
         }}
       >
-        <View
-          onClick={() => {
+        <TouchableOpacity
+          onPress={() => {
             if (!activeConversation.is_group) return;
             setGroupChatEditting(activeConversation);
             setIsCreateGroupModalVisible(true);
@@ -157,12 +157,21 @@ function Chat({
             ...styles.alignCenter,
           }}
         >
-          <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+          <View
+            style={{
+              ...styles.flexRow,
+              ...styles.alignCenter,
+              width: activeChatUserBasicInfos.length * 36,
+              ...styles.mr8,
+            }}
+          >
             {activeChatUserBasicInfos &&
               activeChatUserBasicInfos.map((userBasicInfo, index) => (
                 <View
                   key={userBasicInfo.id}
-                  style2={{ transform: "translateX(" + index * -28 + "px)" }}
+                  style={{
+                    transform: [{ translateX: -(index * 36) }],
+                  }}
                 >
                   <MakeAvatar
                     displayName={userBasicInfo.displayName}
@@ -171,6 +180,17 @@ function Chat({
                 </View>
               ))}
           </View>
+
+          {activeConversation.is_group && (
+            <Text
+              style={{
+                ...styles.flexFill,
+                ...styles.pTag,
+              }}
+            >
+              {activeConversation.chat_name}
+            </Text>
+          )}
 
           {!activeConversation.is_group &&
             activeChatUserBasicInfos &&
@@ -193,23 +213,7 @@ function Chat({
                 />
               </TouchableOpacity>
             )}
-          {activeConversation.is_group && (
-            <Text
-              className="button-1"
-              style2={{
-                transform:
-                  activeChatUserBasicInfos &&
-                  activeChatUserBasicInfos.length > 1
-                    ? "translateX(-" +
-                      (activeChatUserBasicInfos.length - 1) * 28 +
-                      "px)"
-                    : "",
-              }}
-            >
-              {activeConversation.chat_name}
-            </Text>
-          )}
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setActiveConversation(false);

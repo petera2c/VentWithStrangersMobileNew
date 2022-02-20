@@ -35,7 +35,8 @@ const app = createFirebaseApp(firebaseConfig);
 const db = getFirestore();
 const db2 = getDatabase();
 
-if (__DEV__) {
+//__DEV__
+if (false) {
   connectFirestoreEmulator(db, "192.168.100.244", 8080);
   connectDatabaseEmulator(db2, "192.168.100.244", 9000);
   const auth = getAuth();

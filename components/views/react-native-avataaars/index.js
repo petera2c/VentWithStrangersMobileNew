@@ -55,8 +55,6 @@ var Avatar = (function (_super) {
   Avatar.prototype.render = function () {
     var size = this.props.size;
 
-    return <View />;
-
     return (
       <SvgUri
         height="100%"

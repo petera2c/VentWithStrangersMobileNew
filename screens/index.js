@@ -97,9 +97,6 @@ function Routes() {
               visible={Boolean(newReward)}
             />
           )}
-          {isUsersBirthday && (
-            <BirthdayModal close={() => setIsUsersBirthday(false)} />
-          )}
         </RouteContext.Provider>
       </OnlineUsersContext.Provider>
       <FlashMessage position="top" />
