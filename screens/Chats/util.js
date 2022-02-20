@@ -209,7 +209,10 @@ export const messageListener = (
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-        if (querySnapshot.docChanges()[0].type === "added") {
+        if (
+          querySnapshot.docChanges()[0].type === "added" ||
+          querySnapshot.docChanges()[0].type === "removed"
+        ) {
           setMessages((oldMessages) => [
             ...oldMessages,
             {

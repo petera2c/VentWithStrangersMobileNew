@@ -97,7 +97,7 @@ export const findPossibleUsersToTag = async (
     let users;
 
     if (snapshot && snapshot.docs && snapshot.docs.length > 0)
-      users = snapshot.docs.map((doc, index) => ({
+      users = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
         doc,
@@ -105,7 +105,7 @@ export const findPossibleUsersToTag = async (
 
     if (users)
       callback(
-        users.map((user, index) => {
+        users.map((user) => {
           return { id: user.id, display: user.displayName, ...user };
         })
       );
@@ -167,7 +167,10 @@ export const newVentCommentListener = (
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-        if (querySnapshot.docChanges()[0].type === "added") {
+        if (
+          querySnapshot.docChanges()[0].type === "added" ||
+          querySnapshot.docChanges()[0].type === "removed"
+        ) {
           if (querySnapshot.docs[0].data().userID === userID)
             setComments((oldComments) => [
               ...oldComments,
@@ -230,7 +233,7 @@ export const getVentComments = async (
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = [];
-    snapshot.docs.forEach((doc, index) => {
+    snapshot.docs.forEach((doc) => {
       if (comments && comments.find((comment) => comment.id === doc.id)) return;
       else
         newComments.push({
@@ -357,7 +360,7 @@ export const startConversation = async (navigation, user, ventUserID) => {
   );
 
   const goToPage = (conversationID) => {
-    navigation.navigate("Chat", { conversationID });
+    navigation.jumpTo("Chat", { conversationID });
   };
 
   let found;

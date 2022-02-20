@@ -40,13 +40,18 @@ function Message({
 
   if (message.is_notice)
     return (
-      <View style={{ ...styles.xFill }}>
+      <View
+        style={{
+          ...styles.xFill,
+          ...styles.mb8,
+        }}
+      >
         {urlify({ ...styles.fs20, ...styles.colorGrey11 }, message.body).map(
           (obj, index) => {
             return (
               <Text
                 key={index}
-                style={{ ...styles.fs20, ...styles.colorGrey11 }}
+                style={{ ...styles.fs20, ...styles.colorGrey11, ...styles.tac }}
               >
                 {obj}
               </Text>

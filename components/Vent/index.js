@@ -32,7 +32,6 @@ import { colors, styles } from "../../styles";
 
 import { UserContext } from "../../context";
 import {
-  blockUser,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
@@ -49,7 +48,6 @@ import {
   findPossibleUsersToTag,
   getVent,
   getVentComments,
-  getVentPartialLnk,
   likeOrUnlikeVent,
   newVentCommentListener,
   reportVent,
@@ -212,11 +210,11 @@ function VentComponent({
                 ...styles.alignCenter,
               }}
             >
-              <View style={{ ...styles.mr8 }}>
-                <Text style={{ ...styles.colorGrey11, ...styles.fs20 }}>
-                  {capitolizeFirstChar(author.displayName)}
-                </Text>
-              </View>
+              <Text
+                style={{ ...styles.colorGrey11, ...styles.fs20, ...styles.mr8 }}
+              >
+                {capitolizeFirstChar(author.displayName)}
+              </Text>
               {isUserOnline === "online" && (
                 <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
               )}
@@ -224,24 +222,11 @@ function VentComponent({
             </View>
           </TouchableOpacity>
           {vent.is_birthday_post && (
-            <View
-              style={{
-                ...styles.flexFill,
-                ...styles.flexRow,
-                ...styles.alignCenter,
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faBirthdayCake}
-                size={32}
-                style={{ ...styles.colorMain, ...styles.mr8 }}
-              />
-              <FontAwesomeIcon
-                icon={faBirthdayCake}
-                size={32}
-                style={{ ...styles.colorMain }}
-              />
-            </View>
+            <FontAwesomeIcon
+              icon={faBirthdayCake}
+              size={32}
+              style={{ ...styles.colorMain, ...styles.mr8 }}
+            />
           )}
           {user && (
             <ContentOptions
@@ -390,7 +375,7 @@ function VentComponent({
               onPress={() => {
                 if (signUpProgressFunction) return signUpProgressFunction();
 
-                startConversation(navigate, user, vent.userID);
+                startConversation(navigation, user, vent.userID);
               }}
               style={{
                 ...styles.buttonPrimary,
@@ -742,9 +727,10 @@ const renderSuggestions = ({ keyword, onSuggestionPress, ventID }) => {
           ...styles.pa8,
         }}
       >
-        {possibleUsersToTag.map((possibleUserToTag, index) => {
+        {possibleUsersToTag.map((possibleUserToTag) => {
           return (
             <TouchableOpacity
+              key={possibleUserToTag.id}
               onPress={() => {
                 setPossibleUsersToTag([]);
                 onSuggestionPress({
