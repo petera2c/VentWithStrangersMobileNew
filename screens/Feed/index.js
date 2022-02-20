@@ -229,8 +229,15 @@ function FeedScreen({ navigation }) {
               );
             })}
           {canLoadMore && (
-            <TouchableOpacity>
-              <Text>Load More</Text>
+            <TouchableOpacity
+              onPress={() =>
+                getVents(pathname, setCanLoadMore, setVents, user, vents)
+              }
+              style={{ ...styles.buttonPrimary, ...styles.mb16 }}
+            >
+              <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                Load More Vents
+              </Text>
             </TouchableOpacity>
           )}
         </View>

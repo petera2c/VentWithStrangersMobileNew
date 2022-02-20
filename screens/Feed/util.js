@@ -55,10 +55,10 @@ export const getVents = async (
         query2(
           ref(db2, "feed/" + user.uid),
           endAt(
-            vents[vents.length - 1].server_timestamp,
+            vents[vents.length - 1].server_timestamp + 1,
             vents[vents.length - 1].id
           ),
-          limitToLast(5),
+          limitToLast(10),
           orderByChild("server_timestamp")
         )
       );
@@ -66,7 +66,7 @@ export const getVents = async (
       snapshotRTDB = await get(
         query2(
           ref(db2, "feed/" + user.uid),
-          limitToLast(5),
+          limitToLast(10),
           orderByChild("server_timestamp")
         )
       );
@@ -113,7 +113,11 @@ export const getVents = async (
       });
     });
 
-    if (newVents.length < 10) setCanLoadMore(false);
+    if (vents && vents.length > 0) {
+      newVents.shift();
+    }
+
+    if (newVents.length < 9) setCanLoadMore(false);
 
     if (vents) {
       return setVents((oldVents) => {
