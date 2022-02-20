@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
+  Easing,
   KeyboardAvoidingView,
   RefreshControl,
   ScrollView,
@@ -42,8 +44,8 @@ function Chat({
   userID,
 }) {
   const dummyRef = useRef();
-  const textInput = useRef(null);
   const isUserTypingTimeout = useRef();
+  const textInput = useRef(null);
 
   const scrollToBottom = () => {
     if (dummyRef.current) dummyRef.current.scrollToEnd({ animated: true });
@@ -237,7 +239,14 @@ function Chat({
       <View style={{ ...styles.flexFill }}>
         {!messages ||
           ((messages && messages.length) === 0 && (
-            <Text style={{ ...styles.title }}>
+            <Text
+              style={{
+                ...styles.titleSmall,
+                ...styles.tac,
+                ...styles.bgWhite,
+                ...styles.pt16,
+              }}
+            >
               The conversation has been started but no messages have been sent!
             </Text>
           ))}
@@ -303,46 +312,11 @@ function Chat({
         </ScrollView>
       </View>
 
-      {false && (
-        <View
-          className="ease-in-out x-fill"
-          style={{
-            maxHeight: showPartnerIsTyping ? 56 : 0,
-          }}
-        >
-          <View className="bg-none ov-hidden full-center">
-            <View className="align-end pl16">
-              {activeChatUserBasicInfos && activeChatUserBasicInfos[0] && (
-                <MakeAvatar
-                  displayName={activeChatUserBasicInfos[0].displayName}
-                  userBasicInfo={activeChatUserBasicInfos[0]}
-                />
-              )}
-              <Text>...</Text>
-            </View>
-          </View>
-        </View>
-      )}
-      {false && (
-        <View
-          className="ease-in-out x-fill"
-          style={{
-            maxHeight: arrayOfUsersTyping.length > 0 ? "56px" : "0",
-          }}
-        >
-          <View className="bg-none ov-hidden full-center">
-            <View className="align-end pl16">
-              <Text className="">
-                {arrayOfUsersTyping.length}
-                {arrayOfUsersTyping.length === 1
-                  ? " person is "
-                  : " people are "}
-                typing...
-              </Text>
-            </View>
-          </View>
-        </View>
-      )}
+      <UserTypingComponent
+        activeChatUserBasicInfos={activeChatUserBasicInfos}
+        isGroup={activeConversation.is_group}
+        showPartnerIsTyping={showPartnerIsTyping}
+      />
 
       <View
         style={{
@@ -395,6 +369,66 @@ function Chat({
       </View>
     </View>
   );
+}
+
+function UserTypingComponent({
+  activeChatUserBasicInfos,
+  isGroup,
+  showPartnerIsTyping,
+}) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (showPartnerIsTyping)
+      Animated.timing(fadeAnim, {
+        toValue: 200,
+        useNativeDriver: false,
+      }).start();
+    else
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        useNativeDriver: false,
+      }).start();
+  }, [fadeAnim, showPartnerIsTyping]);
+
+  if (isGroup)
+    return (
+      <Animated.View
+        style={{
+          ...styles.flexRow,
+          ...styles.alignCenter,
+          ...styles.bgWhite,
+          ...styles.ovHidden,
+          maxHeight: showPartnerIsTyping ? 200 : 0,
+        }}
+      >
+        <Text className="">
+          {arrayOfUsersTyping.length}
+          {arrayOfUsersTyping.length === 1 ? " person is " : " people are "}
+          typing...
+        </Text>
+      </Animated.View>
+    );
+  else
+    return (
+      <Animated.View
+        style={{
+          ...styles.flexRow,
+          ...styles.alignCenter,
+          ...styles.bgWhite,
+          ...styles.ovHidden,
+          maxHeight: fadeAnim,
+        }}
+      >
+        {activeChatUserBasicInfos && activeChatUserBasicInfos[0] && (
+          <MakeAvatar
+            displayName={activeChatUserBasicInfos[0].displayName}
+            userBasicInfo={activeChatUserBasicInfos[0]}
+          />
+        )}
+        <Text style={{ ...styles.pTag }}>...</Text>
+      </Animated.View>
+    );
 }
 
 export default Chat;

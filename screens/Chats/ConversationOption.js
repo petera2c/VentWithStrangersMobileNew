@@ -287,7 +287,9 @@ function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
           ? capitolizeFirstChar(userBasicInfo.displayName)
           : "Anonymous"}
       </Text>
-      {!chatName && isUserOnline && <View style={{ ...styles.onlineDot }} />}
+      {!chatName && isUserOnline && (
+        <View style={{ ...styles.onlineDot, ...styles.mr8 }} />
+      )}
     </View>
   );
 }
