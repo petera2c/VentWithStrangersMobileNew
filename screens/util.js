@@ -1,6 +1,5 @@
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 import {
   arrayUnion,
@@ -90,7 +89,6 @@ export const registerForPushNotificationsAsync = async (user) => {
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
@@ -115,8 +113,6 @@ export const registerForPushNotificationsAsync = async (user) => {
         { merge: true }
       );
     }
-  } else {
-    alert("Must use physical device for Push Notifications");
   }
 
   if (Platform.OS === "android") {

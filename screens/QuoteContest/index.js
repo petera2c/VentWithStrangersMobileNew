@@ -108,7 +108,6 @@ function QuoteContestScreen({ navigation }) {
           {quotes.map((quote, index) => {
             return (
               <Quote
-                isLast={index === quotes.length - 1}
                 key={quote.id}
                 navigation={navigation}
                 quote1={quote}
@@ -201,7 +200,6 @@ function QuoteContestScreen({ navigation }) {
 }
 
 function Quote({
-  isLast,
   navigation,
   quote1,
   setCanUserCreateQuote,

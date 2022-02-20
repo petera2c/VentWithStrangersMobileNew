@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
-  Pressable,
   SafeAreaView,
   Text,
   TextInput,
@@ -45,7 +44,6 @@ function LoginModal({ setActiveModal, visible }) {
             <SafeAreaView
               style={{
                 ...styles.bgWhite,
-                overflow: "hidden",
                 ...styles.br8,
               }}
             >

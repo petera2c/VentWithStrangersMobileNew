@@ -15,7 +15,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faGlassCheers } from "@fortawesome/pro-solid-svg-icons/faGlassCheers";
 import { faLandmark } from "@fortawesome/pro-solid-svg-icons/faLandmark";
@@ -442,7 +441,7 @@ function ProfileScreen({ navigation, route }) {
             </TouchableOpacity>
           </View>
           {postsSection && (
-            <View dataLength={vents.length}>
+            <View>
               <View>
                 {vents &&
                   vents.map((vent, index) => (
@@ -458,6 +457,13 @@ function ProfileScreen({ navigation, route }) {
                   <Text style={{ ...styles.pTag }}>No vents found.</Text>
                 )}
               </View>
+              {canLoadMoreVents && (
+                <View>
+                  <TouchableOpacity onPress={() => {}}>
+                    <Text>Load More Vents</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
           {!postsSection && (
@@ -476,9 +482,7 @@ function ProfileScreen({ navigation, route }) {
                           }}
                         >
                           <Comment
-                            arrayLength={comments.length}
                             commentID={comment.id}
-                            commentIndex={index}
                             comment2={comment}
                             key={index}
                             navigation={navigation}

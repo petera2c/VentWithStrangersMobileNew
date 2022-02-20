@@ -3,7 +3,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
-  Pressable,
   SafeAreaView,
   Text,
   TextInput,
@@ -49,9 +48,7 @@ function SignUpModal({ setActiveModal, visible }) {
           <TouchableWithoutFeedback>
             <SafeAreaView
               style={{
-                ...styles.bgWhite,
-                overflow: "hidden",
-                ...styles.br8,
+                ...styles.box,
               }}
             >
               <View style={{ ...styles.bgMain, ...styles.pa16 }}>

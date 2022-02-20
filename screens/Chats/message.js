@@ -5,7 +5,6 @@ import { showMessage } from "react-native-flash-message";
 
 import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import OptionsModal from "../../components/modals/Options";
 
@@ -22,10 +21,8 @@ function Message({
   shouldShowDisplayName,
   userID,
 }) {
-  const [deleteMessageConfirm, setDeleteMessageConfirm] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [messageOptions, setMessageOptions] = useState(false);
-  const [reportModal, setReportModal] = useState(false);
 
   useEffect(() => {
     if (

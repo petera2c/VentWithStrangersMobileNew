@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { View } from "react-native";
 
-import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 
 import Routes from "./screens/index";

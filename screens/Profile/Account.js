@@ -12,11 +12,6 @@ import { showMessage } from "react-native-flash-message";
 
 import { faBirthdayCake } from "@fortawesome/pro-solid-svg-icons/faBirthdayCake";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
-import { faLockAlt } from "@fortawesome/pro-solid-svg-icons/faLockAlt";
-import { faMonument } from "@fortawesome/pro-light-svg-icons/faMonument";
-import { faPaperPlane } from "@fortawesome/pro-light-svg-icons/faPaperPlane";
-import { faTransgenderAlt } from "@fortawesome/pro-solid-svg-icons/faTransgenderAlt";
-import { faVenusMars } from "@fortawesome/pro-solid-svg-icons/faVenusMars";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import DeleteAccountModal from "../../components/modals/DeleteAccount";
@@ -229,7 +224,7 @@ function AccountScreen({ navigation }) {
                     return (
                       <TouchableOpacity
                         key={index}
-                        onPress={(text) => {
+                        onPress={() => {
                           if (partying !== index) setPartying(index);
                           else setPartying(undefined);
                         }}
@@ -273,7 +268,7 @@ function AccountScreen({ navigation }) {
                     return (
                       <TouchableOpacity
                         key={index}
-                        onPress={(text) => {
+                        onPress={() => {
                           if (politics !== index) setPolitics(index);
                           else setPolitics(undefined);
                         }}
@@ -316,7 +311,7 @@ function AccountScreen({ navigation }) {
                     return (
                       <TouchableOpacity
                         key={index}
-                        onPress={(text) => {
+                        onPress={() => {
                           if (religion !== str) setReligion(str);
                           else setReligion(undefined);
                         }}
@@ -357,7 +352,7 @@ function AccountScreen({ navigation }) {
                     return (
                       <TouchableOpacity
                         key={index}
-                        onPress={(text) => {
+                        onPress={() => {
                           if (education !== index) setEducation(index);
                           else setEducation(undefined);
                         }}
@@ -400,7 +395,7 @@ function AccountScreen({ navigation }) {
                     return (
                       <TouchableOpacity
                         key={index}
-                        onPress={(text) => {
+                        onPress={() => {
                           if (kids !== index) setKids(index);
                           else setKids(undefined);
                         }}
@@ -485,7 +480,7 @@ function AccountScreen({ navigation }) {
             }}
           >
             <TouchableOpacity
-              onPress={(text) => {
+              onPress={() => {
                 setDisplayName(user.displayName);
                 setEmail(user.email);
                 setNewPassword("");
@@ -550,7 +545,7 @@ function AccountScreen({ navigation }) {
       <DeleteAccountModal
         close={() => setDeleteAccountModal(false)}
         submit={() => {
-          deleteAccountAndAllData(user.uid);
+          deleteAccountAndAllData();
         }}
         visible={deleteAccountModal}
       />

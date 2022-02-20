@@ -62,7 +62,7 @@ function DrawerNavigation() {
       initialRouteName="Home"
       screenOptions={{ drawerPosition: "right", headerShown: false }}
       drawerContent={(props) => {
-        const { navigation, state } = props;
+        const { navigation } = props;
 
         return (
           <SafeAreaView>

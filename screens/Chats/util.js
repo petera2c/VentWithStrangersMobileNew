@@ -63,7 +63,7 @@ export const conversationListener = (currentConversation, setConversations) => {
 
 export const deleteConversation = async (
   conversationID,
-  navigate,
+  navigation,
   setActiveConversation,
   setConversations,
   userID
@@ -82,7 +82,7 @@ export const deleteConversation = async (
   });
 
   setActiveConversation(false);
-  navigate("/chat");
+  navigation.jumpTo("Chats");
 
   showMessage({
     message: "Success :)!",
@@ -280,7 +280,7 @@ export const getMessages = async (
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newMessages = [];
-    snapshot.docs.forEach((doc, index) => {
+    snapshot.docs.forEach((doc) => {
       newMessages.unshift({ id: doc.id, doc, ...doc.data() });
     });
 

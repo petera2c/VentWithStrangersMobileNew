@@ -128,8 +128,7 @@ export const newNotificationsListener = (
 export const getUnreadConversations = (
   pathname,
   setUnreadConversations,
-  userID,
-  first = true
+  userID
 ) => {
   const unsubscribe = onSnapshot(
     doc(db, "unread_conversations_count", userID),
@@ -143,7 +142,6 @@ export const getUnreadConversations = (
       } else {
         setUnreadConversations(0);
       }
-      first = false;
     }
   );
 

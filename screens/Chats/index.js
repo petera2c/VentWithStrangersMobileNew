@@ -126,10 +126,9 @@ function ChatsScreen({ navigation, route }) {
               style={{ flex: 1 }}
             >
               <View style={{ ...styles.pa16 }}>
-                {conversations.map((conversation, index) => {
+                {conversations.map((conversation) => {
                   return (
                     <ConversationOption
-                      activeChatUserBasicInfos={activeChatUserBasicInfos}
                       conversation={conversation}
                       isActive={
                         activeConversation
@@ -137,6 +136,7 @@ function ChatsScreen({ navigation, route }) {
                           : false
                       }
                       key={conversation.id}
+                      navigation={navigation}
                       setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
                       setActiveConversation={setActiveConversation}
                       setConversations={setConversations}

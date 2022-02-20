@@ -1,11 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 
 import NewVentComponent from "../../components/NewVent";
 import Screen from "../../components/containers/Screen";

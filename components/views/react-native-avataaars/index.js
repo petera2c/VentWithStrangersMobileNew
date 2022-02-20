@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, PixelRatio } from "react-native";
+//import { View } from "react-native";
 import ReactDOMServer from "react-dom/server";
 import { default as AvatarReact } from "avataaars";
 import { SvgUri } from "react-native-svg";
@@ -53,8 +53,6 @@ var Avatar = (function (_super) {
     return (_super !== null && _super.apply(this, arguments)) || this;
   }
   Avatar.prototype.render = function () {
-    var size = this.props.size;
-
     return (
       <SvgUri
         height="100%"

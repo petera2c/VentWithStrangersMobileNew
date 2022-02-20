@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 import Screen from "../../../components/containers/Screen";
 import Vent from "../../../components/Vent";
@@ -13,7 +13,9 @@ function SingleVentScreen({ navigation, route }) {
 
   return (
     <Screen goBack navigation={navigation}>
-      {ventFound === false && <Text>Vent Not Found</Text>}
+      {ventFound === false && (
+        <Text style={{ ...styles.title, ...styles.mt16 }}>Vent Not Found</Text>
+      )}
       {ventFound === undefined && ventID && (
         <Vent
           disablePostOnClick={true}

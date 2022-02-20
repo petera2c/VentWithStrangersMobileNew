@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { faRocket } from "@fortawesome/pro-solid-svg-icons/faRocket";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+import { styles } from "../../../styles";
 import { calculateKarma } from "../../../util";
 
 function KarmaBadge({ userBasicInfo }) {

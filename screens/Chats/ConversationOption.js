@@ -34,9 +34,9 @@ import {
 dayjs.extend(relativeTime);
 
 function ConversationOption({
-  activeChatUserBasicInfos,
   conversation,
   isActive,
+  navigation,
   setActiveConversation,
   setActiveChatUserBasicInfos,
   setConversations,
@@ -44,7 +44,6 @@ function ConversationOption({
 }) {
   const unsubFromConversationUpdates = useRef(false);
 
-  const [blockModal, setBlockModal] = useState(false);
   const [isMuted, setIsMuted] = useState();
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [userBasicInfoArray, setUserBasicInfoArray] = useState([]);
@@ -237,7 +236,7 @@ function ConversationOption({
 
               deleteConversation(
                 conversation.id,
-                navigate,
+                navigation,
                 setActiveConversation,
                 setConversations,
                 userID

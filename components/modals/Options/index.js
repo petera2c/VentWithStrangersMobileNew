@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
-  Pressable,
   SafeAreaView,
   Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -14,7 +12,7 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { colors, styles } from "../../../styles";
+import { styles } from "../../../styles";
 
 function OptionsModal({ close, options, title, visible }) {
   return (
@@ -35,8 +33,7 @@ function OptionsModal({ close, options, title, visible }) {
           <TouchableWithoutFeedback>
             <SafeAreaView
               style={{
-                ...styles.bgWhite,
-                ...styles.br8,
+                ...styles.box,
               }}
             >
               <View style={{ ...styles.bgMain, ...styles.pa16 }}>
@@ -47,6 +44,7 @@ function OptionsModal({ close, options, title, visible }) {
               <View style={{ ...styles.pa16 }}>
                 {options.map((option, index) => (
                   <TouchableOpacity
+                    key={index}
                     onPress={option.onPress}
                     style={{ ...styles.buttonSecondary, ...styles.mb8 }}
                   >

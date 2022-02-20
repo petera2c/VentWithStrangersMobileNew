@@ -1,3 +1,4 @@
+import { NativeModules } from "react-native";
 import {
   collection,
   deleteField,
@@ -40,10 +41,10 @@ const deleteAccountField = async (field, userID) => {
   });
 };
 
-export const deleteAccountAndAllData = async (userID) => {
+export const deleteAccountAndAllData = async () => {
   await getAuth().currentUser.delete();
 
-  window.location.reload();
+  NativeModules.DevSettings.reload();
 };
 
 export const followOrUnfollowUser = async (
@@ -152,7 +153,7 @@ export const getUsersComments = async (
   );
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newComments = snapshot.docs.map((doc, index) => ({
+    let newComments = snapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
       doc,
@@ -189,7 +190,7 @@ export const getUsersVents = async (
   );
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc, index) => ({
+    let newVents = snapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
       doc,

@@ -486,18 +486,15 @@ function VentComponent({
           )}
           {comments && comments.length > 0 && (
             <View>
-              {comments.map((comment, index) => {
+              {comments.map((comment) => {
                 return (
                   <Comment
-                    arrayLength={comments.length}
                     commentID={comment.id}
-                    commentIndex={index}
                     comment2={comment}
                     navigation={navigation}
                     setComments={setComments}
                     setCommentString={setCommentString}
                     setEdittingCommentID={setEdittingCommentID}
-                    ventUserID={vent.userID}
                     key={comment.id}
                   />
                 );
@@ -612,7 +609,7 @@ function VentComponent({
                 value={commentString}
               />
             </View>
-            {Boolean(edittingCommentID) ? (
+            {edittingCommentID ? (
               <View style={{ ...styles.flexRow, ...styles.ml8 }}>
                 <TouchableOpacity
                   onPress={() => {

@@ -1,19 +1,12 @@
 import React from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import Screen from "../../components/containers/Screen";
+import Screen from "../../../components/containers/Screen";
 
-import { colors, styles } from "../../styles";
+import { colors, styles } from "../../../styles";
 
-export default ({ setFirstLaunch, statusBarHeight }) => {
+function PrivacyScreen({ setFirstLaunch }) {
   return (
     <Screen>
       <View
@@ -302,4 +295,6 @@ export default ({ setFirstLaunch, statusBarHeight }) => {
       </View>
     </Screen>
   );
-};
+}
+
+export default PrivacyScreen;

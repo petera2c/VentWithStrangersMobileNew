@@ -1,4 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { showMessage } from "react-native-flash-message";
 
 import { registerForPushNotificationsAsync } from "../../../screens/util";
 
@@ -9,6 +10,6 @@ export const login = ({ email, password }, setActiveModal) => {
       setActiveModal();
     })
     .catch((error) => {
-      alert(error);
+      showMessage({ message: error, type: "error" });
     });
 };

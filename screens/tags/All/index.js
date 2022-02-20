@@ -42,7 +42,7 @@ function AllTagsScreen({ navigation }) {
             ...styles.pa16,
           }}
         >
-          {tags.map((tag, index) => (
+          {tags.map((tag) => (
             <Tag key={tag.id} navigation={navigation} tag={tag} />
           ))}
         </View>

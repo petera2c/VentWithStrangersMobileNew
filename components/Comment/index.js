@@ -23,7 +23,6 @@ import {
   hasUserBlockedUser,
   userSignUpProgress,
 } from "../../util";
-import { findPossibleUsersToTag } from "../Vent/util";
 import {
   deleteComment,
   getCommentHasLiked,
@@ -35,15 +34,12 @@ import {
 dayjs.extend(relativeTime);
 
 function CommentComponent({
-  arrayLength,
   comment2,
   commentID,
-  commentIndex,
   navigation,
   setComments,
   setCommentString,
   setEdittingCommentID,
-  ventUserID,
 }) {
   const { user } = useContext(UserContext);
 
@@ -111,7 +107,7 @@ function CommentComponent({
                   }
                 : false
             }
-            deleteFunction={(commentID) => {
+            deleteFunction={() => {
               deleteComment(comment.id, setComments);
             }}
             editFunction={() => {

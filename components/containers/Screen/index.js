@@ -1,17 +1,13 @@
 import React from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
   SafeAreaView,
-  ScrollView,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import { getStatusBarHeight } from "react-native-status-bar-height";
 
 import { faChevronLeft } from "@fortawesome/pro-solid-svg-icons/faChevronLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";

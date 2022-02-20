@@ -3,7 +3,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
-  Pressable,
   SafeAreaView,
   ScrollView,
   Text,
@@ -96,9 +95,8 @@ function GroupChatCreateModal({
           <TouchableWithoutFeedback>
             <SafeAreaView
               style={{
-                ...styles.bgWhite,
+                ...styles.box,
                 maxHeight: "60%",
-                ...styles.br8,
               }}
             >
               <ScrollView>
@@ -170,7 +168,7 @@ function GroupChatCreateModal({
                               Search Results
                             </Text>
                             <View style={{ ...styles.flexRow, ...styles.wrap }}>
-                              {hits.map((hit, index) => {
+                              {hits.map((hit) => {
                                 if (
                                   users.find(
                                     (user) => user.id === hit.objectID

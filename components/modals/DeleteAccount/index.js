@@ -37,9 +37,7 @@ function DeleteAccountModal({ close, submit, visible }) {
           <TouchableWithoutFeedback>
             <SafeAreaView
               style={{
-                ...styles.bgWhite,
-                overflow: "hidden",
-                ...styles.br8,
+                ...styles.box,
               }}
             >
               <View style={{ ...styles.pa16 }}>

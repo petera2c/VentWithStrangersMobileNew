@@ -19,9 +19,9 @@ import { UserContext } from "../../context";
 
 import { styles } from "../../styles";
 
-import { getMetaInformation, getVents, newVentListener } from "./util";
+import { getVents, newVentListener } from "./util";
 
-function FeedScreen({ navigation, route }) {
+function FeedScreen({ navigation }) {
   const { user } = useContext(UserContext);
 
   const [canLoadMore, setCanLoadMore] = useState(true);
@@ -216,7 +216,7 @@ function FeedScreen({ navigation, route }) {
             </TouchableOpacity>
           )}
           {vents &&
-            vents.map((vent, index) => {
+            vents.map((vent) => {
               return (
                 <View key={vent.id}>
                   <Vent
@@ -228,6 +228,11 @@ function FeedScreen({ navigation, route }) {
                 </View>
               );
             })}
+          {canLoadMore && (
+            <TouchableOpacity>
+              <Text>Load More</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </Screen>

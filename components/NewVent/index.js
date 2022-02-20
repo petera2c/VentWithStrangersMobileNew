@@ -1,11 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Pressable,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import algoliasearch from "algoliasearch";
 import { showMessage } from "react-native-flash-message";
 
@@ -14,7 +8,6 @@ import { faQuestionCircle } from "@fortawesome/pro-solid-svg-icons/faQuestionCir
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import Screen from "../containers/Screen";
 import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
@@ -45,7 +38,7 @@ const tagsIndex = searchClient.initIndex("vent_tags");
 const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
 
-function NewVentScreen({ miniVersion, navigation, refreshing, route, ventID }) {
+function NewVentScreen({ miniVersion, navigation, refreshing, ventID }) {
   const { user, userBasicInfo } = useContext(UserContext);
 
   const isBirthdayPost = false;
@@ -62,7 +55,6 @@ function NewVentScreen({ miniVersion, navigation, refreshing, route, ventID }) {
   const [userVentTimeOutFormatted, setUserVentTimeOutFormatted] = useState("");
   const [ventTags, setVentTags] = useState([]);
 
-  const [hasStartedToWriteVent, setHasStartedToWriteVent] = useState(false);
   const [placeholderText, setPlaceholderText] = useState("");
   const [postingDisableFunction, setPostingDisableFunction] = useState();
 
@@ -181,7 +173,6 @@ function NewVentScreen({ miniVersion, navigation, refreshing, route, ventID }) {
               }}
               onFocus={() => {
                 setIsMinified(false);
-                setHasStartedToWriteVent(true);
               }}
               placeholder={
                 isBirthdayPost
@@ -281,7 +272,7 @@ function NewVentScreen({ miniVersion, navigation, refreshing, route, ventID }) {
             />
             {ventTags && ventTags.length > 0 && (
               <View style={{ ...styles.flexRow, ...styles.wrap }}>
-                {ventTags.map((tagHit, index) => (
+                {ventTags.map((tagHit) => (
                   <Tag
                     key={tagHit.objectID}
                     postingDisableFunction={postingDisableFunction}

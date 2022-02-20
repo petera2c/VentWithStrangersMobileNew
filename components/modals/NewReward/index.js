@@ -28,7 +28,7 @@ function NewRewardModal({ close, newReward, visible }) {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            close();
+            if (canClose) close();
           }}
           style={{
             ...styles.fill,

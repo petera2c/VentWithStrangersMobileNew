@@ -13,7 +13,7 @@ export const getQuotes = async (setQuotes) => {
   );
 
   setQuotes(
-    snapshot.docs.map((doc, index) => {
+    snapshot.docs.map((doc) => {
       return { id: doc.id, doc, ...doc.data() };
     })
   );

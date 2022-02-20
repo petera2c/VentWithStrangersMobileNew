@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
-  Easing,
-  KeyboardAvoidingView,
   RefreshControl,
   ScrollView,
   Text,
@@ -10,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { off } from "firebase/database";
 
 import KarmaBadge from "../../components/views/KarmaBadge";

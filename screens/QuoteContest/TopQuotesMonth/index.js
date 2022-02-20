@@ -47,7 +47,7 @@ function TopQuotesMonthScreen({ navigation }) {
           </Text>
         </View>
 
-        {quotes.map((quote, index) => (
+        {quotes.map((quote) => (
           <QuoteDisplay key={quote.id} navigation={navigation} quote={quote} />
         ))}
       </ScrollView>

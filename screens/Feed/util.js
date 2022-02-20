@@ -88,7 +88,7 @@ export const getVents = async (
   }
 
   if (snapshot && snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc, index) => ({
+    let newVents = snapshot.docs.map((doc) => ({
       doc,
       id: doc.id,
       ...doc.data(),

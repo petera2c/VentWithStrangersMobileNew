@@ -1,34 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AppState, Image, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import FlashMessage from "react-native-flash-message";
 
-import BottomHeader from "../components/navigations/BottomHeader";
 import Drawer from "../components/navigations/Drawer";
 import NewRewardModal from "../components/modals/NewReward";
-import PrivacyPage from "./Privacy";
+import PrivacyScreen from "./Basic/Privacy";
 
 import { OnlineUsersContext, RouteContext, UserContext } from "../context";
+import { styles } from "../styles";
 
 import { getUserBasicInfo } from "../util";
 import {
-  getIsUsersBirthday,
+  //getIsUsersBirthday,
   getIsUserSubscribed,
   newRewardListener,
   setIsUserOnlineToDatabase,
   setUserOnlineStatus,
 } from "./util";
 
-const Stack = createNativeStackNavigator();
-
 function Routes() {
   const [activeRoute, setActiveRoute] = useState();
   const [firstLaunch, setFirstLaunch] = useState(null);
   const [firstOnlineUsers, setFirstOnlineUsers] = useState([]);
-  const [isUsersBirthday, setIsUsersBirthday] = useState(false);
+  //const [isUsersBirthday, setIsUsersBirthday] = useState(false);
   const [newReward, setNewReward] = useState();
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
@@ -62,7 +59,7 @@ function Routes() {
 
     if (user) {
       newRewardListenerUnsubscribe = newRewardListener(setNewReward, user.uid);
-      getIsUsersBirthday(setIsUsersBirthday, user.uid);
+      //getIsUsersBirthday(setIsUsersBirthday, user.uid);
       getIsUserSubscribed(setUserSubscription, user.uid);
       setIsUserOnlineToDatabase(user.uid);
       getUserBasicInfo((newBasicUserInfo) => {
@@ -91,7 +88,8 @@ function Routes() {
         </View>
       </View>
     );
-  else if (firstLaunch) return <PrivacyPage setFirstLaunch={setFirstLaunch} />;
+  else if (firstLaunch)
+    return <PrivacyScreen setFirstLaunch={setFirstLaunch} />;
   else
     return (
       <UserContext.Provider

@@ -142,7 +142,7 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
     setDescription(vent.description);
     setTags(
       vent.new_tags
-        ? vent.new_tags.map((tag, index) => {
+        ? vent.new_tags.map((tag) => {
             return { objectID: tag };
           })
         : []

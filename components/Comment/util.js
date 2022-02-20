@@ -1,24 +1,11 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  setDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase_init";
 import { showMessage } from "react-native-flash-message";
 
 import { styles } from "../../styles";
 
-export const getComment = async (commentID, setComment, ventID) => {
-  const commentDoc = await getDoc(doc(db, "comments", commentID));
-  const comment = commentDoc.data();
-
-  if (comment) setComment({ id: commentDoc.id, ...comment });
-};
 export const deleteComment = async (commentID, setComments) => {
   await deleteDoc(doc(db, "comments", commentID));
 

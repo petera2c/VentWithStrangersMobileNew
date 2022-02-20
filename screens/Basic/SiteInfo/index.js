@@ -8,11 +8,6 @@ import {
   View,
 } from "react-native";
 
-import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
-import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-
 import Screen from "../../../components/containers/Screen";
 import KarmaBadge from "../../../components/views/KarmaBadge";
 

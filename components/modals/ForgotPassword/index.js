@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
-  Pressable,
   SafeAreaView,
   Text,
   TextInput,
@@ -35,9 +34,7 @@ function ForgotPasswordModal({ setActiveModal, visible }) {
           <TouchableWithoutFeedback>
             <SafeAreaView
               style={{
-                ...styles.bgWhite,
-                overflow: "hidden",
-                ...styles.br8,
+                ...styles.box,
               }}
             >
               <View style={{ ...styles.bgMain, ...styles.pa16 }}>

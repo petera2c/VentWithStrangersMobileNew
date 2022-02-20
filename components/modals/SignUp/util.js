@@ -1,3 +1,4 @@
+import { showMessage } from "react-native-flash-message";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -18,7 +19,8 @@ export const signUp = (
 ) => {
   if (displayNameErrors(displayName)) return;
 
-  if (password !== passwordConfirm) return alert("Passwords do not match.");
+  if (password !== passwordConfirm)
+    return showMessage({ message: "Passwords do not match.", type: "error" });
 
   createUserWithEmailAndPassword(getAuth(), email, password)
     .then(async (res) => {
@@ -68,6 +70,6 @@ export const signUp = (
       }
     })
     .catch((e) => {
-      alert(e);
+      showMessage({ message: e, type: "error" });
     });
 };

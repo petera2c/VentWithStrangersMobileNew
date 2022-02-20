@@ -1,14 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { ProgressBar, Colors } from "react-native-paper";
+import { ProgressBar } from "react-native-paper";
 
 import Screen from "../../components/containers/Screen";
 

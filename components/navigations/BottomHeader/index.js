@@ -51,16 +51,12 @@ import {
 
 const Tab = createBottomTabNavigator();
 
-function BottomHeader({ navigation, route }) {
-  const { activeRoute, setActiveRoute } = useContext(RouteContext);
+function BottomHeader({ navigation }) {
+  const { user } = useContext(UserContext);
 
-  const { user, userBasicInfo } = useContext(UserContext);
-
-  const [activeModal, setActiveModal] = useState("");
   const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
-  const [showFeedbackContainer, setShowFeedbackContainer] = useState(false);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
   useEffect(() => {
@@ -84,7 +80,7 @@ function BottomHeader({ navigation, route }) {
         user.uid
       );
       newConversationsListenerUnsubscribe = getUnreadConversations(
-        activeRoute,
+        "",
         setUnreadConversationsCount,
         user.uid
       );
@@ -110,7 +106,7 @@ function BottomHeader({ navigation, route }) {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, [activeRoute, isUserInQueueRef, navigation, setIsUserInQueue, user]);
+  }, [isUserInQueueRef, navigation, setIsUserInQueue, user]);
 
   return (
     <Tab.Navigator

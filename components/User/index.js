@@ -3,14 +3,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
-import { faGlassCheers } from "@fortawesome/pro-solid-svg-icons/faGlassCheers";
-import { faLandmark } from "@fortawesome/pro-solid-svg-icons/faLandmark";
-import { faPray } from "@fortawesome/pro-solid-svg-icons/faPray";
-import { faSchool } from "@fortawesome/pro-solid-svg-icons/faSchool";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-
 import DisplayName from "../views/DisplayName";
 import MakeAvatar from "../views/MakeAvatar";
 import StarterModal from "../modals/Starter";
@@ -21,12 +13,6 @@ import { styles } from "../../styles";
 
 import { startConversation } from "../../components/Vent/util";
 import {
-  educationList,
-  kidsList,
-  partyingList,
-  politicalBeliefsList,
-} from "../../PersonalOptions";
-import {
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
@@ -36,12 +22,10 @@ import {
 dayjs.extend(relativeTime);
 
 function UserComponent({
-  additionalUserInfo,
   displayName,
   isUserOnline,
   lastOnline,
   navigation,
-  showAdditionaluserInformation,
   showMessageUser,
   userID,
 }) {

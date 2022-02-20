@@ -228,7 +228,7 @@ function SettingsScreen({ navigation }) {
               <Text style={{ ...styles.pTag }}>Blocked Users</Text>
             </TouchableOpacity>
 
-            {blockedUsers.map((blockedUserID, index) => (
+            {blockedUsers.map((blockedUserID) => (
               <UserDisplay
                 blockedUserID={blockedUserID}
                 key={blockedUserID}
