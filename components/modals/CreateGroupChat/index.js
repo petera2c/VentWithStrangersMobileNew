@@ -113,8 +113,8 @@ function GroupChatCreateModal({
 
                   <View style={{ ...styles.pa32 }}>
                     {existingUsers && existingUsers.length > 0 && (
-                      <View>
-                        <Text style={{ ...styles.titleSmall }}>
+                      <View style={{ ...styles.mb16 }}>
+                        <Text style={{ ...styles.titleSmall, ...styles.mb8 }}>
                           Users In Chat
                         </Text>
                         {existingUsers.map((user) => {
@@ -122,6 +122,7 @@ function GroupChatCreateModal({
                             <DisplayExistingUser
                               groupChatEditting={groupChatEditting}
                               key={user.id}
+                              navigation={navigation}
                               setExistingUsers={setExistingUsers}
                               user={user}
                               userBasicInfo={userBasicInfo}
@@ -166,7 +167,7 @@ function GroupChatCreateModal({
                             <Text
                               style={{ ...styles.titleSmall, ...styles.mb16 }}
                             >
-                              Searched For People
+                              Search Results
                             </Text>
                             <View style={{ ...styles.flexRow, ...styles.wrap }}>
                               {hits.map((hit, index) => {
@@ -277,7 +278,6 @@ function GroupChatCreateModal({
                   </View>
                   {isNewGroupChatOrOwner && (
                     <View
-                      className="full-center border-top pa16"
                       style={{
                         ...styles.flexRow,
                         ...styles.alignCenter,
@@ -285,7 +285,6 @@ function GroupChatCreateModal({
                       }}
                     >
                       <TouchableOpacity
-                        className="grey-1 border-all py8 px32 mx4 br4"
                         onPress={() => close()}
                         style={{
                           ...styles.flexFill,
@@ -299,7 +298,6 @@ function GroupChatCreateModal({
                         <Text style={{ ...styles.pTag }}>Cancel</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        className="TouchableOpacity-2 py8 px32 mx4 br4"
                         onPress={() => {
                           saveGroup(
                             chatNameString,
@@ -335,6 +333,7 @@ function GroupChatCreateModal({
 
 function DisplayExistingUser({
   groupChatEditting,
+  navigation,
   setExistingUsers,
   user,
   userBasicInfo,
@@ -357,7 +356,7 @@ function DisplayExistingUser({
   }, [user]);
 
   return (
-    <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+    <View style={{ ...styles.flexRow, ...styles.alignCenter, ...styles.mb8 }}>
       <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
         <MakeAvatar
           displayName={user.displayName}
@@ -365,7 +364,6 @@ function DisplayExistingUser({
           userBasicInfo={user}
         />
         <TouchableOpacity
-          className="full-center flex-fill ov-hidden ic gap4"
           onPress={() => navigation.jumpTo("Profile", { userID: user.id })}
         >
           <Text style={{ ...styles.pTag, ...styles.mr8 }}>
@@ -419,7 +417,6 @@ function HitDisplay({ existingUsers, hit, setUsers }) {
 
   return (
     <TouchableOpacity
-      className="TouchableOpacity-8 align-center gap8"
       onPress={() => {
         setUsers((users) => {
           if (existingUsers.length + users.length >= GROUP_MAX) {
@@ -434,7 +431,14 @@ function HitDisplay({ existingUsers, hit, setUsers }) {
         });
       }}
     >
-      <View className="gap4">
+      <View
+        style={{
+          ...styles.flexRow,
+          ...styles.alignCenter,
+          ...styles.mr8,
+          ...styles.mb8,
+        }}
+      >
         {userBasicInfo && (
           <MakeAvatar
             displayName={hit.displayName}
@@ -442,9 +446,7 @@ function HitDisplay({ existingUsers, hit, setUsers }) {
             userBasicInfo={userBasicInfo}
           />
         )}
-        <View className="full-center flex-fill ov-hidden ic">
-          <Text className="ic ellipsis fw-400 grey-11">{hit.displayName}</Text>
-        </View>
+        <Text style={{ ...styles.pTag }}>{hit.displayName}</Text>
       </View>
       {userBasicInfo && (
         <KarmaBadge

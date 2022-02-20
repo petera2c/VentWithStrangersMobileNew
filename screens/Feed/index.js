@@ -218,7 +218,7 @@ function FeedScreen({ navigation, route }) {
           {vents &&
             vents.map((vent, index) => {
               return (
-                <View className="column x-fill gap8" key={vent.id}>
+                <View key={vent.id}>
                   <Vent
                     navigation={navigation}
                     previewMode={true}

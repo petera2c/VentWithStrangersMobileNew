@@ -24,9 +24,7 @@ function RulesScreen({ navigation }) {
       >
         <View style={{ ...styles.pa16 }}>
           <View style={{ ...styles.box, ...styles.pa32 }}>
-            <Text className="tac" style={{ ...styles.title, ...styles.mb8 }}>
-              VWS Rules
-            </Text>
+            <Text style={{ ...styles.title, ...styles.mb8 }}>VWS Rules</Text>
 
             <View>
               <Text style={{ ...styles.pTag, ...styles.tac, ...styles.mb16 }}>

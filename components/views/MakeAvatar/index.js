@@ -7,7 +7,7 @@ import Avatar from "../react-native-avataaars";
 
 import { styles } from "../../../styles";
 
-function MakeAvatar({ className, displayName, size, userBasicInfo }) {
+function MakeAvatar({ displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
 
   useEffect(() => {

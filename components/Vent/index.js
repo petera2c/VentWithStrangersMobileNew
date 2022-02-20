@@ -533,8 +533,8 @@ function VentComponent({
         </View>
       )}
       {displayCommentField && !comments && (
-        <View className="x-fill full-center">
-          <Text>Loading</Text>
+        <View style={{ ...styles.fullCenter }}>
+          <Text style={{ ...styles.titleSmall, ...styles.tac }}>Loading</Text>
         </View>
       )}
     </View>

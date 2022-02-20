@@ -100,7 +100,6 @@ function OptionsModal({
               <View style={{ ...styles.pa16 }}>
                 {objectUserID === userID && (
                   <TouchableOpacity
-                    className="button-8 clickable align-center justify-between gap8"
                     onPress={() => {
                       editFunction(objectID);
                       setOptionsModal(false);

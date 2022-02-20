@@ -314,6 +314,7 @@ function Chat({
 
       <UserTypingComponent
         activeChatUserBasicInfos={activeChatUserBasicInfos}
+        arrayOfUsersTyping={arrayOfUsersTyping}
         isGroup={activeConversation.is_group}
         showPartnerIsTyping={showPartnerIsTyping}
       />
@@ -354,7 +355,6 @@ function Chat({
         />
 
         <TouchableOpacity
-          className={"button-2 "}
           onPress={() => {
             if (!messageString) return;
             setConversationIsTyping(activeConversation.id, true, userID);
@@ -373,6 +373,7 @@ function Chat({
 
 function UserTypingComponent({
   activeChatUserBasicInfos,
+  arrayOfUsersTyping,
   isGroup,
   showPartnerIsTyping,
 }) {
@@ -402,7 +403,7 @@ function UserTypingComponent({
           maxHeight: showPartnerIsTyping ? 200 : 0,
         }}
       >
-        <Text className="">
+        <Text style={{ ...styles.pTag }}>
           {arrayOfUsersTyping.length}
           {arrayOfUsersTyping.length === 1 ? " person is " : " people are "}
           typing...

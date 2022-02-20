@@ -66,7 +66,7 @@ function NotificationsScreen({ navigation }) {
           <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
             <Text style={{ ...styles.title }}>Your Notifications</Text>
           </View>
-          <View className="bg-white ov-hidden br8">
+          <View>
             <NotificationList
               navigation={navigation}
               notifications={notifications}

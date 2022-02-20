@@ -48,7 +48,7 @@ function DeleteAccountModal({ close, submit, visible }) {
                     Permanently Delete Account
                   </Text>
                 </View>
-                <View className="flex-fill column x-fill ov-auto gap16 py16 px32">
+                <View>
                   <Text
                     style={{ ...styles.pTag, ...styles.tac, ...styles.mb16 }}
                   >
@@ -72,7 +72,6 @@ function DeleteAccountModal({ close, submit, visible }) {
                 </View>
                 {!isDeleting && (
                   <View
-                    className="full-center border-top pa16"
                     style={{
                       ...styles.flexRow,
                       ...styles.borderTop,
@@ -80,7 +79,6 @@ function DeleteAccountModal({ close, submit, visible }) {
                     }}
                   >
                     <TouchableOpacity
-                      className="grey-1 border-all py8 px32 mx4 br4"
                       onPress={() => close()}
                       style={{
                         ...styles.flexFill,
@@ -100,12 +98,6 @@ function DeleteAccountModal({ close, submit, visible }) {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      className={
-                        "py8 px32 mx4 br4 " +
-                        (inputString === "delete permanently"
-                          ? "TouchableOpacity-2"
-                          : "grey-1")
-                      }
                       onPress={() => {
                         if (inputString === "delete permanently") {
                           setIsDeleting(true);

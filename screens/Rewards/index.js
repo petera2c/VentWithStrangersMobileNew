@@ -177,7 +177,7 @@ function CounterDisplay({ counter = 0, size, tooltip, title }) {
         color="#2096f2"
       />
 
-      <Text className="flex justify-end" style={{ lineHeight: 1.25 }}>
+      <Text style={{ ...styles.fs16, ...styles.mt8 }}>
         {calculateMilestone(counter, size)} Karma Points
       </Text>
     </View>

@@ -100,10 +100,6 @@ function AvatarScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              className={
-                "flex align-center grey-1 gap8 mb16 " +
-                (activeSection === 1 ? "blue" : "")
-              }
               onPress={() => setActiveSection(1)}
               style={{
                 ...styles.flexRow,
@@ -278,10 +274,6 @@ function AvatarScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              className={
-                "flex align-center grey-1 gap8 mb16 " +
-                (activeSection === 7 ? "blue" : "")
-              }
               onPress={() => setActiveSection(7)}
               style={{
                 ...styles.flexRow,
@@ -348,7 +340,6 @@ function AvatarScreen({ navigation }) {
                 {sectionsArray[activeSection].map((obj, index) => (
                   <TouchableOpacity
                     key={index}
-                    className={"flex-fill grey-1 py16 "}
                     onPress={() => {
                       avatar[getActiveSection(activeSection)] = obj.value;
                       setAvatar({ ...avatar });

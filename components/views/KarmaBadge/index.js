@@ -16,8 +16,7 @@ function KarmaBadge({ userBasicInfo }) {
     setIsAdmin(userBasicInfo ? userBasicInfo.is_admin : false);
   }, [userBasicInfo, userBasicInfo.is_admin]);
 
-  if (isAdmin)
-    return <Text className="bg-blue white fw-400 px8 py4 br8">Moderator</Text>;
+  if (isAdmin) return <Text style={{ ...styles.colorMain }}>Moderator</Text>;
 
   let badgeColor;
   let badgeIcon;

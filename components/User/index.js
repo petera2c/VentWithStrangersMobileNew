@@ -64,7 +64,6 @@ function UserComponent({
   return (
     <View style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}>
       <TouchableOpacity
-        className="column x-fill flex-fill gap8"
         onPress={() => navigation.jumpTo("Profile", { userID })}
       >
         <View
@@ -94,79 +93,6 @@ function UserComponent({
             </Text>
           </View>
         </View>
-
-        {(userInfo.birth_date || userInfo.gender || userInfo.pronouns) && (
-          <View style={{ ...styles.mb16 }}>
-            {Boolean(
-              new dayjs().year() - new dayjs(userInfo.birth_date).year()
-            ) && (
-              <View className="column">
-                <Text className="fw-400">Age</Text>
-                <Text className="grey-1 fw-400">
-                  {new dayjs().year() - new dayjs(userInfo.birth_date).year()}
-                </Text>
-              </View>
-            )}
-
-            {userInfo.gender && (
-              <View className="column">
-                <Text className="fw-400">Gender</Text>
-                <Text className="grey-1 fw-400">{userInfo.gender}</Text>
-              </View>
-            )}
-            {userInfo.pronouns && (
-              <View className="column">
-                <Text className="fw-400">Pronouns</Text>
-                <Text className="grey-1 fw-400">{userInfo.pronouns}</Text>
-              </View>
-            )}
-          </View>
-        )}
-
-        {showAdditionaluserInformation && (
-          <View style={{ ...styles.flexRow, ...styles.wrap, ...styles.mb16 }}>
-            {additionalUserInfo.education !== undefined && (
-              <View className="border-all align-center px8 py4 br4">
-                <Text>
-                  <FontAwesomeIcon className="mr8" icon={faSchool} />
-                  {educationList[additionalUserInfo.education]}
-                </Text>
-              </View>
-            )}
-            {additionalUserInfo.kids !== undefined && (
-              <View className="border-all align-center px8 py4 br4">
-                <Text>
-                  <FontAwesomeIcon className="mr8" icon={faBaby} />
-                  {kidsList[additionalUserInfo.kids]}
-                </Text>
-              </View>
-            )}
-            {additionalUserInfo.partying !== undefined && (
-              <View className="border-all align-center px8 py4 br4">
-                <Text>
-                  <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
-                  {partyingList[additionalUserInfo.partying]}
-                </Text>
-              </View>
-            )}
-            {additionalUserInfo.politics !== undefined && (
-              <View className="border-all align-center px8 py4 br4">
-                <Text>
-                  <FontAwesomeIcon className="mr8" icon={faLandmark} />
-                  {politicalBeliefsList[additionalUserInfo.politics]}
-                </Text>
-              </View>
-            )}
-            {additionalUserInfo.religion !== undefined && (
-              <View className="border-all align-center px8 py4 br4">
-                <Text>
-                  <FontAwesomeIcon className="mr8" icon={faPray} />
-                  {additionalUserInfo.religion}
-                </Text>
-              </View>
-            )}
-          </View>
-        )}
 
         {showMessageUser && (
           <View>

@@ -176,28 +176,31 @@ function ChatsScreen({ navigation, route }) {
       {activeConversation && (
         <View style={{ ...styles.flexFill }}>
           {!activeConversation && user && user.emailVerified && (
-            <TouchableOpacity className="grey-1 tac pa32" to="/people-online">
-              <Text className="tac">
+            <TouchableOpacity onPress={() => navigation.jumpTo("OnlineUsers")}>
+              <Text style={{ ...styles.titleSmall, ...styles.tac }}>
                 Check your messages from friends on Vent With Strangers,{" "}
+                <Text style={{ ...styles.colorMain }}>
+                  See Who is Online :)
+                </Text>
               </Text>
-              <Text className="blue">See Who is Online :)</Text>
             </TouchableOpacity>
           )}
           {(!user || (user && !user.emailVerified)) && (
-            <Text
-              className="TouchableOpacity-1 grey-1 tac pa32"
-              onClick={() => {
+            <TouchableOpacity
+              onPress={() => {
                 if (!user) setStarterModal(true);
                 else {
                   userSignUpProgress(user);
                 }
               }}
             >
-              Check your messages from friends on Vent With Strangers,
-              <Text className="blue">
-                {user ? " verify your email!" : " get started here!"}
+              <Text style={{ ...styles.titleSmall, ...styles.tac }}>
+                Check your messages from friends on Vent With Strangers,
+                <Text style={{ ...styles.colorMain }}>
+                  {user ? " verify your email!" : " get started here!"}
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           )}
           {user &&
             user.emailVerified &&

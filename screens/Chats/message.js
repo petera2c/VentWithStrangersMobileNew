@@ -83,7 +83,11 @@ function Message({
           >
             {Boolean(
               message.userID !== userID && shouldShowDisplayName && displayName
-            ) && <Text className="orange">{displayName}</Text>}
+            ) && (
+              <Text style={{ ...styles.fs18, ...styles.mb8 }}>
+                {displayName}
+              </Text>
+            )}
             <View>
               {urlify(
                 {

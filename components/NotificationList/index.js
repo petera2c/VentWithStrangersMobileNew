@@ -30,7 +30,7 @@ function NotificationList({ navigation, notifications }) {
       ))}
       {((notifications && notifications.length === 0) || !notifications) && (
         <View style={{ ...styles.box, ...styles.pa32 }}>
-          <Text className="fw-400 pa16">
+          <Text style={{ ...styles.titleSmall, ...styles.tac }}>
             There are no notifications to show!
           </Text>
         </View>

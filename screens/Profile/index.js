@@ -348,7 +348,11 @@ function ProfileScreen({ navigation, route }) {
 
                       startConversation(navigation, user, userID);
                     }}
-                    style={{ ...styles.buttonPrimary, ...styles.mt8 }}
+                    style={{
+                      ...styles.buttonPrimary,
+                      ...styles.mt8,
+                      ...styles.mb16,
+                    }}
                   >
                     <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
                       Message {capitolizeFirstChar(userBasicInfo.displayName)}
@@ -377,9 +381,9 @@ function ProfileScreen({ navigation, route }) {
                   userID !== user.uid && (
                     <TouchableOpacity onPress={() => setShowOptionsModal(true)}>
                       <FontAwesomeIcon
-                        className="clickable grey-9"
                         icon={faEllipsisV}
-                        style={{ width: "50px" }}
+                        size={24}
+                        style={{ ...styles.colorGrey11 }}
                       />
                     </TouchableOpacity>
                   )}
@@ -438,29 +442,8 @@ function ProfileScreen({ navigation, route }) {
             </TouchableOpacity>
           </View>
           {postsSection && (
-            <View
-              dataLength={vents.length}
-              endMessage={
-                vents.length !== 0 ? (
-                  <Text className="primary tac mt16">
-                    Yay! You have seen it all
-                  </Text>
-                ) : (
-                  <View />
-                )
-              }
-              hasMore={canLoadMoreVents}
-              loader={
-                <View className="x-fill full-center">
-                  <Text>Loading</Text>
-                </View>
-              }
-              next={() =>
-                getUsersVents(userID, setCanLoadMoreVents, setVents, vents)
-              }
-              scrollableTarget="scrollable-div"
-            >
-              <View className="x-fill" direction="vertical" size="middle">
+            <View dataLength={vents.length}>
+              <View>
                 {vents &&
                   vents.map((vent, index) => (
                     <Vent
@@ -510,7 +493,6 @@ function ProfileScreen({ navigation, route }) {
               )}
               {canLoadMoreComments && (
                 <TouchableOpacity
-                  className="mt16"
                   onPress={() =>
                     getUsersComments(
                       userID,
@@ -526,8 +508,10 @@ function ProfileScreen({ navigation, route }) {
             </View>
           )}
           {((!vents && postsSection) || (!comments && !postsSection)) && (
-            <View className="x-fill full-center">
-              <Text>Loading</Text>
+            <View style={{ ...styles.fullCenter }}>
+              <Text style={{ ...styles.titleSmall, ...styles.tac }}>
+                Loading
+              </Text>
             </View>
           )}
         </View>
@@ -559,7 +543,6 @@ function ProfileScreen({ navigation, route }) {
                 </View>
                 <View style={{ ...styles.pa16 }}>
                   <TouchableOpacity
-                    className="button-8 clickable align-center"
                     onPress={() => {
                       const userInteractionIssues = userSignUpProgress(user);
 

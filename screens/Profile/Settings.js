@@ -211,7 +211,6 @@ function SettingsScreen({ navigation }) {
 
           <View style={{ ...styles.alignStart, ...styles.mb16 }}>
             <TouchableOpacity
-              className="TouchableOpacity-4"
               onPress={() => {
                 if (blockedUsers && blockedUsers.length > 0) {
                   setBlockedUsers([]);
@@ -275,7 +274,6 @@ function UserDisplay({ blockedUserID, setBlockedUsers, userID }) {
 
   return (
     <TouchableOpacity
-      className="TouchableOpacity-2 fs-18 br4 gap8 pa8"
       onPress={() => unblockUser(blockedUserID, setBlockedUsers, userID)}
       style={{ ...styles.buttonSecondary, ...styles.mr8, ...styles.mb8 }}
     >

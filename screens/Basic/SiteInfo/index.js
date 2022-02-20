@@ -86,7 +86,7 @@ function SiteInfoScreen({ navigation }) {
               >
                 With Great Power Comes Great Responsibility
               </Text>
-              <View className="column gap8">
+              <View>
                 <Text style={{ ...styles.pTag, ...styles.tac, ...styles.mb8 }}>
                   Click on a badge to learn more :)
                 </Text>

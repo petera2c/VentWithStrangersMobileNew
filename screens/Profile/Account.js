@@ -464,9 +464,6 @@ function AccountScreen({ navigation }) {
                   onPress={() => setCanSeePassword(!canSeePassword)}
                 >
                   <FontAwesomeIcon
-                    className={
-                      "clickable ml8 " + (canSeePassword ? "blue active" : "")
-                    }
                     icon={faEye}
                     size={24}
                     style={{
@@ -488,7 +485,6 @@ function AccountScreen({ navigation }) {
             }}
           >
             <TouchableOpacity
-              className="flex full-center cancel py8 px32 mx4 br4"
               onPress={(text) => {
                 setDisplayName(user.displayName);
                 setEmail(user.email);
@@ -510,7 +506,6 @@ function AccountScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              className="TouchableOpacity-2 py8 px32 mx4 br4"
               onPress={() =>
                 updateUser(
                   bio,
@@ -543,13 +538,8 @@ function AccountScreen({ navigation }) {
             </TouchableOpacity>
           </View>
 
-          <View className="mt16" style={{ ...styles.mt16 }}>
-            <TouchableOpacity
-              className="TouchableOpacity-1 grey-1"
-              onPress={() => setDeleteAccountModal(true)}
-              size="large"
-              type="text"
-            >
+          <View style={{ ...styles.mt16 }}>
+            <TouchableOpacity onPress={() => setDeleteAccountModal(true)}>
               <Text style={{ ...styles.colorGrey11 }}>
                 Delete Account and All Data
               </Text>

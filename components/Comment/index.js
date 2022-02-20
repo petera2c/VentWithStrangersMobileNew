@@ -135,7 +135,7 @@ function CommentComponent({
         )}
       </View>
       <Text style={{ ...styles.pTag, ...styles.mb16 }}>
-        {swapTags(comment.text)}
+        {swapTags(comment.text, navigation)}
       </Text>
 
       <View
@@ -164,7 +164,6 @@ function CommentComponent({
           style={{ ...styles.flexRow, ...styles.alignCenter }}
         >
           <FontAwesomeIcon
-            className={`heart ${hasLiked ? "red" : "grey-5"} mr4`}
             icon={hasLiked ? faHeart2 : faHeart}
             size={24}
             style={{

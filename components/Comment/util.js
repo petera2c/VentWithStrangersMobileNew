@@ -1,4 +1,5 @@
 import React from "react";
+import { Text, TouchableOpacity } from "react-native";
 import {
   deleteDoc,
   doc,
@@ -9,6 +10,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase_init";
 import { showMessage } from "react-native-flash-message";
+
+import { styles } from "../../styles";
 
 export const getComment = async (commentID, setComment, ventID) => {
   const commentDoc = await getDoc(doc(db, "comments", commentID));
@@ -71,7 +74,7 @@ export const reportComment = async (commentID, userID, ventID) => {
   });
 };
 
-export const swapTags = (commentText) => {
+export const swapTags = (commentText, navigation) => {
   if (!commentText) return;
   const regexFull = /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
   const regexDisplay = /\[[\x21-\x5A|\x61-\x7A|\x5f]+\]/gi;
@@ -90,6 +93,7 @@ export const swapTags = (commentText) => {
         start: index,
         end: possibleTag.length + index,
         value: displayTag,
+        id: displayTag[1],
       });
       return displayNameArray[0];
     } else return possibleTag;
@@ -99,24 +103,20 @@ export const swapTags = (commentText) => {
   else {
     return [
       ...listOfTaggedDisplayNames.map((obj, index) => {
-        if (index === 0) {
-          return [
-            commentText.slice(0, obj.start),
-            <span className="mentions__mention" key={index}>
+        return [
+          commentText.slice(0, obj.start),
+          <TouchableOpacity
+            key={index}
+            onPress={() => navigation.navigate("Profile", { userID: obj.id })}
+            style={{
+              marginBottom: -3,
+            }}
+          >
+            <Text style={{ ...styles.fs20, ...styles.colorMain }}>
               {obj.value}
-            </span>,
-          ];
-        } else {
-          return [
-            commentText.slice(
-              listOfTaggedDisplayNames[index - 1].end,
-              obj.start
-            ),
-            <span className="mentions__mention" key={index}>
-              {obj.value}
-            </span>,
-          ];
-        }
+            </Text>
+          </TouchableOpacity>,
+        ];
       }),
       commentText.slice(
         listOfTaggedDisplayNames[listOfTaggedDisplayNames.length - 1].end,
