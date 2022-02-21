@@ -133,7 +133,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ventwithstrangersmobilenew"
+        applicationId "com.commontech.ventwithstrangers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 49
