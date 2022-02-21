@@ -136,7 +136,7 @@ android {
         applicationId "com.commontech.ventwithstrangers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 49
+        versionCode 50
         versionName "3.0.0"
     }
     splits {
