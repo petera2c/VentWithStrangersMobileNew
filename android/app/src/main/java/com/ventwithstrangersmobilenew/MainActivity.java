@@ -1,4 +1,4 @@
-package com.ventwithstrangersmobilenew;
+package com.commontech.ventwithstrangers;
 
 import android.os.Build;
 import android.os.Bundle;
