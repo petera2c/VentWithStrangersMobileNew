@@ -3,6 +3,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
+  Platform,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -17,7 +18,10 @@ import { styles } from "../../../styles";
 function OptionsModal({ close, options, title, visible }) {
   return (
     <Modal transparent={true} visible={visible}>
-      <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={{ ...styles.flexFill }}
+      >
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {

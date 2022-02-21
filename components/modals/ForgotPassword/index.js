@@ -3,6 +3,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
+  Platform,
   SafeAreaView,
   Text,
   TextInput,
@@ -18,7 +19,10 @@ import { sendPasswordReset } from "./util";
 function ForgotPasswordModal({ setActiveModal, visible }) {
   return (
     <Modal transparent={true} visible={visible}>
-      <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={{ ...styles.flexFill }}
+      >
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {

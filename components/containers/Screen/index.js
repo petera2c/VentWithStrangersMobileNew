@@ -1,6 +1,7 @@
 import React from "react";
 import {
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -27,7 +28,10 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
       }}
     >
       <StatusBar style="dark" />
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
         <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
           {goBack && (
             <View style={{ ...styles.bgWhite }}>

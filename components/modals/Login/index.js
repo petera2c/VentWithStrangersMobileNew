@@ -4,6 +4,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Modal,
+  Platform,
   SafeAreaView,
   Text,
   TextInput,
@@ -27,7 +28,10 @@ function LoginModal({ setActiveModal, visible }) {
 
   return (
     <Modal transparent={true} visible={visible}>
-      <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={{ ...styles.flexFill }}
+      >
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {

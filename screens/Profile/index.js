@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   Modal,
+  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -530,7 +531,10 @@ function ProfileScreen({ navigation, route }) {
       </ScrollView>
 
       <Modal transparent={true} visible={Boolean(showOptionsModal)}>
-        <KeyboardAvoidingView behavior="padding" style={{ ...styles.flexFill }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+          style={{ ...styles.flexFill }}
+        >
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
