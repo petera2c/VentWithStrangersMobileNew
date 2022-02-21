@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "440569980458-4e53oiibrr0nvorct1neuace4katm96k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.commontech.ventwithstrangers",
-            "certificate_hash": "a5b119cc12779ef21259697fc2a7b565a20d6e54"
-          }
-        },
-        {
           "client_id": "440569980458-sk0shqfgmrur54fuop36fo2bmg254r1c.apps.googleusercontent.com",
           "client_type": 3
         }
