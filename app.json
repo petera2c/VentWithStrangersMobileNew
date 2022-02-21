@@ -15,7 +15,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "40",
+      "buildNumber": "41",
       "bundleIdentifier": "com.commontech.ventwithstrangers"
     },
     "android": {
