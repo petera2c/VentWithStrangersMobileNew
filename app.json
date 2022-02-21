@@ -16,7 +16,8 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "41",
-      "bundleIdentifier": "com.commontech.ventwithstrangers"
+      "bundleIdentifier": "com.commontech.ventwithstrangers",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -25,7 +26,7 @@
       "splash": {
         "resizeMode": "native"
       },
-      "versionCode": 50
+      "versionCode": 51
     }
   }
 }
