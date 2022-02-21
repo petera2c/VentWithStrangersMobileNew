@@ -1,8 +1,31 @@
 {
   "expo": {
-    "name": "VentWithStrangersMobileNew",
-    "slug": "VentWithStrangersMobileNew",
+    "name": "Vent With Strangers",
+    "description": "A safe place to give or receive help :)",
+    "slug": "vent-with-strangers",
     "version": "3.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "primaryColor": "#2096f2",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "40",
+      "bundleIdentifier": "com.commontech.ventwithstrangers"
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.commontech.ventwithstrangers",
+      "permissions": [],
+      "splash": {
+        "resizeMode": "native"
+      },
+      "versionCode": 50
+    }
   }
 }
