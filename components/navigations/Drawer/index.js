@@ -60,7 +60,7 @@ function DrawerNavigation() {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      screenOptions={{ drawerPosition: "right", headerShown: false }}
+      screenOptions={{ headerShown: false }}
       drawerContent={(props) => {
         const { navigation } = props;
 
