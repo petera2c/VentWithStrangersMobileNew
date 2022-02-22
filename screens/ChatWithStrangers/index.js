@@ -24,10 +24,11 @@ function ChatWithStrangersScreen({ navigation }) {
   useEffect(() => {
     let isUserInQueueUnsubscribe;
 
-    isUserInQueueUnsubscribe = isUserInQueueListener(
-      setIsUserInQueue,
-      user.uid
-    );
+    if (user)
+      isUserInQueueUnsubscribe = isUserInQueueListener(
+        setIsUserInQueue,
+        user.uid
+      );
 
     return () => {
       if (user && isUserInQueueRef.current) leaveQueue(user.uid);

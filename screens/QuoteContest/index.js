@@ -55,11 +55,11 @@ function QuoteContestScreen({ navigation }) {
   useEffect(() => {
     if (user) {
       getCanUserCreateQuote(setCanUserCreateQuote, user.uid);
-    }
 
-    getUserBasicInfo((newBasicUserInfo) => {
-      setUserBasicInfo(newBasicUserInfo);
-    }, user.uid);
+      getUserBasicInfo((newBasicUserInfo) => {
+        setUserBasicInfo(newBasicUserInfo);
+      }, user.uid);
+    }
 
     setQuotes([]);
     getQuotes(undefined, setCanLoadMoreQuotes, setQuotes);

@@ -170,6 +170,21 @@ function BottomHeader({ navigation }) {
                 </View>
               )}
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                navigation.openDrawer();
+              }}
+              style={{ flex: 1, ...styles.fullCenter, ...styles.py16 }}
+            >
+              <FontAwesomeIcon
+                icon={faBars}
+                size={28}
+                style={{
+                  ...styles.colorGrey1,
+                }}
+              />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("NewVent");
@@ -222,20 +237,6 @@ function BottomHeader({ navigation }) {
                   </Text>
                 </View>
               )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.openDrawer();
-              }}
-              style={{ flex: 1, ...styles.fullCenter, ...styles.py16 }}
-            >
-              <FontAwesomeIcon
-                icon={faBars}
-                size={28}
-                style={{
-                  ...styles.colorGrey1,
-                }}
-              />
             </TouchableOpacity>
           </SafeAreaView>
         );
