@@ -10,6 +10,6 @@ export const login = ({ email, password }, setActiveModal) => {
       setActiveModal();
     })
     .catch((error) => {
-      showMessage({ message: error, type: "error" });
+      showMessage({ message: error.message, type: "error" });
     });
 };

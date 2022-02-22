@@ -12,7 +12,7 @@ export const sendPasswordReset = ({ email }) => {
     })
     .catch((error) => {
       showMessage({
-        message: error,
+        message: error.message,
         type: "error",
       });
     });

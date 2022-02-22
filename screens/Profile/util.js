@@ -357,7 +357,7 @@ export const updateUser = async (
           })
           .catch((error) => {
             showMessage({
-              message: error,
+              message: error.message,
               type: "error",
             });
           });
