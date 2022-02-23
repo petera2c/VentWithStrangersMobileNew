@@ -10,24 +10,31 @@ dayjs.extend(relativeTime);
 function NotificationList({ navigation, notifications }) {
   return (
     <View>
-      {notifications.map((notification, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() =>
-            navigation.jumpTo("SingleVent", {
-              ventID: getVentIDFromLink(notification.link),
-            })
-          }
-          style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}
-        >
-          <Text style={{ ...styles.fs20, ...styles.mb8 }}>
-            {notification.message}
-          </Text>
-          <Text style={{ ...styles.fs18, ...styles.colorGrey5, ...styles.tar }}>
-            {dayjs(notification.server_timestamp).fromNow()}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      {notifications.map((notification, index) => {
+        const ventID = getVentIDFromLink(notification.link);
+        return (
+          <TouchableOpacity
+            activeOpacity={ventID ? 0.2 : 1}
+            key={index}
+            onPress={() => {
+              if (ventID)
+                navigation.jumpTo("SingleVent", {
+                  ventID,
+                });
+            }}
+            style={{ ...styles.box, ...styles.mb16, ...styles.pa32 }}
+          >
+            <Text style={{ ...styles.fs20, ...styles.mb8 }}>
+              {notification.message}
+            </Text>
+            <Text
+              style={{ ...styles.fs18, ...styles.colorGrey5, ...styles.tar }}
+            >
+              {dayjs(notification.server_timestamp).fromNow()}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
       {((notifications && notifications.length === 0) || !notifications) && (
         <View style={{ ...styles.box, ...styles.pa32 }}>
           <Text style={{ ...styles.titleSmall, ...styles.tac }}>
