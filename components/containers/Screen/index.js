@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
 import { faChevronLeft } from "@fortawesome/pro-solid-svg-icons/faChevronLeft";
@@ -29,13 +30,19 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
         },
       }}
     >
-      {Platform.OS == "ios" && <StatusBar style="dark" />}
+      <StatusBar hidden={false} style="dark" />
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ flex: 1 }}
       >
-        <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            ...styles.bgWhite,
+            marginTop: getStatusBarHeight(),
+          }}
+        >
           {goBack && (
             <View style={{ ...styles.bgWhite }}>
               <TouchableOpacity
