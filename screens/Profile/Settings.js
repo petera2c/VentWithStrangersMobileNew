@@ -40,8 +40,10 @@ function SettingsScreen({ navigation }) {
 
   if (!settingsSnapshot || !settingsSnapshot.data())
     return (
-      <View>
-        <Text style={{ ...styles.titleSmall, ...styles.mb16 }}>Loading</Text>
+      <View style={{ ...styles.fullCenter }}>
+        <Text style={{ ...styles.titleSmall, ...styles.tac, ...styles.my16 }}>
+          Loading
+        </Text>
       </View>
     );
 

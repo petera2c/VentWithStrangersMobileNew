@@ -12,6 +12,7 @@ function NotificationList({ navigation, notifications }) {
     <View>
       {notifications.map((notification, index) => {
         const ventID = getVentIDFromLink(notification.link);
+
         return (
           <TouchableOpacity
             activeOpacity={ventID ? 0.2 : 1}
