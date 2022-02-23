@@ -1,5 +1,6 @@
 import React from "react";
 import { Linking, Platform, Text, TouchableOpacity } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 import reactStringReplace from "react-string-replace";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
@@ -183,6 +184,10 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
   });
 
   return dbRef;
+};
+
+export const getKeyboardVerticalOffSet = () => {
+  return getStatusBarHeight();
 };
 
 export const getTotalOnlineUsers = (callback) => {

@@ -15,11 +15,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 function OptionsModal({ close, options, title, visible }) {
   return (
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

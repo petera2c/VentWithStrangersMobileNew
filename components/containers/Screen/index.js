@@ -15,6 +15,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 function ScreenContainer({ children, goBack, navigation, style, Title }) {
   return (
     <PaperProvider
@@ -27,9 +29,10 @@ function ScreenContainer({ children, goBack, navigation, style, Title }) {
         },
       }}
     >
-      <StatusBar style="dark" />
+      {Platform.OS == "ios" && <StatusBar style="dark" />}
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ flex: 1 }}
       >
         <SafeAreaView style={{ flex: 1, ...styles.bgWhite }}>

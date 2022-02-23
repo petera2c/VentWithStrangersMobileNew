@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { styles } from "../../styles";
 
-import { blockUser } from "../../util";
+import { blockUser, getKeyboardVerticalOffSet } from "../../util";
 
 function OptionsComponent({
   canUserInteractFunction,
@@ -75,6 +75,7 @@ function OptionsModal({
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

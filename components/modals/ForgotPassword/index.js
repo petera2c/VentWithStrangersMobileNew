@@ -14,6 +14,8 @@ import {
 
 import { colors, styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 import { sendPasswordReset } from "./util";
 
 function ForgotPasswordModal({ setActiveModal, visible }) {
@@ -21,6 +23,7 @@ function ForgotPasswordModal({ setActiveModal, visible }) {
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

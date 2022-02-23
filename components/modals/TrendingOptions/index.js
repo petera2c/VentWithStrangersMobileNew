@@ -14,11 +14,14 @@ import {
 
 import { styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 function TrendingOptionsModal({ close, options, visible }) {
   return (
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

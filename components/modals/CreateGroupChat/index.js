@@ -29,6 +29,7 @@ import { colors, styles } from "../../../styles";
 import {
   capitolizeFirstChar,
   getIsUserOnline,
+  getKeyboardVerticalOffSet,
   getUserBasicInfo,
 } from "../../../util";
 import { saveGroup } from "./util";
@@ -82,6 +83,7 @@ function GroupChatCreateModal({
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

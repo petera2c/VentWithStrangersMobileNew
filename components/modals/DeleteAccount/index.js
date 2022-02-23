@@ -14,6 +14,8 @@ import {
 
 import { colors, styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 function DeleteAccountModal({ close, submit, visible }) {
   const textInput = useRef(null);
 
@@ -24,6 +26,7 @@ function DeleteAccountModal({ close, submit, visible }) {
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

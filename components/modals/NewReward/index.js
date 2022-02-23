@@ -16,6 +16,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 function NewRewardModal({ close, newReward, visible }) {
   const [canClose, setCanClose] = useState(false);
 
@@ -27,6 +29,7 @@ function NewRewardModal({ close, newReward, visible }) {
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

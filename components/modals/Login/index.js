@@ -18,6 +18,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { colors, styles } from "../../../styles";
 
+import { getKeyboardVerticalOffSet } from "../../../util";
+
 import { login } from "./util";
 
 function LoginModal({ setActiveModal, visible }) {
@@ -30,6 +32,7 @@ function LoginModal({ setActiveModal, visible }) {
     <Modal transparent={true} visible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={getKeyboardVerticalOffSet()}
         style={{ ...styles.flexFill }}
       >
         <TouchableOpacity

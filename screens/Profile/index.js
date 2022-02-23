@@ -47,6 +47,7 @@ import {
   calculateKarma,
   capitolizeFirstChar,
   getIsUserOnline,
+  getKeyboardVerticalOffSet,
   getUserBasicInfo,
   userSignUpProgress,
 } from "../../util";
@@ -533,6 +534,7 @@ function ProfileScreen({ navigation, route }) {
       <Modal transparent={true} visible={Boolean(showOptionsModal)}>
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={getKeyboardVerticalOffSet()}
           style={{ ...styles.flexFill }}
         >
           <TouchableOpacity
