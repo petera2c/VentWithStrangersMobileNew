@@ -22,7 +22,7 @@ export const signUp = (
   if (password !== passwordConfirm)
     return showMessage({ message: "Passwords do not match.", type: "error" });
 
-  createUserWithEmailAndPassword(getAuth(), email, password)
+  createUserWithEmailAndPassword(getAuth(), email.replace(/ /g, ""), password)
     .then(async (res) => {
       if (res.user) {
         registerForPushNotificationsAsync(res.user);
