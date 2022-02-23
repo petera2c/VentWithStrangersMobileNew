@@ -1,4 +1,3 @@
-import { NativeModules } from "react-native";
 import {
   collection,
   deleteField,
@@ -43,8 +42,6 @@ const deleteAccountField = async (field, userID) => {
 
 export const deleteAccountAndAllData = async () => {
   await getAuth().currentUser.delete();
-
-  NativeModules.DevSettings.reload();
 };
 
 export const followOrUnfollowUser = async (

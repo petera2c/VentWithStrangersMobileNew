@@ -36,6 +36,11 @@ function Routes() {
   onAuthStateChanged(getAuth(), (user) => {
     setLoading(false);
     if (user) setUser(user);
+    else {
+      setUser();
+      setUserSubscription();
+      if (userBasicInfo.displayName) setUserBasicInfo({});
+    }
   });
 
   useEffect(() => {
@@ -66,7 +71,6 @@ function Routes() {
         setUserBasicInfo(newBasicUserInfo);
       }, user.uid);
     }
-
     AppState.addEventListener("change", appStateListener);
 
     return () => {

@@ -12,7 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../../config/firebase_init";
-import { getEndAtValueTimestamp, soundNotify } from "../../../util";
+import { getEndAtValueTimestamp } from "../../../util";
 
 export const conversationsListener = (navigation, userID) => {
   const unsubscribe = onSnapshot(
@@ -116,8 +116,6 @@ export const newNotificationsListener = (
           },
           ...oldNotifications,
         ]);
-
-        soundNotify();
       }
     }
   );

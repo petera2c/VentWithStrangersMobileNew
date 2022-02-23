@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import { Linking, NativeModules, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { Linking, Platform, Text, TouchableOpacity } from "react-native";
 import reactStringReplace from "react-string-replace";
 import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 import {
   arrayRemove,
@@ -13,7 +12,6 @@ import {
   onSnapshot,
   query,
   setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import {
   get,
@@ -38,7 +36,6 @@ export const blockUser = async (userID, userIDToBlock) => {
     message: "User has been blocked",
     type: "success",
   });
-  NativeModules.DevSettings.reload();
 };
 
 export const calculateKarma = (usereBasicInfo) => {
@@ -283,7 +280,10 @@ const removeExpoToken = async (userID) => {
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
+      showMessage({
+        message: "Failed to get push token for push notification!",
+        type: "error",
+      });
       return;
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
@@ -296,7 +296,10 @@ const removeExpoToken = async (userID) => {
       { merge: true }
     );
   } else {
-    alert("Must use physical device for Push Notifications");
+    showMessage({
+      message: "Must use physical device for Push Notifications",
+      type: "error",
+    });
   }
 
   if (Platform.OS === "android") {
@@ -313,15 +316,11 @@ export const signOut2 = async (userID) => {
   setUserOnlineStatus("offline", userID);
   await removeExpoToken(userID);
 
-  signOut(getAuth()).then(() => {
-    NativeModules.DevSettings.reload();
-  });
+  signOut(getAuth());
 };
 
-export const soundNotify = (sound = "bing") => {};
-
 export const urlify = (style, text) =>
-  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
+  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match) => (
     <TouchableOpacity
       onPress={() => {
         Linking.canOpenURL(match).then((supported) => {
@@ -336,17 +335,6 @@ export const urlify = (style, text) =>
       <Text style={style}>{match}</Text>
     </TouchableOpacity>
   ));
-
-export const useIsMounted = () => {
-  const isMountedRef = useRef(true);
-  const isMounted = useCallback(() => isMountedRef.current, []);
-
-  useEffect(() => {
-    return () => void (isMountedRef.current = false);
-  }, []);
-
-  return isMounted;
-};
 
 export const userSignUpProgress = (user, noAlert) => {
   if (!user) {
