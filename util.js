@@ -316,7 +316,11 @@ export const signOut2 = async (userID) => {
   setUserOnlineStatus("offline", userID);
   await removeExpoToken(userID);
 
-  signOut(getAuth());
+  signOut(
+    getAuth().then(() => {
+      showMessage({ message: "Sign out successful :)", type: "success" });
+    })
+  );
 };
 
 export const urlify = (style, text) =>
