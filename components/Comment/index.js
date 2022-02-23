@@ -83,7 +83,12 @@ function CommentComponent({
   return (
     <View style={{ ...styles.pa16 }}>
       <View
-        style={{ ...styles.flexRow, ...styles.justifyBetween, ...styles.mb16 }}
+        style={{
+          ...styles.flexRow,
+          ...styles.justifyBetween,
+          ...styles.alignCenter,
+          ...styles.mb16,
+        }}
       >
         <DisplayName
           displayName={userBasicInfo.displayName}

@@ -211,7 +211,12 @@ function VentComponent({
               }}
             >
               <Text
-                style={{ ...styles.colorGrey11, ...styles.fs20, ...styles.mr8 }}
+                style={{
+                  flexShrink: 1,
+                  ...styles.colorGrey11,
+                  ...styles.fs20,
+                  ...styles.mr8,
+                }}
               >
                 {capitolizeFirstChar(author.displayName)}
               </Text>

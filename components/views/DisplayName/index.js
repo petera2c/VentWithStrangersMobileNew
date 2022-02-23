@@ -30,21 +30,36 @@ function DisplayName({
 
   if (isLink)
     return (
-      <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+      <View style={{ flexShrink: 1, ...styles.flexRow, ...styles.alignCenter }}>
         <TouchableOpacity
           onPress={() => {
             navigation.jumpTo("Profile", { userID });
           }}
-          style={{ ...styles.flexRow, ...styles.alignCenter }}
+          style={{
+            flexShrink: 1,
+            ...styles.flexRow,
+            ...styles.alignCenter,
+          }}
         >
           <MakeAvatar
             displayName={userBasicInfo.displayName}
             userBasicInfo={userBasicInfo}
           />
           {userBasicInfo && (
-            <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+            <View
+              style={{
+                flexShrink: 1,
+                ...styles.flexRow,
+                ...styles.alignCenter,
+              }}
+            >
               <Text
-                style={{ ...styles.fs20, ...styles.colorGrey11, ...styles.mr8 }}
+                style={{
+                  flexShrink: 1,
+                  ...styles.fs20,
+                  ...styles.colorGrey11,
+                  ...styles.mr8,
+                }}
               >
                 {capitolizedDisplayName}
               </Text>
@@ -65,7 +80,13 @@ function DisplayName({
     );
   else
     return (
-      <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
+      <View
+        style={{
+          ...styles.flexFill,
+          ...styles.flexRow,
+          ...styles.alignCenter,
+        }}
+      >
         <View style={{ ...styles.flexRow, ...styles.alignCenter }}>
           {!noAvatar && (
             <MakeAvatar
@@ -76,12 +97,14 @@ function DisplayName({
           {userBasicInfo && (
             <View
               style={{
+                ...styles.flexFill,
                 ...styles.flexRow,
                 ...styles.fullCenter,
               }}
             >
               <Text
                 style={{
+                  flexShrink: 1,
                   ...(big
                     ? styles.fs24
                     : { ...styles.fs20, ...styles.colorGrey11 }),
