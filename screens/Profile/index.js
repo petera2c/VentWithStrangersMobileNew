@@ -162,8 +162,7 @@ function ProfileScreen({ navigation, route }) {
                 {(Boolean(
                   new dayjs().year() - new dayjs(userInfo.birth_date).year()
                 ) ||
-                  userInfo.gender ||
-                  userInfo.pronouns) && (
+                  Boolean(userInfo.gender || userInfo.pronouns)) && (
                   <View style={{ ...styles.flexRow }}>
                     {Boolean(
                       new dayjs().year() - new dayjs(userInfo.birth_date).year()
@@ -225,7 +224,7 @@ function ProfileScreen({ navigation, route }) {
                 )}
               </View>
 
-              {userInfo.bio && (
+              {Boolean(userInfo.bio) && (
                 <View style={{ ...styles.mt16 }}>
                   <Text style={{ ...styles.titleSmall, ...styles.mb8 }}>
                     Bio
