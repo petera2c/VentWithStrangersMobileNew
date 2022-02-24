@@ -187,7 +187,8 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
 };
 
 export const getKeyboardVerticalOffSet = () => {
-  return getStatusBarHeight() * 2;
+  if (Platform.OS === "ios") return 0;
+  else return getStatusBarHeight() * 2;
 };
 
 export const getTotalOnlineUsers = (callback) => {
