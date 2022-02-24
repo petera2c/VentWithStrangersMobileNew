@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -53,6 +54,7 @@ function AccountScreen({ navigation }) {
   const [partying, setPartying] = useState();
   const [politics, setPolitics] = useState();
   const [religion, setReligion] = useState();
+  const [showDatePicker, setShowDatePicker] = useState(Platform.OS === "ios");
 
   const setAccountInfo = (userInfo) => {
     if (userInfo.bio) setBio(userInfo.bio);
@@ -185,24 +187,37 @@ function AccountScreen({ navigation }) {
                   ...styles.mb16,
                 }}
               >
-                <DateTimePicker
-                  value={birthDate ? new Date(birthDate) : new Date()}
-                  mode={"date"}
-                  onChange={(event, selectedDate) => {
-                    if (!selectedDate) return setBirthDate(null);
-                    const date = new dayjs(selectedDate);
+                {!showDatePicker && (
+                  <TouchableOpacity
+                    onPress={() => setShowDatePicker(true)}
+                    style={{ ...styles.buttonPrimary }}
+                  >
+                    <Text style={{ ...styles.fs20, ...styles.colorWhite }}>
+                      Change Birthday
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {showDatePicker && (
+                  <DateTimePicker
+                    mode="date"
+                    onChange={(event, selectedDate) => {
+                      if (Platform.OS !== "ios") setShowDatePicker(false);
+                      if (!selectedDate) return setBirthDate(null);
+                      const date = new dayjs(selectedDate);
 
-                    const diffInYears = new dayjs().diff(date) / 31536000000;
-                    if (diffInYears > 11) setBirthDate(date);
-                    else {
-                      showMessage({
-                        message:
-                          "You are too young to use this application :'(",
-                        type: "error",
-                      });
-                    }
-                  }}
-                />
+                      const diffInYears = new dayjs().diff(date) / 31536000000;
+                      if (diffInYears > 11) setBirthDate(date);
+                      else {
+                        showMessage({
+                          message:
+                            "You are too young to use this application :'(",
+                          type: "error",
+                        });
+                      }
+                    }}
+                    value={birthDate ? new Date(birthDate) : new Date()}
+                  />
+                )}
               </View>
 
               <Text style={{ ...styles.fs20, ...styles.tac }}>
