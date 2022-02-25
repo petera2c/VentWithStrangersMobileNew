@@ -23,7 +23,6 @@ function Avatar(props) {
         source={{
           uri:
             "data:image/svg+xml;utf8," +
-            "data:image/svg+xml;utf8," +
             ReactDOMServer.renderToString(React.createElement(avatars, props)),
         }}
         style={{ width: "100%", height: "100%" }}

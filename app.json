@@ -14,18 +14,16 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
       "buildNumber": "47",
       "bundleIdentifier": "com.commontech.ventwithstrangers",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.commontech.ventwithstrangers",
       "permissions": [],
-      "splash": {
-        "resizeMode": "native"
-      },
+      "splash": { "resizeMode": "native" },
       "versionCode": 57
     }
   }

@@ -369,11 +369,17 @@ function ProfileScreen({ navigation, route }) {
                 }}
               >
                 <View>
-                  {isUserOnline && isUserOnline.last_online && (
-                    <Text style={{ ...styles.pTag, ...styles.fs16 }}>
-                      Last Seen: {dayjs(isUserOnline.last_online).fromNow()}
-                    </Text>
-                  )}
+                  {isUserOnline &&
+                    (isUserOnline.index || isUserOnline.last_online) && (
+                      <Text style={{ ...styles.pTag, ...styles.fs16 }}>
+                        Last Seen:{" "}
+                        {dayjs(
+                          isUserOnline.last_online
+                            ? isUserOnline.last_online
+                            : isUserOnline.index
+                        ).fromNow()}
+                      </Text>
+                    )}
                 </View>
                 {userBasicInfo.displayName &&
                   userID &&
