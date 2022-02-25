@@ -3,7 +3,7 @@
     "name": "Vent With Strangers",
     "description": "A safe place to give or receive help :)",
     "slug": "vent-with-strangers",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "primaryColor": "#2096f2",
@@ -14,7 +14,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "47",
+      "buildNumber": "48",
       "bundleIdentifier": "com.commontech.ventwithstrangers",
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true
@@ -24,7 +24,7 @@
       "package": "com.commontech.ventwithstrangers",
       "permissions": [],
       "splash": { "resizeMode": "native" },
-      "versionCode": 57
+      "versionCode": 58
     }
   }
 }
