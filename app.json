@@ -3,7 +3,7 @@
     "name": "Vent With Strangers",
     "description": "A safe place to give or receive help :)",
     "slug": "vent-with-strangers",
-    "version": "3.0.6",
+    "version": "3.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "primaryColor": "#2096f2",
@@ -24,7 +24,7 @@
       "package": "com.commontech.ventwithstrangers",
       "permissions": [],
       "splash": { "resizeMode": "native" },
-      "versionCode": 58
+      "versionCode": 59
     }
   }
 }

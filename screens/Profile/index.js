@@ -127,7 +127,7 @@ function ProfileScreen({ navigation, route }) {
         }
       >
         <View style={{ ...styles.pa16 }}>
-          {userID && (
+          {Boolean(userID) && (
             <View style={{ ...styles.box, ...styles.mb16, ...styles.pa16 }}>
               <View style={{ ...styles.fullCenter }}>
                 <MakeAvatar
@@ -202,7 +202,7 @@ function ProfileScreen({ navigation, route }) {
                     )}
                   </View>
                 )}
-                {userBasicInfo.server_timestamp && (
+                {Boolean(userBasicInfo.server_timestamp) && (
                   <View
                     style={{
                       ...styles.mt16,
@@ -233,11 +233,13 @@ function ProfileScreen({ navigation, route }) {
                 </View>
               )}
 
-              {(userInfo.education !== undefined ||
-                userInfo.kids !== undefined ||
-                userInfo.partying !== undefined ||
-                userInfo.politics !== undefined ||
-                userInfo.religion !== undefined) && (
+              {Boolean(
+                userInfo.education !== undefined ||
+                  userInfo.kids !== undefined ||
+                  userInfo.partying !== undefined ||
+                  userInfo.politics !== undefined ||
+                  userInfo.religion !== undefined
+              ) && (
                 <View
                   style={{ ...styles.flexRow, ...styles.wrap, ...styles.mt16 }}
                 >
@@ -259,7 +261,7 @@ function ProfileScreen({ navigation, route }) {
                       </Text>
                     </View>
                   )}
-                  {userInfo.kids !== undefined && (
+                  {Boolean(userInfo.kids !== undefined) && (
                     <View
                       style={{
                         ...styles.flexRow,
@@ -277,7 +279,7 @@ function ProfileScreen({ navigation, route }) {
                       </Text>
                     </View>
                   )}
-                  {userInfo.partying !== undefined && (
+                  {Boolean(userInfo.partying !== undefined) && (
                     <View
                       style={{
                         ...styles.flexRow,
@@ -295,7 +297,7 @@ function ProfileScreen({ navigation, route }) {
                       </Text>
                     </View>
                   )}
-                  {userInfo.politics !== undefined && (
+                  {Boolean(userInfo.politics !== undefined) && (
                     <View
                       style={{
                         ...styles.flexRow,
@@ -313,7 +315,7 @@ function ProfileScreen({ navigation, route }) {
                       </Text>
                     </View>
                   )}
-                  {userInfo.religion !== undefined && (
+                  {Boolean(userInfo.religion !== undefined) && (
                     <View
                       style={{
                         ...styles.flexRow,
@@ -333,7 +335,7 @@ function ProfileScreen({ navigation, route }) {
                   )}
                 </View>
               )}
-              {userBasicInfo.displayName &&
+              {Boolean(userBasicInfo.displayName) &&
                 userID &&
                 (user ? userID !== user.uid : true) && (
                   <TouchableOpacity
@@ -369,7 +371,7 @@ function ProfileScreen({ navigation, route }) {
                 }}
               >
                 <View>
-                  {isUserOnline &&
+                  {Boolean(isUserOnline) &&
                     (isUserOnline.index || isUserOnline.last_online) && (
                       <Text style={{ ...styles.pTag, ...styles.fs16 }}>
                         Last Seen:{" "}
@@ -381,7 +383,7 @@ function ProfileScreen({ navigation, route }) {
                       </Text>
                     )}
                 </View>
-                {userBasicInfo.displayName &&
+                {Boolean(userBasicInfo.displayName) &&
                   userID &&
                   user &&
                   userID !== user.uid && (
@@ -447,7 +449,7 @@ function ProfileScreen({ navigation, route }) {
               </Text>
             </TouchableOpacity>
           </View>
-          {postsSection && (
+          {Boolean(postsSection) && (
             <View>
               <View>
                 {vents &&
@@ -478,7 +480,7 @@ function ProfileScreen({ navigation, route }) {
               )}
             </View>
           )}
-          {!postsSection && (
+          {Boolean(!postsSection) && (
             <View>
               {comments && comments.length > 0 && (
                 <View style={{ ...styles.box }}>
@@ -504,10 +506,10 @@ function ProfileScreen({ navigation, route }) {
                     })}
                 </View>
               )}
-              {comments && comments.length === 0 && (
+              {Boolean(comments && comments.length === 0) && (
                 <Text style={{ ...styles.pTag }}>No comments found.</Text>
               )}
-              {canLoadMoreComments && (
+              {Boolean(canLoadMoreComments) && (
                 <TouchableOpacity
                   onPress={() =>
                     getUsersComments(
@@ -526,7 +528,9 @@ function ProfileScreen({ navigation, route }) {
               )}
             </View>
           )}
-          {((!vents && postsSection) || (!comments && !postsSection)) && (
+          {Boolean(
+            (!vents && postsSection) || (!comments && !postsSection)
+          ) && (
             <View style={{ ...styles.fullCenter }}>
               <Text style={{ ...styles.titleSmall, ...styles.tac }}>
                 Loading

@@ -187,7 +187,7 @@ function AccountScreen({ navigation }) {
                   ...styles.mb16,
                 }}
               >
-                {!showDatePicker && (
+                {Boolean(!showDatePicker) && (
                   <TouchableOpacity
                     onPress={() => setShowDatePicker(true)}
                     style={{ ...styles.buttonPrimary }}
@@ -197,7 +197,7 @@ function AccountScreen({ navigation }) {
                     </Text>
                   </TouchableOpacity>
                 )}
-                {showDatePicker && (
+                {Boolean(showDatePicker) && (
                   <DateTimePicker
                     mode="date"
                     onChange={(event, selectedDate) => {

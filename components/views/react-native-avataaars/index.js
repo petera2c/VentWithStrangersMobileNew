@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import ReactDOMServer from "react-dom/server";
 import avatars from "avataaars";
 import { SvgUri } from "react-native-svg";
@@ -17,8 +17,8 @@ function Avatar(props) {
         }
       />
     );
-  else
-    return (
+  else return <View />;
+  /*return (
       <Image
         source={{
           uri:
@@ -27,7 +27,7 @@ function Avatar(props) {
         }}
         style={{ width: "100%", height: "100%" }}
       />
-    );
+    );*/
 }
 
 export default Avatar;
